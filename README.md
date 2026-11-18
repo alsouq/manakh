@@ -78,8 +78,31 @@ Authorization is by the `memberships` table (never by user metadata). Roles: **o
 
 The one privileged step, `bootstrap_org` (creating the first org + owner membership), is a guarded `SECURITY DEFINER` function; everything else goes through RLS. All 27 policies are verified against a real Postgres in `supabase/test/` — run `npm run test:rls` (needs a local Postgres). The row⇄domain mappers have a round-trip test: `npm run test:map`.
 
+## Deploy
+
+The web app is a standard Next.js app — any Node host runs it; Vercel is one click.
+
+**1. Push to GitHub** (private repo recommended — this is your farm's tool):
+
+```bash
+gh repo create manakh --private --source=. --push
+# or, manually:
+# git remote add origin git@github.com:<you>/manakh.git && git push -u origin main
+```
+
+**2. Deploy on Vercel:** import the repo at vercel.com (framework auto-detected as
+Next.js). For **cloud mode**, add the two env vars from `.env.example`
+(`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`) in the Vercel project
+settings, and apply the migrations (`supabase db push`). With no env vars it deploys
+in **demo mode** and runs the in-browser twin — good for a live preview.
+
+CI (`.github/workflows/ci.yml`) runs typecheck, lint, build and the unit tests on every
+push. The **edge service** (`edge/`) is deployed separately, on the on-site controller,
+not on Vercel.
+
 ## Roadmap
 
 1. **Done:** UI + control engine + digital twin (demo mode).
 2. **Done:** Supabase auth, roles, RLS, Postgres persistence (`supabase/migrations/`), cloud mode. *Verified: schema + RLS on real Postgres, mapper round-trips, typecheck, build, demo e2e. Not yet exercised against a live hosted project in this session.*
-3. **Next:** edge service on site (Node + SQLite buffer), Modbus/MQTT adapters, sync, alarm notifications (SMS/WhatsApp/push), realtime multi-device sync.
+3. **Done (scaffold):** edge control service (`edge/`) — same engine on site, Modbus/MQTT adapters, local buffer, best-effort cloud sync; verified against a simulated device. Real hardware needs a thin client wrapper per protocol.
+4. **Next:** alarm notifications (SMS/WhatsApp/push), realtime multi-device sync, the IO/floorplan/irrigation config wired to the edge.
