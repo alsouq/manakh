@@ -1,14 +1,13 @@
 "use client";
 import { useStore } from "@/lib/store";
 import { SITE } from "@/sim/seed";
-import { Button, Card, CardHeader, PageHeader, Segmented } from "@/components/ui";
+import { Button, Card, CardHeader, Segmented } from "@/components/ui";
 
 export default function SettingsPage() {
   const s = useStore();
   const t = s.t;
   return (
     <div className="max-w-3xl">
-      <PageHeader title={t("set.title")} />
       <div className="space-y-4">
         <Card>
           <CardHeader title={t("set.profile")} />

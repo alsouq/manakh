@@ -16,6 +16,8 @@ export default function WaterPage() {
   return (
     <div>
       <PageHeader title={t("wa.title")} />
+      <EasyIrrigation />
+      <h2 className="mt-6 mb-3 text-[15px] font-semibold text-ink">{t("wa.perValve")}</h2>
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {SECTIONS.map((d) => {
           const L = tw.live[d.id];
@@ -141,5 +143,82 @@ function IrrDialog({ id, onClose }: { id: string; onClose: () => void }) {
         ))}
       </div>
     </Dialog>
+  );
+}
+
+function EasyIrrigation() {
+  const s = useStore();
+  const t = s.t;
+  const [included, setIncluded] = useState<Set<string>>(() => new Set(SECTIONS.map((d) => d.id)));
+  const [duration, setDuration] = useState(10);
+  const toggle = (id: string) => setIncluded((x) => (x.has(id) ? new Set([...x].filter((y) => y !== id)) : new Set([...x, id])));
+  const startSeq = () => {
+    SECTIONS.filter((d) => included.has(d.id)).forEach((d) => s.irrigateNow(d.id));
+    s.toast(t("wa.seqStarted", { n: included.size }));
+  };
+  return (
+    <Card>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3">
+        <div className="flex items-center gap-2">
+          <Droplets size={18} className="text-[var(--s1)]" />
+          <h3 className="text-[15px] font-semibold">{t("wa.easy")}</h3>
+        </div>
+        <Button variant="primary" size="sm" onClick={startSeq} disabled={included.size === 0}>
+          <Play size={15} /> {t("wa.startSeq")}
+        </Button>
+      </div>
+      <div className="flex flex-wrap items-center gap-4 border-b border-line px-4 py-2.5 text-[13px]">
+        <span className="text-ink-2">
+          {t("wa.selected", { n: included.size })}
+        </span>
+        <label className="flex items-center gap-2">
+          <span className="text-muted">{t("wa.duration")}</span>
+          <NumberInput className="w-20" value={duration} step={1} min={1} onChange={setDuration} />
+          <span className="text-muted">{t("u.min")}</span>
+        </label>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead>
+            <tr className="text-[12px] text-muted">
+              <th className="px-4 py-2 text-start font-medium">{t("wa.valve")}</th>
+              <th className="px-3 py-2 text-start font-medium">{t("wa.startTime")}</th>
+              <th className="px-3 py-2 text-end font-medium">{t("wa.duration")}</th>
+              <th className="px-3 py-2 text-end font-medium">{t("wa.ec")}</th>
+              <th className="px-3 py-2 text-end font-medium">{t("wa.ph")}</th>
+              <th className="px-3 py-2 text-end font-medium">{t("wa.included")}</th>
+              <th className="px-2 py-2" />
+            </tr>
+          </thead>
+          <tbody className="num divide-y divide-line">
+            {SECTIONS.map((d) => {
+              const cfg = s.s.irrigation[d.id];
+              const on = included.has(d.id);
+              return (
+                <tr key={d.id} className={on ? "" : "opacity-50"}>
+                  <td className="px-4 py-2 text-ink">
+                    <b>{d.code}</b> · {s.s.lang === "ar" ? d.nameAr : d.name}
+                  </td>
+                  <td className="px-3 py-2 text-ink-2">{t("wa.asap")}</td>
+                  <td className="px-3 py-2 text-end text-ink-2">{duration}m 00s</td>
+                  <td className="px-3 py-2 text-end text-ink-2">{fmt(cfg.ecTarget, 1)}</td>
+                  <td className="px-3 py-2 text-end text-ink-2">{fmt(cfg.phTarget, 1)}</td>
+                  <td className="px-3 py-2 text-end">
+                    <span className="inline-flex justify-end">
+                      <Switch checked={on} onChange={() => toggle(d.id)} />
+                    </span>
+                  </td>
+                  <td className="px-2 py-2 text-end">
+                    <button onClick={() => s.irrigateNow(d.id)} className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-brand hover:bg-surface-2" title={t("wa.manualStart")}>
+                      <Play size={15} />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </Card>
   );
 }

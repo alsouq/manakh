@@ -60,3 +60,8 @@ Settable value [V] badge opens the setpoint editor,section,should,yes,yes,matche
 Chart range toggle 24h/48h/7d on a section,section,could,yes,yes,matches IIVO Hourly/Daily/Monthly
 All-sections comparison table (multi-zone),dashboard,could,yes,yes,matches iSii multi-zone column table
 Rule-based suggestions (our own, not their IA models),dashboard,could,no,yes,our improvement; heuristic advisor
+IO configuration hardware tree (control station/ethercan/datapoint/modules),settings,could,yes,yes,matches iSii IO Configuration; generic module catalogue
+Add-modules catalogue dialog,settings,could,yes,yes,matches iSii Add modules
+Channel properties (coupling nett/gross matrix test signal),settings,could,yes,yes,
+Floorplan editor with draggable climate locations,settings,could,yes,yes,matches iSii Floorplans
+Easy irrigation valve sequence with EC/pH,water,could,yes,yes,matches iSii Easy irrigation
