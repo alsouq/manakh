@@ -20,6 +20,8 @@ import {
   Sprout,
   Gauge,
   Table2,
+  Thermometer,
+  Navigation,
 } from "lucide-react";
 import { store, useStore } from "@/lib/store";
 import { SECTIONS, SITE } from "@/sim/seed";
@@ -67,6 +69,8 @@ const NAV = [
   { href: "/activity", k: "nav.activity", icon: History },
   { href: "/settings", k: "nav.settings", icon: Settings },
 ];
+
+const dirs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
 function isActive(path: string, href: string) {
   return href === "/" ? path === "/" : path.startsWith(href);
@@ -158,6 +162,7 @@ function TopBar({ onMenu }: { onMenu: () => void }) {
   const tw = s.twin!;
   const now = s.simNow();
   const o = tw.outside;
+  const alarms = s.unhandledAlarms().length;
   const dark = typeof document !== "undefined" && document.documentElement.dataset.theme === "dark";
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-line bg-bg/85 px-3 backdrop-blur sm:px-5">
@@ -172,11 +177,22 @@ function TopBar({ onMenu }: { onMenu: () => void }) {
         <div className="hidden text-muted sm:block">
           {new Intl.DateTimeFormat(s.s.lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", { timeZone: SITE.geo.tz, weekday: "short", day: "numeric", month: "short" }).format(new Date(now))}
         </div>
-        <Link href="/weather" className="hidden items-center gap-1.5 rounded-lg px-2 py-1 text-ink-2 hover:bg-surface-2 md:flex">
-          <Sun size={15} className="text-[var(--s4)]" />
-          <span className="num">{fmt(o.temp, 1)}°</span>
-          <span className="num text-muted">{fmt(o.radiation, 0)} W/m²</span>
-          <span className="num text-muted">{fmt(o.wind, 1)} m/s</span>
+        <Link href="/weather" className="hidden items-center gap-3 rounded-lg px-2 py-1 text-ink-2 hover:bg-surface-2 md:flex">
+          <span className="num inline-flex items-center gap-1" title={t("var.outTemp")}>
+            <Thermometer size={14} className="text-[var(--s8)]" /> {fmt(o.temp, 1)}°C
+          </span>
+          <span className="num inline-flex items-center gap-1 text-muted" title={t("var.outRh")}>
+            <Droplets size={14} className="text-[var(--s1)]" /> {fmt(o.rh, 0)}%
+          </span>
+          <span className="num hidden items-center gap-1 text-muted lg:inline-flex" title={t("var.radiation")}>
+            <Sun size={14} className="text-[var(--s4)]" /> {fmt(o.radiation, 0)} W/m²
+          </span>
+          <span className="num hidden text-muted xl:inline" title={t("ov.radSum")}>
+            {fmt(tw.live.a.totals.radSum, 0)} J/cm²
+          </span>
+          <span className="num inline-flex items-center gap-1 text-muted" title={t("var.wind")}>
+            <Navigation size={13} style={{ transform: `rotate(${o.windDir + 180}deg)` }} /> {fmt(o.wind, 1)} m/s {dirs[Math.round(o.windDir / 45) % 8]}
+          </span>
         </Link>
       </div>
       <div className="ms-auto flex items-center gap-1">
@@ -199,9 +215,13 @@ function TopBar({ onMenu }: { onMenu: () => void }) {
         <IconButton label={t("top.theme")} onClick={() => s.setTheme(dark ? "light" : "dark")}>
           {dark ? <Sun size={18} /> : <Moon size={18} />}
         </IconButton>
-        <Link href="/alarms" className="relative inline-flex h-9 w-9 items-center justify-center rounded-xl text-ink-2 hover:bg-surface-2 lg:hidden" aria-label={t("nav.alarms")}>
+        <Link href="/alarms" className="relative inline-flex h-9 w-9 items-center justify-center rounded-xl text-ink-2 hover:bg-surface-2" aria-label={t("nav.alarms")}>
           <Bell size={18} />
-          {s.unhandledAlarms().length > 0 && <span className="absolute end-1 top-1 h-2.5 w-2.5 rounded-full bg-critical ring-2 ring-bg" />}
+          {alarms > 0 && (
+            <span className="num absolute -end-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-critical px-1 text-[10px] font-bold text-white ring-2 ring-bg">
+              {alarms}
+            </span>
+          )}
         </Link>
         <IconButton label={t("top.signout")} onClick={() => s.logout()}>
           <LogOut size={18} className="rtl:-scale-x-100" />

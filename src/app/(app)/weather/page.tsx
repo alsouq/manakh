@@ -1,14 +1,33 @@
 "use client";
-import { useMemo } from "react";
-import { Cloud, Navigation, Sunrise, Sunset, Thermometer, Wind, Droplets, Sun } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Cloud, Navigation, Sun, Sunrise, Sunset, Thermometer, Wind, Droplets } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { SITE } from "@/sim/seed";
 import { weatherAt } from "@/sim/weather";
-import { dewPoint } from "@/engine/psy";
+import { ahFromRh, dewPoint } from "@/engine/psy";
 import { fmtMinutes } from "@/engine/sun";
-import { fmt, fmtTime } from "@/lib/vars";
+import { fmt } from "@/lib/vars";
 import { TimeCharts, type ChartPanelDef } from "@/components/TimeChart";
-import { Card, CardHeader, PageHeader, Stat } from "@/components/ui";
+import { Card, cx, PageHeader, Stat, Switch } from "@/components/ui";
+
+interface FcVar {
+  key: string;
+  label: string;
+  unit: string;
+  color: string;
+  digits: number;
+  get: (f: ReturnType<typeof weatherAt>, i: number, cum: number[]) => number;
+}
+const FC_VARS: FcVar[] = [
+  { key: "radiation", label: "var.radiation", unit: "W/m²", color: "--s4", digits: 0, get: (f) => f.radiation },
+  { key: "radSum", label: "ov.radSum", unit: "J/cm²", color: "--s6", digits: 0, get: (_f, i, cum) => cum[i] },
+  { key: "temp", label: "var.outTemp", unit: "°C", color: "--s2", digits: 1, get: (f) => f.temp },
+  { key: "wind", label: "var.wind", unit: "m/s", color: "--s7", digits: 1, get: (f) => f.wind },
+  { key: "cloud", label: "wx.cloud", unit: "%", color: "--axis", digits: 0, get: (f) => f.cloud * 100 },
+  { key: "rh", label: "var.outRh", unit: "%", color: "--s1", digits: 0, get: (f) => f.rh },
+  { key: "ah", label: "wx.ah", unit: "g/m³", color: "--s3", digits: 1, get: (f) => ahFromRh(f.temp, f.rh) },
+  { key: "windDir", label: "wx.dir", unit: "°", color: "--s5", digits: 0, get: (f) => f.windDir },
+];
 
 export default function WeatherPage() {
   const s = useStore();
@@ -18,31 +37,53 @@ export default function WeatherPage() {
   const lt = tw.lt;
   const now = s.simNow();
   const hourBucket = Math.floor(now / 3600000);
+  const [enabled, setEnabled] = useState<string[]>(["radiation", "temp", "wind"]);
+  const dirs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
   const fc = useMemo(() => {
     const start = (hourBucket + 1) * 3600000;
-    return Array.from({ length: 48 }, (_, i) => {
+    const rows = Array.from({ length: 48 }, (_, i) => {
       const tt = start + i * 3600000;
       return { t: tt, ...weatherAt(tt, SITE.geo, (tt - now) / 3600000) };
     });
+    const offset = lt.offsetMin * 60000;
+    const cum: number[] = [];
+    let run = 0;
+    let day = -1;
+    for (let i = 0; i < rows.length; i++) {
+      const d = Math.floor((rows[i].t + offset) / 86400000);
+      if (d !== day) {
+        run = 0;
+        day = d;
+      }
+      run += (rows[i].radiation * 3600) / 10000;
+      cum.push(run);
+    }
+    return { rows, cum };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hourBucket]);
 
-  const H = tw.history;
-  const from = Math.max(0, H.t.findIndex((x) => x >= now - 48 * 3600000));
-  const pastT = H.t.slice(from);
-  const x = [...pastT, ...fc.map((f) => f.t)];
-  const pad = (n: number) => Array(n).fill(null);
-  const past = (k: keyof typeof H.out) => [...H.out[k].slice(from), ...pad(fc.length)];
-  const fut = (k: "temp" | "rh" | "radiation" | "wind") => [...pad(pastT.length - 1), H.out[k === "temp" ? "outTemp" : k === "rh" ? "outRh" : k][H.out.outTemp.length - 1], ...fc.map((f) => f[k])];
+  const stats = useMemo(() => {
+    const out: Record<string, { min: number; max: number; avg: number; next: number }> = {};
+    for (const v of FC_VARS) {
+      const vals = fc.rows.map((f, i) => v.get(f, i, fc.cum));
+      out[v.key] = { min: Math.min(...vals), max: Math.max(...vals), avg: vals.reduce((a, b) => a + b, 0) / vals.length, next: vals[0] };
+    }
+    return out;
+  }, [fc]);
 
-  const panels: ChartPanelDef[] = [
-    { id: "t", title: t("var.outTemp"), unit: "°C", series: [{ label: t("var.outTemp"), values: past("outTemp"), color: "--s2" }, { label: t("wx.forecast"), values: fut("temp"), color: "--s2", dash: true }] },
-    { id: "r", title: t("var.radiation"), unit: "W/m²", series: [{ label: t("var.radiation"), values: past("radiation"), color: "--s4", digits: 0 }, { label: t("wx.forecast"), values: fut("radiation"), color: "--s4", dash: true, digits: 0 }], height: 150 },
-    { id: "h", title: t("var.outRh"), unit: "%", series: [{ label: t("var.outRh"), values: past("outRh"), color: "--s1", digits: 0 }, { label: t("wx.forecast"), values: fut("rh"), color: "--s1", dash: true, digits: 0 }], height: 130 },
-    { id: "w", title: t("var.wind"), unit: "m/s", series: [{ label: t("var.wind"), values: past("wind"), color: "--s7" }, { label: t("wx.forecast"), values: fut("wind"), color: "--s7", dash: true }], height: 130 },
-  ];
-  const dirs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+  const x = fc.rows.map((f) => f.t);
+  const byUnit = new Map<string, ChartPanelDef>();
+  for (const v of FC_VARS) {
+    if (!enabled.includes(v.key)) continue;
+    const series = { label: t(v.label), values: fc.rows.map((f, i) => v.get(f, i, fc.cum)), color: v.color, digits: v.digits };
+    const g = byUnit.get(v.unit);
+    if (g) g.series.push(series);
+    else byUnit.set(v.unit, { id: v.unit, title: "", unit: v.unit, series: [series], height: 150 });
+  }
+  const panels = [...byUnit.values()];
+
+  const toggle = (k: string) => setEnabled(enabled.includes(k) ? enabled.filter((x) => x !== k) : [...enabled, k]);
 
   return (
     <div>
@@ -52,48 +93,59 @@ export default function WeatherPage() {
         <Stat icon={<Droplets size={15} />} label={t("var.outRh")} value={fmt(o.rh, 0)} unit="%" sub={`${t("wx.dew")} ${fmt(dewPoint(o.temp, o.rh), 1)} °C`} />
         <Stat icon={<Sun size={15} />} label={t("var.radiation")} value={fmt(o.radiation, 0)} unit="W/m²" sub={`${t("ov.radSum")} ${fmt(tw.live.a.totals.radSum, 0)} J/cm²`} />
         <Stat icon={<Wind size={15} />} label={t("var.wind")} value={fmt(o.wind, 1)} unit="m/s" />
-        <Stat
-          icon={<Navigation size={15} style={{ transform: `rotate(${o.windDir + 180}deg)` }} />}
-          label={t("wx.dir")}
-          value={dirs[Math.round(o.windDir / 45) % 8]}
-          sub={`${fmt(o.windDir, 0)}°`}
-        />
+        <Stat icon={<Navigation size={15} style={{ transform: `rotate(${o.windDir + 180}deg)` }} />} label={t("wx.dir")} value={dirs[Math.round(o.windDir / 45) % 8]} sub={`${fmt(o.windDir, 0)}°`} />
         <Stat icon={<Cloud size={15} />} label={t("wx.cloud")} value={fmt(o.cloud * 100, 0)} unit="%" />
         <Stat icon={<Sunrise size={15} />} label={t("wx.sunrise")} value={fmtMinutes(lt.sunriseMin)} sub={<span className="inline-flex items-center gap-1"><Sunset size={12} /> {fmtMinutes(lt.sunsetMin)}</span>} />
       </div>
-      <div className="mt-4 grid gap-4 xl:grid-cols-[1fr_380px]">
-        <Card className="p-4">
-          <h3 className="mb-3 text-[15px] font-semibold">{t("wx.past")}</h3>
-          <TimeCharts x={x} panels={panels} syncKey="wx" now={now} />
-        </Card>
-        <Card>
-          <CardHeader title={t("wx.hourly")} />
-          <div className="max-h-[720px] overflow-auto">
-            <table className="num w-full text-[13px]">
-              <thead className="sticky top-0 bg-surface text-[11px] text-muted">
-                <tr>
-                  <th className="px-4 py-1.5 text-start font-medium">{t("wx.time")}</th>
-                  <th className="px-2 py-1.5 text-end font-medium">°C</th>
-                  <th className="px-2 py-1.5 text-end font-medium">%</th>
-                  <th className="px-2 py-1.5 text-end font-medium">W/m²</th>
-                  <th className="px-4 py-1.5 text-end font-medium">m/s</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-line">
-                {fc.slice(0, 36).map((f) => (
-                  <tr key={f.t}>
-                    <td className="px-4 py-1.5 text-ink-2">{fmtTime(f.t, SITE.geo.tz, true)}</td>
-                    <td className="px-2 py-1.5 text-end font-semibold">{fmt(f.temp, 1)}</td>
-                    <td className="px-2 py-1.5 text-end">{fmt(f.rh, 0)}</td>
-                    <td className="px-2 py-1.5 text-end">{fmt(f.radiation, 0)}</td>
-                    <td className="px-4 py-1.5 text-end">{fmt(f.wind, 1)}</td>
+
+      <Card className="mt-4 p-4">
+        <h3 className="mb-3 text-[15px] font-semibold">{t("wx.forecast")}</h3>
+        {panels.length ? <TimeCharts x={x} panels={panels} syncKey="wx" now={now} /> : <p className="py-8 text-center text-sm text-muted">{t("gr.empty")}</p>}
+      </Card>
+
+      <Card className="mt-4 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-[13px]">
+            <thead>
+              <tr className="border-b border-line bg-surface-2 text-[12px] text-ink-2">
+                <th className="px-3 py-2 text-start font-semibold">{t("wx.item")}</th>
+                <th className="px-2 py-2 text-start font-medium">{t("gr.series")}</th>
+                <th className="px-3 py-2 text-end font-medium">{t("wx.min")}</th>
+                <th className="px-3 py-2 text-end font-medium">{t("wx.max")}</th>
+                <th className="px-3 py-2 text-end font-medium">{t("wx.avg")}</th>
+                <th className="px-3 py-2 text-end font-medium">{t("wx.now")}</th>
+                <th className="px-3 py-2 text-end font-medium">{t("wx.show")}</th>
+              </tr>
+            </thead>
+            <tbody className="num divide-y divide-line">
+              {FC_VARS.map((v) => {
+                const st = stats[v.key];
+                const on = enabled.includes(v.key);
+                return (
+                  <tr key={v.key} className={cx("hover:bg-surface-2", on && "bg-surface-2/40")}>
+                    <td className="px-3 py-1.5">
+                      <span className="inline-flex items-center gap-2 text-ink">
+                        <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: `var(${v.color})` }} />
+                        {t(v.label)}
+                      </span>
+                    </td>
+                    <td className="px-2 py-1.5 text-muted">{v.unit}</td>
+                    <td className="px-3 py-1.5 text-end text-ink-2">{fmt(st.min, v.digits)}</td>
+                    <td className="px-3 py-1.5 text-end text-ink-2">{fmt(st.max, v.digits)}</td>
+                    <td className="px-3 py-1.5 text-end font-semibold text-ink">{fmt(st.avg, v.digits)}</td>
+                    <td className="px-3 py-1.5 text-end text-ink-2">{fmt(st.next, v.digits)}</td>
+                    <td className="px-3 py-1.5 text-end">
+                      <span className="inline-flex justify-end">
+                        <Switch checked={on} onChange={() => toggle(v.key)} />
+                      </span>
+                    </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      </div>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </Card>
     </div>
   );
 }
