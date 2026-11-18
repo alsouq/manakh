@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "e2e": "node scripts/e2e.mjs",
     "test:map": "tsx scripts/map.test.ts",
-    "test:rls": "bash supabase/test/run.sh"
+    "test:rls": "bash supabase/test/run.sh",
+    "test:edge": "tsx edge/edge.test.ts",
+    "edge:sim": "tsx edge/run.ts"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
