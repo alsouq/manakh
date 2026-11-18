@@ -100,6 +100,16 @@ const en = {
   "sec.overrideHint": "Manual control always expires. The computer takes over again after the time you choose.",
   "sec.manualActive": "Manual until {t}",
   "sec.last24": "Last 24 hours",
+  "sec.trend": "Trend",
+  "ov.compare": "All sections",
+  "ov.advisor": "Suggestions",
+  "ov.advisorNone": "Nothing to flag — all sections are within their strategy.",
+  "adv.hot": "{s}: {t} °C is well above the ventilation setpoint {sp} °C. Check cooling or lower the load.",
+  "adv.cold": "{s}: {t} °C is below the heating setpoint {sp} °C. Heating may be limited (max pipe or min pipe).",
+  "adv.humid": "{s}: humidity {rh}% is above the max {max}%. A screen gap or a minimum pipe would dry the air.",
+  "adv.dryHot": "{s}: dry ({rh}%) and warm ({t} °C). Fogging or more shade could help the crop.",
+  "adv.co2Waste": "{s}: dosing CO₂ while the vents are {v}% open — most of it is lost. Reduce dosing at high vent.",
+  "adv.lowLight": "{s}: light sum {d} mol is low for the day. Lamps or less shade could lift it.",
   "sec.graphIt": "Open in graphs",
   "sec.clickHint": "Tap any value or installation to see why it is doing what it does.",
   "sec.notFound": "Section not found",
@@ -472,6 +482,7 @@ const en = {
   "set.aboutText": "Manakh is an independent greenhouse control interface. Hardware connects through open protocols (Modbus, MQTT) via an on-site edge controller.",
   "u.min": "min",
   "u.h": "h",
+  "u.d": "d",
 };
 
 export type Key = keyof typeof en;
@@ -576,6 +587,16 @@ const ar: Record<Key, string> = {
   "sec.overrideHint": "التحكم اليدوي بينتهي دايمًا. الكمبيوتر بيرجع يتحكم بعد المدة اللي تختارها.",
   "sec.manualActive": "يدوي حتى {t}",
   "sec.last24": "آخر 24 ساعة",
+  "sec.trend": "التغيّر",
+  "ov.compare": "كل الأقسام",
+  "ov.advisor": "اقتراحات",
+  "ov.advisorNone": "مفيش ملاحظات — كل الأقسام في حدود استراتيجيتها.",
+  "adv.hot": "{s}: {t} °م أعلى بكتير من حرارة التهوية {sp} °م. راجع التبريد أو قلّل الحمل.",
+  "adv.cold": "{s}: {t} °م أقل من حرارة التدفئة {sp} °م. التدفئة ممكن تكون محدودة (أقصى/أقل مواسير).",
+  "adv.humid": "{s}: الرطوبة {rh}% فوق الحد {max}%. فتحة ستارة أو أقل مواسير هتجفّف الهواء.",
+  "adv.dryHot": "{s}: جاف ({rh}%) ودافي ({t} °م). الضباب أو تظليل أكتر هيساعد المحصول.",
+  "adv.co2Waste": "{s}: تسميد CO₂ والشبابيك مفتوحة {v}% — أغلبه بيضيع. قلّل التسميد عند الفتح العالي.",
+  "adv.lowLight": "{s}: مجموع الضوء {d} مول قليل لليوم. الإضاءة أو تظليل أقل هيرفعه.",
   "sec.graphIt": "افتح في الرسوم",
   "sec.clickHint": "اضغط على أي قيمة أو معدة عشان تعرف بتعمل كده ليه.",
   "sec.notFound": "القسم غير موجود",
@@ -948,6 +969,7 @@ const ar: Record<Key, string> = {
   "set.aboutText": "مناخ واجهة تحكم مستقلة للصوب. المعدات بتتوصل ببروتوكولات مفتوحة (Modbus وMQTT) عن طريق كنترولر محلي في الموقع.",
   "u.min": "د",
   "u.h": "س",
+  "u.d": "ي",
 };
 
 export const dict: Record<Lang, Record<Key, string>> = { en, ar };

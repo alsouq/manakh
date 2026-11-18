@@ -27,6 +27,7 @@ export default function SectionLivePage() {
   const [ovr, setOvr] = useState<ActuatorKey | null>(null);
   const [sub, setSub] = useState<Subsystem>("climate");
   const [editParam, setEditParam] = useState<Param | null>(null);
+  const [range, setRange] = useState(288);
   if (!L) return null;
   const d = L.def;
   const bd = L.ctrl.breakdown;
@@ -38,7 +39,7 @@ export default function SectionLivePage() {
 
   const H = tw.history;
   const n = H.t.length;
-  const from = Math.max(0, n - 288);
+  const from = Math.max(0, n - range);
   const x = H.t.slice(from);
   const h = H.sec[id];
   const sl = (a: number[]) => a.slice(from);
@@ -156,11 +157,14 @@ export default function SectionLivePage() {
       </div>
 
       <Card className="p-4">
-        <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-[15px] font-semibold">{t("sec.last24")}</h3>
-          <Link href={`/graphs?s=${id}:temp,${id}:heatSp,${id}:ventSp,out:outTemp`} className="text-[13px] font-medium text-brand">
-            {t("sec.graphIt")} →
-          </Link>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h3 className="text-[15px] font-semibold">{t("sec.trend")}</h3>
+          <div className="flex items-center gap-2">
+            <Segmented value={range} onChange={setRange} options={[{ value: 288, label: "24" + t("u.h") }, { value: 576, label: "48" + t("u.h") }, { value: 2016, label: "7" + t("u.d") }]} size="sm" />
+            <Link href={`/graphs?s=${id}:temp,${id}:heatSp,${id}:ventSp,out:outTemp`} className="text-[13px] font-medium text-brand">
+              {t("sec.graphIt")} →
+            </Link>
+          </div>
         </div>
         <TimeCharts x={x} panels={panels} syncKey={`sec-${id}`} />
       </Card>

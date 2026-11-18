@@ -57,3 +57,6 @@ Setpoint day-curve with sunrise/sunset and now,strategy,should,yes,yes,matches I
 Subsystem tabs within a section (climate/heating/ventilation/...),section,should,yes,yes,matches IIVO's climate subsystem tabs
 Grouped ACTUAL values table with measured/setpoint rows,section,should,yes,yes,matches IIVO CLIMATE ACTUAL
 Settable value [V] badge opens the setpoint editor,section,should,yes,yes,matches IIVO; the [V] marker
+Chart range toggle 24h/48h/7d on a section,section,could,yes,yes,matches IIVO Hourly/Daily/Monthly
+All-sections comparison table (multi-zone),dashboard,could,yes,yes,matches iSii multi-zone column table
+Rule-based suggestions (our own, not their IA models),dashboard,could,no,yes,our improvement; heuristic advisor

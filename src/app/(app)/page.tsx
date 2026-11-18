@@ -1,13 +1,14 @@
 "use client";
 import Link from "next/link";
-import { Bell, CheckCircle2, Droplets, Flame, Hand, Sun, Wind, Zap } from "lucide-react";
+import { Bell, CheckCircle2, Droplets, Flame, Hand, Lightbulb, Sun, Wind, Zap } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { SECTIONS, SITE } from "@/sim/seed";
 import { fmt, fmtTime } from "@/lib/vars";
 import { fmtMinutes } from "@/engine/sun";
 import { tData } from "@/lib/i18n";
+import { adviseLight } from "@/lib/advisor";
 import { SectionCard } from "@/components/SectionCard";
-import { Card, CardHeader, PageHeader, PriorityBadge, Stat } from "@/components/ui";
+import { Badge, Card, CardHeader, cx, PageHeader, PriorityBadge, Stat } from "@/components/ui";
 
 export default function Overview() {
   const s = useStore();
@@ -76,6 +77,78 @@ export default function Overview() {
           <SectionCard key={d.id} id={d.id} />
         ))}
       </div>
+
+      {(() => {
+        const advice = SECTIONS.flatMap((d) => adviseLight(tw.live[d.id], lt.minuteOfDay, s.activeVersion(d.id).doc.lighting.targetDli)).sort((a, b) => b.priority - a.priority);
+        const rows: { label: string; unit: string; digits: number; get: (id: string) => number }[] = [
+          { label: "var.temp", unit: "°C", digits: 1, get: (id) => tw.live[id].phys.temp },
+          { label: "var.heatSp", unit: "°C", digits: 1, get: (id) => tw.live[id].ctrl.setpoints.heat },
+          { label: "var.ventSp", unit: "°C", digits: 1, get: (id) => tw.live[id].ctrl.setpoints.vent },
+          { label: "var.rh", unit: "%", digits: 0, get: (id) => tw.live[id].rh },
+          { label: "var.co2", unit: "ppm", digits: 0, get: (id) => tw.live[id].phys.co2 },
+          { label: "var.pipe", unit: "°C", digits: 0, get: (id) => tw.live[id].phys.pipeT },
+          { label: "var.ventLee", unit: "%", digits: 0, get: (id) => Math.max(tw.live[id].phys.act.ventLee, tw.live[id].phys.act.ventWind) },
+          { label: "var.energyScreen", unit: "%", digits: 0, get: (id) => Math.max(tw.live[id].phys.act.energyScreen, tw.live[id].phys.act.shadeScreen) },
+        ];
+        return (
+          <div className="mt-7 grid gap-3 lg:grid-cols-[1fr_360px]">
+            <Card className="overflow-hidden">
+              <CardHeader title={t("ov.compare")} />
+              <div className="overflow-x-auto">
+                <table className="num w-full text-[13px]">
+                  <thead>
+                    <tr className="border-b border-line bg-surface-2 text-[12px] text-ink-2">
+                      <th className="px-4 py-2 text-start font-medium" colSpan={2} />
+                      {SECTIONS.map((d) => (
+                        <th key={d.id} className="px-3 py-2 text-end font-semibold">
+                          <Link href={`/sections/${d.id}`} className="hover:text-brand">
+                            {d.code}
+                          </Link>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((r) => (
+                      <tr key={r.label} className="border-b border-line/60 hover:bg-surface-2">
+                        <td className="px-4 py-1.5 text-ink-2">{t(r.label)}</td>
+                        <td className="px-1 py-1.5 text-muted">{r.unit}</td>
+                        {SECTIONS.map((d) => (
+                          <td key={d.id} className="px-3 py-1.5 text-end font-semibold text-ink">
+                            {fmt(r.get(d.id), r.digits)}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+            <Card>
+              <CardHeader title={t("ov.advisor")} right={<Lightbulb size={16} className="text-[var(--s4)]" />} />
+              {advice.length === 0 ? (
+                <div className="flex items-center gap-2 px-4 pb-4 text-sm text-ink-2">
+                  <CheckCircle2 size={18} className="text-good" /> {t("ov.advisorNone")}
+                </div>
+              ) : (
+                <ul className="divide-y divide-line">
+                  {advice.slice(0, 6).map((ad, i) => (
+                    <li key={i} className="flex items-start gap-2.5 px-4 py-2.5">
+                      <span className={cx("mt-1 h-2 w-2 shrink-0 rounded-full", ad.priority >= 2 ? "bg-serious" : "bg-[var(--s4)]")} />
+                      <Link href={`/sections/${ad.sectionId}`} className="text-[13px] text-ink-2 hover:text-ink">
+                        <Badge tone={ad.priority >= 2 ? "warning" : "neutral"} className="me-1 align-middle">
+                          {s.sectionName(ad.sectionId)}
+                        </Badge>
+                        {t(ad.code, ad.params)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Card>
+          </div>
+        );
+      })()}
 
       <div className="mt-7 grid gap-3 lg:grid-cols-2">
         <Card>
