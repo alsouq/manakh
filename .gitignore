@@ -44,3 +44,6 @@ next-env.d.ts
 /replica/screens/
 # local scratch
 /scripts/sim-check.ts
+
+# oh-my-claudecode local state
+.omc/

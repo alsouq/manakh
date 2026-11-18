@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Languages, Moon, Sun } from "lucide-react";
 import { store, useStore } from "@/lib/store";
+import { isCloud } from "@/lib/config";
 import { Logo, useApplyDocPrefs } from "@/components/AppShell";
 import { Button, Field, IconButton, Input } from "@/components/ui";
 
@@ -12,13 +13,54 @@ export default function LoginPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<{ text: string; ok?: boolean } | null>(null);
   useEffect(() => store.init(), []);
   useApplyDocPrefs();
   useEffect(() => {
-    if (s.ready && s.s.user) router.replace("/");
+    if (!isCloud && s.ready && s.s.user) router.replace("/");
   }, [s.ready, s.s.user, router]);
   const t = s.t;
   const dark = typeof document !== "undefined" && document.documentElement.dataset.theme === "dark";
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email) return;
+    if (!isCloud) {
+      s.login(name, email);
+      router.replace("/");
+      return;
+    }
+    setBusy(true);
+    setMsg(null);
+    try {
+      const { supabaseBrowser } = await import("@/lib/supabase/client");
+      const sb = supabaseBrowser();
+      if (mode === "signup") {
+        const { error } = await sb.auth.signUp({
+          email,
+          password: pw,
+          options: { data: { name }, emailRedirectTo: `${location.origin}/auth/confirm` },
+        });
+        if (error) throw error;
+        const { data } = await sb.auth.getSession();
+        if (data.session) {
+          window.location.href = "/";
+        } else {
+          setMsg({ text: t("login.checkEmail"), ok: true });
+        }
+      } else {
+        const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+        if (error) throw error;
+        window.location.href = "/";
+      }
+    } catch (err) {
+      setMsg({ text: (err as Error).message });
+    } finally {
+      setBusy(false);
+    }
+  }
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
@@ -38,31 +80,32 @@ export default function LoginPage() {
           </div>
         </div>
         <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center py-10">
-          <h1 className="text-2xl font-semibold tracking-tight">{t("login.title")}</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{isCloud && mode === "signup" ? t("login.signup") : t("login.title")}</h1>
           <p className="mt-1.5 text-sm text-ink-2">{t("login.subtitle")}</p>
-          <form
-            className="mt-8 space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (!email) return;
-              s.login(name, email);
-              router.replace("/");
-            }}
-          >
-            <Field label={t("login.name")}>
-              <Input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
-            </Field>
+          <form className="mt-8 space-y-4" onSubmit={submit}>
+            {(!isCloud || mode === "signup") && (
+              <Field label={t("login.name")}>
+                <Input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
+              </Field>
+            )}
             <Field label={t("login.email")}>
               <Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" dir="ltr" />
             </Field>
             <Field label={t("login.password")}>
-              <Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} autoComplete="current-password" dir="ltr" />
+              <Input type="password" required={isCloud} value={pw} onChange={(e) => setPw(e.target.value)} autoComplete={mode === "signup" ? "new-password" : "current-password"} dir="ltr" />
             </Field>
-            <Button variant="primary" className="w-full" type="submit">
-              {t("login.submit")}
+            {msg && <p className={`rounded-xl px-3 py-2 text-[13px] ${msg.ok ? "bg-brand-soft text-good-ink" : "bg-critical-soft text-critical"}`}>{msg.text}</p>}
+            <Button variant="primary" className="w-full" type="submit" disabled={busy}>
+              {busy ? "…" : isCloud && mode === "signup" ? t("login.signup") : t("login.submit")}
             </Button>
           </form>
-          <p className="mt-6 rounded-xl bg-brand-soft px-3 py-2.5 text-[13px] text-ink-2">{t("login.demo")}</p>
+          {isCloud ? (
+            <button className="mt-4 text-[13px] text-brand hover:underline" onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setMsg(null); }}>
+              {mode === "signin" ? t("login.toSignup") : t("login.toSignin")}
+            </button>
+          ) : (
+            <p className="mt-6 rounded-xl bg-brand-soft px-3 py-2.5 text-[13px] text-ink-2">{t("login.demo")}</p>
+          )}
         </div>
       </div>
       <div className="relative hidden overflow-hidden bg-brand-soft lg:block">

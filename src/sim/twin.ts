@@ -22,6 +22,7 @@ export const OUTSIDE_KEYS = ["outTemp", "outRh", "radiation", "wind", "gas", "el
 export type OutsideKey = (typeof OUTSIDE_KEYS)[number];
 
 export interface StrategyVersion {
+  id?: string;
   version: number;
   doc: Strategy;
   note: string;

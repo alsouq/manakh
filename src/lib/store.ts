@@ -15,6 +15,8 @@ import {
   type Recipe,
 } from "@/sim/seed";
 import { Twin, type Alarm, type Override, type StrategyVersion } from "@/sim/twin";
+import { isCloud } from "@/lib/config";
+import type { SupabaseRepo } from "@/lib/supabase/repo";
 
 export interface AuditEntry {
   id: string;
@@ -87,12 +89,15 @@ function fresh(): Persisted {
   };
 }
 
-const uid = () => Math.random().toString(36).slice(2, 10);
+const uid = () => (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2, 10));
+const PREFS = "manakh:prefs";
 
 class Store {
   s: Persisted = fresh();
   twin: Twin | null = null;
   ready = false;
+  mode: "cloud" | "demo" = isCloud ? "cloud" : "demo";
+  cloud: SupabaseRepo | null = null;
   rev = 0;
   toasts: Toast[] = [];
   private listeners = new Set<() => void>();
@@ -101,16 +106,62 @@ class Store {
   private ticks = 0;
 
   init() {
+    void this.initAsync();
+  }
+
+  private async initAsync() {
     if (this.ready || typeof window === "undefined") return;
+    // theme/speed are per-device UI prefs, kept out of the cloud
     try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) {
-        const p = JSON.parse(raw) as Persisted;
-        if (p.v === 2) this.s = { ...fresh(), ...p };
-      }
+      const prefs = JSON.parse(localStorage.getItem(PREFS) ?? "{}");
+      if (prefs.theme) this.s.theme = prefs.theme;
     } catch {
-      /* storage blocked: run with defaults */
+      /* ignore */
     }
+
+    if (this.mode === "cloud") {
+      const { SupabaseRepo } = await import("@/lib/supabase/repo");
+      this.cloud = new SupabaseRepo();
+      this.cloud.onError = (m) => this.toast(m, "bad");
+      const user = await this.cloud.currentUser().catch(() => null);
+      if (!user) {
+        this.ready = true;
+        this.emit();
+        return; // AppShell / middleware will route to /login
+      }
+      this.s.user = { name: (user.user_metadata?.name as string) || user.email!.split("@")[0], email: user.email! };
+      try {
+        const snap = await this.cloud.loadOrBootstrap(this.s.lang, this.s.user.name);
+        this.s.lang = snap.language;
+        this.s.versions = snap.versions;
+        this.s.recipes = snap.recipes;
+        this.s.rules = snap.rules;
+        this.s.overrides = snap.overrides;
+        this.s.irrigation = snap.irrigation;
+        this.s.views = snap.views;
+        this.s.audit = snap.audit;
+      } catch {
+        // error already surfaced; fall back to local defaults so the UI still runs
+      }
+    } else {
+      try {
+        const raw = localStorage.getItem(KEY);
+        if (raw) {
+          const p = JSON.parse(raw) as Persisted;
+          if (p.v === 2) this.s = { ...fresh(), ...p, theme: this.s.theme };
+        }
+      } catch {
+        /* storage blocked: run with defaults */
+      }
+    }
+    this.buildTwin();
+    this.ready = true;
+    this.lastReal = Date.now();
+    this.timer = setInterval(() => this.tick(), 1000);
+    this.emit();
+  }
+
+  private buildTwin() {
     const now = this.simNow();
     this.twin = new Twin(
       {
@@ -122,7 +173,6 @@ class Store {
       now - 50 * 3600000,
     );
     this.twin.advanceTo(now);
-    // drop the 2 h warm-up from history
     const H = this.twin.history;
     const cut = H.t.findIndex((t) => t >= now - 48 * 3600000);
     if (cut > 0) {
@@ -130,10 +180,6 @@ class Store {
       for (const k of Object.keys(H.out)) H.out[k as keyof typeof H.out].splice(0, cut);
       for (const id of Object.keys(H.sec)) for (const k of Object.keys(H.sec[id])) H.sec[id][k as keyof (typeof H.sec)[string]].splice(0, cut);
     }
-    this.ready = true;
-    this.lastReal = Date.now();
-    this.timer = setInterval(() => this.tick(), 1000);
-    this.emit();
   }
 
   simNow() {
@@ -162,10 +208,16 @@ class Store {
 
   persist() {
     try {
-      localStorage.setItem(KEY, JSON.stringify(this.s));
+      localStorage.setItem(PREFS, JSON.stringify({ theme: this.s.theme }));
+      if (this.mode === "demo") localStorage.setItem(KEY, JSON.stringify(this.s));
     } catch {
       /* ignore */
     }
+  }
+
+  /** Fire a cloud write without blocking the UI; the repo surfaces its own errors. */
+  private push(p: Promise<unknown> | undefined) {
+    if (p) p.catch(() => {});
   }
 
   private commit() {
@@ -186,8 +238,10 @@ class Store {
   t = (key: string, params?: Record<string, string | number>) => translate(this.s.lang, key, params);
 
   private audit(code: string, params: Record<string, string | number> = {}) {
-    this.s.audit.unshift({ id: uid(), t: this.simNow(), user: this.s.user?.name ?? "—", code, params });
+    const id = uid();
+    this.s.audit.unshift({ id, t: this.simNow(), user: this.s.user?.name ?? "—", code, params });
     if (this.s.audit.length > 500) this.s.audit.length = 500;
+    this.push(this.cloud?.appendAudit(id, code, params));
   }
 
   sectionName(id: string) {
@@ -204,11 +258,16 @@ class Store {
     this.commit();
   }
   logout() {
+    if (this.cloud) {
+      this.push(this.cloud.signOut().then(() => (window.location.href = "/login")));
+      return;
+    }
     this.s.user = null;
     this.commit();
   }
   setLang(l: Lang) {
     this.s.lang = l;
+    this.push(this.cloud?.setLanguage(l));
     this.commit();
   }
   setTheme(th: Persisted["theme"]) {
@@ -234,7 +293,9 @@ class Store {
     const list = this.s.versions[sectionId];
     const v = Math.max(...list.map((x) => x.version)) + 1;
     const now = this.simNow();
-    list.push({ version: v, doc: JSON.parse(JSON.stringify(doc)), note, createdAt: now, activeFrom: now, author: this.s.user?.name ?? "—", source });
+    const row: StrategyVersion = { id: uid(), version: v, doc: JSON.parse(JSON.stringify(doc)), note, createdAt: now, activeFrom: now, author: this.s.user?.name ?? "—", source };
+    list.push(row);
+    this.push(this.cloud?.saveStrategyVersion(sectionId, row));
     if (source === "manual") this.audit("ac.strategy", { v, s: sectionId });
     this.commit();
     return v;
@@ -253,8 +314,10 @@ class Store {
     const now = this.simNow();
     for (const o of this.s.overrides)
       if (o.sectionId === sectionId && o.actuator === actuator && o.until > now && o.cancelledAt === undefined) o.cancelledAt = now;
-    this.s.overrides.push({ id: uid(), sectionId, actuator, value, from: now, until: now + minutes * 60000, by: this.s.user?.name ?? "—" });
+    const row: Override = { id: uid(), sectionId, actuator, value, from: now, until: now + minutes * 60000, by: this.s.user?.name ?? "—" };
+    this.s.overrides.push(row);
     this.s.overrides = this.s.overrides.filter((o) => o.until > now - 72 * 3600000);
+    this.push(this.cloud?.setOverride(row));
     this.audit("ac.override", { a: actuator, v: Math.round(value), s: sectionId, d: minutes });
     this.commit();
   }
@@ -262,6 +325,7 @@ class Store {
     const now = this.simNow();
     for (const o of this.s.overrides)
       if (o.sectionId === sectionId && o.actuator === actuator && o.until > now && o.cancelledAt === undefined) o.cancelledAt = now;
+    this.push(this.cloud?.cancelOverride(sectionId, actuator));
     this.audit("ac.overrideEnd", { a: actuator, s: sectionId });
     this.commit();
   }
@@ -296,27 +360,33 @@ class Store {
   }
   saveRule(r: AlarmRule) {
     const i = this.s.rules.findIndex((x) => x.id === r.id);
-    if (i >= 0) this.s.rules[i] = r;
-    else this.s.rules.push({ ...r, id: uid() });
+    const row = i >= 0 ? r : { ...r, id: uid() };
+    if (i >= 0) this.s.rules[i] = row;
+    else this.s.rules.push(row);
+    this.push(this.cloud?.saveRule(row));
     this.audit("ac.rule", { r: r.name });
     this.commit();
   }
   deleteRule(id: string) {
     const r = this.s.rules.find((x) => x.id === id);
     this.s.rules = this.s.rules.filter((x) => x.id !== id);
+    this.push(this.cloud?.deleteRule(id));
     if (r) this.audit("ac.ruleDelete", { r: r.name });
     this.commit();
   }
 
   // ---------- recipes ----------
   saveRecipe(r: Omit<Recipe, "id" | "createdAt" | "author">) {
-    this.s.recipes.unshift({ ...r, id: uid(), createdAt: this.simNow(), author: this.s.user?.name ?? "—" });
+    const row: Recipe = { ...r, id: uid(), createdAt: this.simNow(), author: this.s.user?.name ?? "—" };
+    this.s.recipes.unshift(row);
+    this.push(this.cloud?.saveRecipe(row));
     this.audit("ac.recipeSave", { r: r.name });
     this.commit();
   }
   deleteRecipe(id: string) {
     const r = this.s.recipes.find((x) => x.id === id);
     this.s.recipes = this.s.recipes.filter((x) => x.id !== id);
+    this.push(this.cloud?.deleteRecipe(id));
     if (r) this.audit("ac.recipeDelete", { r: r.name });
     this.commit();
   }
@@ -334,6 +404,7 @@ class Store {
   // ---------- irrigation ----------
   setIrrigation(sectionId: string, s: IrrigationSettings) {
     this.s.irrigation[sectionId] = s;
+    this.push(this.cloud?.setIrrigation(sectionId, s));
     this.audit("ac.irrigation", { s: sectionId });
     this.commit();
   }
@@ -346,15 +417,19 @@ class Store {
 
   // ---------- graph views ----------
   saveView(v: Omit<GraphView, "id">) {
-    this.s.views.push({ ...v, id: uid() });
+    const row = { ...v, id: uid() };
+    this.s.views.push(row);
+    this.push(this.cloud?.saveView(row));
     this.commit();
   }
   deleteView(id: string) {
     this.s.views = this.s.views.filter((v) => v.id !== id);
+    this.push(this.cloud?.deleteView(id));
     this.commit();
   }
 
   reset() {
+    if (this.mode === "cloud") return; // cloud data is managed in Supabase, not reset from here
     const user = this.s.user;
     const lang = this.s.lang;
     const theme = this.s.theme;

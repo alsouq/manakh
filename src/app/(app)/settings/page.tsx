@@ -56,15 +56,17 @@ export default function SettingsPage() {
           <CardHeader title={t("set.sim")} sub={t("set.simHint")} />
           <div className="flex flex-wrap items-center justify-between gap-3 px-4 pb-4">
             <Segmented value={s.s.speed} onChange={(v) => s.setSpeed(v)} options={[1, 60, 600].map((v) => ({ value: v, label: `${v}×` }))} />
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => {
-                if (confirm(t("set.resetConfirm"))) s.reset();
-              }}
-            >
-              {t("set.reset")}
-            </Button>
+            {s.mode === "demo" && (
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => {
+                  if (confirm(t("set.resetConfirm"))) s.reset();
+                }}
+              >
+                {t("set.reset")}
+              </Button>
+            )}
           </div>
         </Card>
         <Card>
