@@ -54,3 +54,6 @@ Grodan partner integration,integrations,could,yes,skip,partner deal; integrate v
 Hoogendoorn Online manuals and courses,support,could,yes,skip,their content
 Measurement report table (periods x days with average),report,should,yes,yes,matches IIVO measurement grid; Calendar day / Day / Night per section
 Setpoint day-curve with sunrise/sunset and now,strategy,should,yes,yes,matches IIVO setpoint editor; adds the ventilation line too
+Subsystem tabs within a section (climate/heating/ventilation/...),section,should,yes,yes,matches IIVO's climate subsystem tabs
+Grouped ACTUAL values table with measured/setpoint rows,section,should,yes,yes,matches IIVO CLIMATE ACTUAL
+Settable value [V] badge opens the setpoint editor,section,should,yes,yes,matches IIVO; the [V] marker

@@ -6,11 +6,14 @@ import { ChartLine, Hand, RotateCcw } from "lucide-react";
 import type { ActuatorKey } from "@/engine/types";
 import { useStore } from "@/lib/store";
 import { SITE } from "@/sim/seed";
-import { fmt, fmtTime, fmtVar } from "@/lib/vars";
+import { fmt, fmtTime } from "@/lib/vars";
+import type { Param } from "@/lib/params";
 import { GreenhouseViz, type VizTarget } from "@/components/GreenhouseViz";
+import { ActualTable, subsystemsFor, type Subsystem } from "@/components/ActualTable";
+import { SetpointEditorDialog } from "@/components/SetpointEditorDialog";
 import { BreakdownView, ReasonList } from "@/components/Explain";
 import { TimeCharts, type ChartPanelDef } from "@/components/TimeChart";
-import { Badge, Button, Card, CardHeader, cx, Dialog, Field, Segmented, Bar } from "@/components/ui";
+import { Badge, Button, Card, CardHeader, Dialog, Field, Segmented } from "@/components/ui";
 
 const ACTS: ActuatorKey[] = ["ventLee", "ventWind", "pipe", "energyScreen", "shadeScreen", "co2Valve", "lamps", "fans", "pad", "fog"];
 
@@ -22,14 +25,16 @@ export default function SectionLivePage() {
   const L = tw.live[id];
   const [sel, setSel] = useState<VizTarget>("climate");
   const [ovr, setOvr] = useState<ActuatorKey | null>(null);
+  const [sub, setSub] = useState<Subsystem>("climate");
+  const [editParam, setEditParam] = useState<Param | null>(null);
   if (!L) return null;
   const d = L.def;
-  const sp = L.ctrl.setpoints;
   const bd = L.ctrl.breakdown;
   const available = ACTS.filter((k) => !(k === "fans" || k === "pad" ? !d.phys.hasPadFan : k === "lamps" ? !d.phys.hasLamps : k === "fog" ? !d.phys.hasFog : false));
   const manualOf = (k: ActuatorKey) => L.overrides.find((o) => o.actuator === k);
   const posOf = (k: ActuatorKey) => (k === "pipe" ? L.phys.pipeT : L.phys.act[k]);
   const fmtPos = (k: ActuatorKey, v: number) => (k === "pipe" ? (v > 0 ? `${fmt(v, 0)} °C` : t("common.off")) : k === "lamps" || k === "pad" || k === "fog" ? (v > 0 ? t("common.on") : t("common.off")) : `${fmt(v, 0)}%`);
+  const subs = subsystemsFor(L);
 
   const H = tw.history;
   const n = H.t.length;
@@ -88,10 +93,34 @@ export default function SectionLivePage() {
 
   return (
     <div className="space-y-4">
+      {/* IIVO-style subsystem tabs */}
+      <div className="flex gap-1 overflow-x-auto border-b border-line">
+        {subs.map((x2) => {
+          const active = x2 === sub;
+          return (
+            <button
+              key={x2}
+              onClick={() => setSub(x2)}
+              className={active ? "relative px-3 py-2 text-sm font-semibold whitespace-nowrap text-ink" : "relative px-3 py-2 text-sm font-medium whitespace-nowrap text-muted hover:text-ink-2"}
+            >
+              {t(`sub.${x2}`)}
+              {active && <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-brand" />}
+            </button>
+          );
+        })}
+      </div>
+
+      <Card className="overflow-hidden p-2 sm:p-3">
+        <GreenhouseViz L={L} out={tw.outside} minuteOfDay={tw.lt.minuteOfDay} sunrise={tw.lt.sunriseMin} sunset={tw.lt.sunsetMin} t={t} selected={sel} onSelect={setSel} />
+        <p className="px-2 pt-1 pb-1 text-[12px] text-muted">{t("sec.clickHint")}</p>
+      </Card>
+
       <div className="grid gap-4 xl:grid-cols-[1fr_380px]">
-        <Card className="overflow-hidden p-2 sm:p-3">
-          <GreenhouseViz L={L} out={tw.outside} minuteOfDay={tw.lt.minuteOfDay} sunrise={tw.lt.sunriseMin} sunset={tw.lt.sunsetMin} t={t} selected={sel} onSelect={setSel} />
-          <p className="px-2 pt-1 pb-1 text-[12px] text-muted">{t("sec.clickHint")}</p>
+        <Card className="overflow-hidden">
+          <CardHeader title={`${t(`sub.${sub}`)} · ${t("actual.title")}`} sub={t("actual.hint")} />
+          <div className="overflow-x-auto pb-1">
+            <ActualTable sectionId={id} subsystem={sub} selected={sel} onSelect={setSel} onEdit={setEditParam} />
+          </div>
         </Card>
 
         <Card className="p-4">
@@ -126,76 +155,6 @@ export default function SectionLivePage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Card>
-          <CardHeader title={t("sec.climate")} />
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-[12px] text-muted">
-                <th className="px-4 py-1.5 text-start font-medium" />
-                <th className="px-2 py-1.5 text-end font-medium">{t("sec.measured")}</th>
-                <th className="px-4 py-1.5 text-end font-medium">{t("sec.setpoint")}</th>
-              </tr>
-            </thead>
-            <tbody className="num divide-y divide-line">
-              {[
-                ["temp", L.phys.temp, `${fmt(sp.heat, 1)} – ${fmt(sp.vent, 1)}`, "°C"],
-                ["rh", L.rh, `≤ ${fmt(sp.rhMax, 0)}`, "%"],
-                ["hd", L.hd, "", "g/m³"],
-                ["vpd", L.vpd, "", "kPa"],
-                ["co2", L.phys.co2, sp.co2 > 0 ? fmt(sp.co2, 0) : t("common.off"), "ppm"],
-                ["par", L.flux.par, "", "µmol"],
-                ["dli", L.ctrl.state.dli, d.phys.hasLamps ? fmt(s.activeVersion(id).doc.lighting.targetDli, 0) : "", "mol/m²"],
-              ].map(([k, v, spText, unit]) => (
-                <tr key={k as string} className="cursor-pointer hover:bg-surface-2" onClick={() => setSel("climate")}>
-                  <td className="px-4 py-2 text-ink-2">
-                    <Link href={graphHref(k as string)} className="inline-flex items-center gap-1.5 hover:text-brand" onClick={(e) => e.stopPropagation()}>
-                      {t(`var.${k}`)} <ChartLine size={13} className="opacity-50" />
-                    </Link>
-                  </td>
-                  <td className="px-2 py-2 text-end font-semibold text-ink">
-                    {fmtVar(k as string, v as number)} <span className="text-[11px] font-normal text-muted">{unit as string}</span>
-                  </td>
-                  <td className="px-4 py-2 text-end text-ink-2">{spText as string}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
-
-        <Card>
-          <CardHeader title={t("sec.installations")} />
-          <ul className="divide-y divide-line">
-            {available.map((k) => {
-              const m = manualOf(k);
-              const raw = posOf(k);
-              const pct = k === "pipe" ? ((raw - 20) / 60) * 100 : raw;
-              return (
-                <li key={k}>
-                  <button onClick={() => setSel(k)} className={cx("flex w-full items-center gap-3 px-4 py-2.5 text-start hover:bg-surface-2", sel === k && "bg-surface-2")}>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2 text-sm text-ink">
-                        {t(`var.${k}`)}
-                        {m && (
-                          <Badge tone="manual">
-                            <Hand size={11} /> {fmtTime(m.until, SITE.geo.tz)}
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="truncate text-[12px] text-muted">{(L.ctrl.reasons[k] ?? []).slice(-1).map((r) => t(r.code, r.params))}</div>
-                    </div>
-                    <div className="w-24 shrink-0">
-                      <div className="num text-end text-sm font-semibold text-ink">{fmtPos(k, raw)}</div>
-                      <Bar value={k === "pipe" && L.target.pipe === 0 ? 0 : pct} color={m ? "#6250d6" : k === "pipe" ? "var(--s8)" : "var(--s1)"} className="mt-1" />
-                    </div>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </Card>
-      </div>
-
       <Card className="p-4">
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-[15px] font-semibold">{t("sec.last24")}</h3>
@@ -207,6 +166,7 @@ export default function SectionLivePage() {
       </Card>
 
       {ovr && <OverrideDialog sectionId={id} k={ovr} current={ovr === "pipe" ? L.phys.pipeT : L.phys.act[ovr]} onClose={() => setOvr(null)} />}
+      {editParam && <SetpointEditorDialog sectionId={id} param={editParam} onClose={() => setEditParam(null)} />}
     </div>
   );
 }
@@ -314,7 +274,7 @@ function OverrideDialog({ sectionId, k, current, onClose }: { sectionId: string;
             <Segmented value={value > 0 ? 100 : 0} onChange={setValue} options={[{ value: 0, label: t("common.off") }, { value: 100, label: t("common.on") }]} />
           ) : (
             <div className="flex items-center gap-3">
-              <input type="range" min={isPipe ? 0 : 0} max={isPipe ? 80 : 100} step={isPipe ? 1 : 5} value={value} onChange={(e) => setValue(+e.target.value)} className="flex-1 accent-[var(--brand)]" />
+              <input type="range" min={0} max={isPipe ? 80 : 100} step={isPipe ? 1 : 5} value={value} onChange={(e) => setValue(+e.target.value)} className="flex-1 accent-[var(--brand)]" />
               <span className="num w-16 text-end text-lg font-semibold">
                 {value}
                 {isPipe ? "°C" : "%"}

@@ -75,13 +75,29 @@ ok(await seen(p.getByText("v2", { exact: true })), "section C has a v2 from the 
 
 // F06 manual override on vents
 await p.goto(base + "/sections/a");
-await p.locator("li button", { hasText: "Vents lee side" }).click();
+await p.getByRole("button", { name: "Ventilation", exact: true }).click();
+await p.waitForTimeout(400);
+await p.locator("td", { hasText: /^Position$/ }).first().click();
 await p.getByRole("button", { name: "Manual", exact: true }).click();
 await p.getByRole("dialog").locator('input[type="range"]').fill("60");
 await p.getByRole("dialog").getByRole("button", { name: "Apply" }).click();
 await p.waitForTimeout(1500);
 ok(await seen(p.getByText(/Manual until/)), "override shows 'Manual until'");
 await p.screenshot({ path: `${shots}/e2e-override.png`, fullPage: false });
+
+// IIVO-style section: subsystem tabs + ACTUAL table + [V] setpoint editor
+await p.goto(base + "/sections/a");
+await seen(p.getByRole("button", { name: "Heating", exact: true }));
+// default Climate tab: open the Temperature setpoint editor via the [V] badge
+await p.getByRole("button", { name: /Edit setpoint .*Temperature: setpoint/ }).first().click();
+await seen(p.getByRole("dialog"));
+ok(await seen(p.getByRole("dialog").locator("svg[role=img]")), "[V] opens the setpoint day-curve editor");
+const v0 = await p.getByRole("dialog").locator('input[type=number]').first().inputValue();
+await p.getByRole("dialog").locator('input[type=number]').first().fill(String(Number(v0 || "18") + 0.5));
+await p.getByRole("dialog").getByRole("button", { name: "Save", exact: true }).click();
+ok(await seen(p.getByText(/Strategy v\d+ is now active/)), "editing a setpoint via [V] saves a new strategy version");
+await p.getByRole("button", { name: "Ventilation", exact: true }).click();
+ok(await seen(p.getByText("P-band °C")), "ventilation tab shows the P-band field in the ACTUAL table");
 
 // F05 custom alarm rule fires and can be acknowledged
 await p.goto(base + "/alarms");
