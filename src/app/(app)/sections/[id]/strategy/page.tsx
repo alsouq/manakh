@@ -12,6 +12,7 @@ import { fmt } from "@/lib/vars";
 import { forecastRun } from "@/sim/twin";
 import { TimeCharts, type ChartPanelDef } from "@/components/TimeChart";
 import { Button, Card, CardHeader, cx, IconButton, Input, NumberInput, Select, Switch } from "@/components/ui";
+import { SetpointCurve } from "@/components/SetpointCurve";
 
 const clone = <T,>(x: T): T => JSON.parse(JSON.stringify(x));
 const uid = () => Math.random().toString(36).slice(2, 8);
@@ -267,7 +268,9 @@ export default function StrategyPage() {
               </tbody>
             </table>
           </div>
-          <DayStrip draft={draft} sunrise={lt.sunriseMin} sunset={lt.sunsetMin} now={lt.minuteOfDay} />
+          <div className="px-4 pb-4">
+            <SetpointCurve strategy={draft} sunrise={lt.sunriseMin} sunset={lt.sunsetMin} now={lt.minuteOfDay} />
+          </div>
         </Card>
 
         {/* parameter groups */}
@@ -446,31 +449,6 @@ function sourceNow(src: InfluenceSource, out: { radiation: number; temp: number;
   return src === "radiation" ? out.radiation : src === "outsideTemp" ? out.temp : src === "wind" ? out.wind : rh - rhMax;
 }
 
-/** 24 h strip showing where each period starts, with sunrise, sunset and now. */
-function DayStrip({ draft, sunrise, sunset, now }: { draft: Strategy; sunrise: number; sunset: number; now: number }) {
-  const lang = useStore().s.lang;
-  const starts = draft.periods.map((p) => ({ p, s: periodStart(p, sunrise, sunset) })).sort((a, b) => a.s - b.s);
-  const pct = (m: number) => `${(m / 1440) * 100}%`;
-  const tones = ["var(--s1)", "var(--s3)", "var(--s4)", "var(--s7)", "var(--s5)", "var(--s2)"];
-  return (
-    <div className="px-4 pb-4" dir="ltr">
-      <div className="relative h-7 overflow-hidden rounded-lg bg-surface-2">
-        <div className="absolute inset-y-0 bg-[var(--s4)]/15" style={{ left: pct(sunrise), width: pct(sunset - sunrise) }} />
-        {starts.map(({ p, s }, i) => (
-          <div key={p.id} className="absolute inset-y-0 border-s-2" style={{ left: pct(s), borderColor: tones[i % tones.length] }}>
-            <span className="absolute top-1 ms-1 text-[10px] font-semibold whitespace-nowrap text-ink-2">{tData(lang, p.name)}</span>
-          </div>
-        ))}
-        <div className="absolute inset-y-0 w-0.5 bg-ink" style={{ left: pct(now) }} />
-      </div>
-      <div className="num mt-1 flex justify-between text-[10px] text-muted">
-        {[0, 6, 12, 18, 24].map((h) => (
-          <span key={h}>{String(h).padStart(2, "0")}:00</span>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function InfluenceEditor({ inf, current, onChange, onDelete }: { inf: Influence; current: number; onChange: (i: Influence) => void; onDelete: () => void }) {
   const s = useStore();

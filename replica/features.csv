@@ -52,3 +52,5 @@ Intelligent Algorithms trained models,ai,could,yes,skip,their models; we can bui
 LetsGrow.com benchmark data network,data,could,yes,skip,their network of growers
 Grodan partner integration,integrations,could,yes,skip,partner deal; integrate via public APIs later
 Hoogendoorn Online manuals and courses,support,could,yes,skip,their content
+Measurement report table (periods x days with average),report,should,yes,yes,matches IIVO measurement grid; Calendar day / Day / Night per section
+Setpoint day-curve with sunrise/sunset and now,strategy,should,yes,yes,matches IIVO setpoint editor; adds the ventilation line too

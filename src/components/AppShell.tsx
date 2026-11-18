@@ -19,6 +19,7 @@ import {
   Sun,
   Sprout,
   Gauge,
+  Table2,
 } from "lucide-react";
 import { store, useStore } from "@/lib/store";
 import { SECTIONS, SITE } from "@/sim/seed";
@@ -57,6 +58,7 @@ export function Logo({ size = 28 }: { size?: number }) {
 const NAV = [
   { href: "/", k: "nav.overview", icon: LayoutDashboard },
   { href: "/graphs", k: "nav.graphs", icon: ChartLine },
+  { href: "/report", k: "nav.report", icon: Table2 },
   { href: "/alarms", k: "nav.alarms", icon: Bell },
   { href: "/recipes", k: "nav.recipes", icon: BookOpen },
   { href: "/weather", k: "nav.weather", icon: CloudSun },
