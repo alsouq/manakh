@@ -1,0 +1,54 @@
+feature,area,priority,original,clone,notes
+Sign in with email and password,auth,must,yes,partial,demo login stored in the browser; real auth is phase 2 (Supabase)
+Language switch,auth,must,yes,yes,original has 6 languages; we add Arabic RTL; Arabic RTL + English
+Overview of all sections with live values,dashboard,must,yes,yes,
+Outside weather tile,dashboard,must,yes,yes,
+Alarm badge and count in the shell,dashboard,must,yes,yes,
+Section page with measured value list,section,must,yes,yes,
+Visualization panel of installations (vents screens pipes lamps CO2),section,must,yes,yes,
+Setpoint vs measured shown together,section,must,yes,yes,
+Manual override of an actuator and back to auto,section,must,yes,yes,
+Manual mode visible everywhere,section,must,inferred,yes,forgotten manual mode is a classic failure
+Day periods with start relative to sunrise sunset or clock,strategy,must,yes,yes,
+Heating temperature setpoint per period,strategy,must,yes,yes,
+Ventilation temperature and P-band,strategy,must,yes,yes,
+Humidity control (RH or humidity deficit),strategy,must,yes,yes,
+CO2 setpoint with vent-dependent reduction,strategy,must,yes,yes,
+Screen strategy (energy and shade),strategy,must,yes,yes,
+Influences: light raises temperature setpoint,strategy,must,yes,yes,
+Calculated setpoint from strategy plus influences,control,must,yes,yes,
+Graphs of any value with time range,graphs,must,yes,yes,
+One-click graph from any value,graphs,must,yes,yes,release 7.0
+Compare several series and sections,graphs,must,yes,yes,
+Active alarms with acknowledge,alarms,must,yes,yes,
+Alarm history,alarms,must,yes,yes,
+Crop recipe library: save and apply,recipes,must,yes,yes,
+Custom alarm rules with condition delay and priority,alarms,should,yes,yes,
+Alarm snooze and night silence window,alarms,should,yes,yes,snooze 30 min / 2 h / until 07:00 + active window per rule
+Weather forecast used by control,weather,should,yes,partial,forecast drives the strategy preview; not yet inside the control loop
+Lighting strategy (assimilation lamps by radiation and light sum),strategy,should,yes,yes,release 7.0
+Irrigation groups with start rules (radiation sum and time),water,should,yes,yes,simulated valves
+EC and pH targets and drain percentage,water,should,yes,yes,simulated measurements
+Energy overview (boiler buffer gas usage),energy,should,yes,yes,
+Mobile layout for use in the greenhouse,shell,should,yes,yes,
+Change log of who changed what,admin,should,inferred,yes,
+User roles,admin,should,yes,no,phase 2 with Supabase RLS
+Graph window settings (saved views),graphs,should,yes,yes,release 7.0
+Light and dark strategy,strategy,should,yes,partial,release 7.0; lamps per period with light-sum target
+Technical rooms and installations status,installations,should,yes,no,
+Remote access without VPN,shell,should,yes,yes,"web app, phone layout"
+Unit settings,admin,should,yes,no,°C / metric only
+Explain why: setpoint breakdown into base plus each influence,control,could,no,yes,our improvement
+Preview a strategy change as a 24h curve before saving,strategy,could,no,yes,our improvement
+Diff and confirm before applying a change or recipe,strategy,could,inferred,yes,our improvement
+Cooling for hot climates (pad and fan fogging),strategy,could,partial,yes,our improvement for Egypt and the Gulf
+Arabic RTL interface,shell,could,no,yes,our improvement
+Dark mode for night checks,shell,could,unknown,yes,our improvement
+Daily summary (light sum gas water per section),dashboard,could,inferred,partial,"totals on overview, energy and water pages"
+Root-zone sensors (slab weight water content),water,could,yes,no,
+Export graph data to CSV,graphs,could,unknown,yes,
+Hoogendoorn hardware and I/O firmware,hardware,could,yes,skip,their hardware; we target open protocols (Modbus MQTT) instead
+Intelligent Algorithms trained models,ai,could,yes,skip,their models; we can build our own optimiser later
+LetsGrow.com benchmark data network,data,could,yes,skip,their network of growers
+Grodan partner integration,integrations,could,yes,skip,partner deal; integrate via public APIs later
+Hoogendoorn Online manuals and courses,support,could,yes,skip,their content

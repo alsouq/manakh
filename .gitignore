@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# reference screenshots of the original app: never commit or ship
+/replica/screens/
+# local scratch
+/scripts/sim-check.ts
