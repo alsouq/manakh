@@ -18,7 +18,7 @@ import {
   Settings,
   Sun,
   Sprout,
-  Gauge,
+
   Table2,
   Thermometer,
   Navigation,
@@ -26,7 +26,7 @@ import {
 import { store, useStore } from "@/lib/store";
 import { SECTIONS, SITE } from "@/sim/seed";
 import { fmt, fmtTime } from "@/lib/vars";
-import { cx, IconButton, Segmented } from "./ui";
+import { cx } from "./ui";
 
 export function useApplyDocPrefs() {
   const s = useStore();
@@ -156,76 +156,107 @@ function NavItem({ href, label, icon: Icon, active, badge, onClick }: { href: st
   );
 }
 
+function pageTitle(path: string, s: ReturnType<typeof useStore>): string {
+  const t = s.t;
+  if (path.startsWith("/sections/")) {
+    const id = path.split("/")[2];
+    const d = SECTIONS.find((x) => x.id === id);
+    if (d) return `${d.code} · ${s.s.lang === "ar" ? d.nameAr : d.name}`;
+  }
+  const map: Record<string, string> = {
+    "/": "nav.overview",
+    "/graphs": "nav.graphs",
+    "/report": "nav.report",
+    "/alarms": "nav.alarms",
+    "/recipes": "nav.recipes",
+    "/weather": "nav.weather",
+    "/water": "nav.water",
+    "/energy": "nav.energy",
+    "/activity": "nav.activity",
+    "/settings": "nav.settings",
+  };
+  const key = Object.keys(map).find((k) => (k === "/" ? path === "/" : path.startsWith(k)));
+  return key ? t(map[key]) : t("app.name");
+}
+
+function HeaderButton({ label, onClick, children }: { label: string; onClick: () => void; children: ReactNode }) {
+  return (
+    <button aria-label={label} title={label} onClick={onClick} className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--header-ink)]/90 hover:bg-[var(--header-soft)]">
+      {children}
+    </button>
+  );
+}
+
 function TopBar({ onMenu }: { onMenu: () => void }) {
   const s = useStore();
   const t = s.t;
   const tw = s.twin!;
+  const path = usePathname();
   const now = s.simNow();
   const o = tw.outside;
   const alarms = s.unhandledAlarms().length;
   const dark = typeof document !== "undefined" && document.documentElement.dataset.theme === "dark";
+  const chip = "num inline-flex items-center gap-1 text-[var(--header-ink)]";
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-line bg-bg/85 px-3 backdrop-blur sm:px-5">
-      <IconButton label="Menu" className="lg:hidden" onClick={onMenu}>
-        <Menu size={20} />
-      </IconButton>
-      <div className="flex items-center gap-2 lg:hidden">
-        <Logo size={24} />
-      </div>
-      <div className="flex min-w-0 items-center gap-3 text-sm">
-        <div className="num font-semibold text-ink">{fmtTime(now, SITE.geo.tz)}</div>
-        <div className="hidden text-muted sm:block">
-          {new Intl.DateTimeFormat(s.s.lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", { timeZone: SITE.geo.tz, weekday: "short", day: "numeric", month: "short" }).format(new Date(now))}
-        </div>
-        <Link href="/weather" className="hidden items-center gap-3 rounded-lg px-2 py-1 text-ink-2 hover:bg-surface-2 md:flex">
-          <span className="num inline-flex items-center gap-1" title={t("var.outTemp")}>
-            <Thermometer size={14} className="text-[var(--s8)]" /> {fmt(o.temp, 1)}°C
-          </span>
-          <span className="num inline-flex items-center gap-1 text-muted" title={t("var.outRh")}>
-            <Droplets size={14} className="text-[var(--s1)]" /> {fmt(o.rh, 0)}%
-          </span>
-          <span className="num hidden items-center gap-1 text-muted lg:inline-flex" title={t("var.radiation")}>
-            <Sun size={14} className="text-[var(--s4)]" /> {fmt(o.radiation, 0)} W/m²
-          </span>
-          <span className="num hidden text-muted xl:inline" title={t("ov.radSum")}>
-            {fmt(tw.live.a.totals.radSum, 0)} J/cm²
-          </span>
-          <span className="num inline-flex items-center gap-1 text-muted" title={t("var.wind")}>
-            <Navigation size={13} style={{ transform: `rotate(${o.windDir + 180}deg)` }} /> {fmt(o.wind, 1)} m/s {dirs[Math.round(o.windDir / 45) % 8]}
-          </span>
-        </Link>
-      </div>
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-2 bg-[var(--header)] px-3 text-[var(--header-ink)] shadow-sm sm:px-5">
+      <HeaderButton label="Menu" onClick={onMenu}>
+        <span className="lg:hidden">
+          <Menu size={20} />
+        </span>
+      </HeaderButton>
+      <h1 className="truncate text-[15px] font-bold tracking-wide whitespace-nowrap uppercase">{pageTitle(path, s)}</h1>
+      <Link href="/weather" className="ms-4 hidden items-center gap-3 rounded-lg px-2 py-1 text-sm hover:bg-[var(--header-soft)] md:flex">
+        <span className={chip} title={t("var.outTemp")}>
+          <Thermometer size={14} className="opacity-80" /> {fmt(o.temp, 1)}°C
+        </span>
+        <span className={`${chip} opacity-90`} title={t("var.outRh")}>
+          <Droplets size={14} className="opacity-80" /> {fmt(o.rh, 0)}%
+        </span>
+        <span className={`${chip} hidden opacity-90 lg:inline-flex`} title={t("var.radiation")}>
+          <Sun size={14} className="opacity-80" /> {fmt(o.radiation, 0)} W/m²
+        </span>
+        <span className={`${chip} hidden opacity-90 xl:inline-flex`} title={t("ov.radSum")}>
+          {fmt(tw.live.a.totals.radSum, 0)} J/cm²
+        </span>
+        <span className={`${chip} opacity-90`} title={t("var.wind")}>
+          <Navigation size={13} style={{ transform: `rotate(${o.windDir + 180}deg)` }} /> {fmt(o.wind, 1)} m/s {dirs[Math.round(o.windDir / 45) % 8]}
+        </span>
+      </Link>
       <div className="ms-auto flex items-center gap-1">
-        <div className="hidden items-center gap-1.5 sm:flex" title={t("top.speed")}>
-          <Gauge size={16} className="text-muted" />
-          <Segmented
-            size="sm"
-            value={s.s.speed}
-            onChange={(v) => s.setSpeed(v)}
-            options={[
-              { value: 1, label: "1×" },
-              { value: 60, label: "60×" },
-              { value: 600, label: "600×" },
-            ]}
-          />
+        <div className="me-1 hidden flex-col items-end leading-tight sm:flex">
+          <span className="num text-[13px] font-semibold">{fmtTime(now, SITE.geo.tz)}</span>
+          <span className="text-[11px] opacity-80">
+            {new Intl.DateTimeFormat(s.s.lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB", { timeZone: SITE.geo.tz, weekday: "short", day: "numeric", month: "short" }).format(new Date(now))}
+          </span>
         </div>
-        <IconButton label={t("top.lang")} onClick={() => s.setLang(s.s.lang === "ar" ? "en" : "ar")}>
+        <div className="me-1 hidden rounded-lg bg-[var(--header-soft)] p-0.5 sm:flex" title={t("top.speed")}>
+          {[1, 60, 600].map((v) => (
+            <button
+              key={v}
+              onClick={() => s.setSpeed(v)}
+              className={cx("num rounded-md px-2 py-1 text-[12px] font-medium", s.s.speed === v ? "bg-white text-[var(--brand)]" : "text-[var(--header-ink)]/80 hover:text-[var(--header-ink)]")}
+            >
+              {v}×
+            </button>
+          ))}
+        </div>
+        <HeaderButton label={t("top.lang")} onClick={() => s.setLang(s.s.lang === "ar" ? "en" : "ar")}>
           <Languages size={18} />
-        </IconButton>
-        <IconButton label={t("top.theme")} onClick={() => s.setTheme(dark ? "light" : "dark")}>
+        </HeaderButton>
+        <HeaderButton label={t("top.theme")} onClick={() => s.setTheme(dark ? "light" : "dark")}>
           {dark ? <Sun size={18} /> : <Moon size={18} />}
-        </IconButton>
-        <Link href="/alarms" className="relative inline-flex h-9 w-9 items-center justify-center rounded-xl text-ink-2 hover:bg-surface-2" aria-label={t("nav.alarms")}>
+        </HeaderButton>
+        <Link href="/alarms" className="relative inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--header-ink)]/90 hover:bg-[var(--header-soft)]" aria-label={t("nav.alarms")}>
           <Bell size={18} />
           {alarms > 0 && (
-            <span className="num absolute -end-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-critical px-1 text-[10px] font-bold text-white ring-2 ring-bg">
+            <span className="num absolute -end-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold text-[var(--brand)]">
               {alarms}
             </span>
           )}
         </Link>
-        <IconButton label={t("top.signout")} onClick={() => s.logout()}>
+        <HeaderButton label={t("top.signout")} onClick={() => s.logout()}>
           <LogOut size={18} className="rtl:-scale-x-100" />
-        </IconButton>
+        </HeaderButton>
       </div>
     </header>
   );

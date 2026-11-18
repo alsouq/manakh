@@ -38,7 +38,7 @@ await p.waitForTimeout(300);
 ok((await p.getAttribute("html", "dir")) === "ltr", "language switch to English sets LTR");
 
 // F01 overview
-await p.getByRole("heading", { name: "Overview" }).waitFor();
+await p.locator('a[href^="/sections/"]').first().waitFor();
 ok((await p.locator('a[href^="/sections/"]').count()) >= 4, "overview lists the four sections");
 
 // F02 change strategy with preview, save as v2

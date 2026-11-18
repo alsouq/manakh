@@ -73,7 +73,7 @@ export function Badge({ tone = "neutral", children, className }: { tone?: "neutr
         "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] font-medium whitespace-nowrap",
         tone === "neutral" && "bg-surface-2 text-ink-2",
         tone === "brand" && "bg-brand-soft text-brand",
-        tone === "good" && "bg-brand-soft text-good-ink",
+        tone === "good" && "bg-good-soft text-good-ink",
         tone === "warning" && "bg-warning-soft text-ink",
         tone === "critical" && "bg-critical-soft text-critical",
         tone === "manual" && "bg-[#6250d6]/12 text-[#6250d6] dark:text-[#9085e9]",
