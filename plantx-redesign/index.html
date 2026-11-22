@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PlantX Redesign Options</title>
+<style>
+:root{color-scheme:light dark;--bg:#0c1519;--fg:#eaf5f7;--card:#13222a;--mut:#8fb2ba;--acc:#19d6d0}
+@media(prefers-color-scheme:light){:root{--bg:#eef5f6;--fg:#06303a;--card:#fff;--mut:#4a6b74;--acc:#0195b1}}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--fg);font:400 1rem/1.5 system-ui,'Segoe UI',Tahoma,sans-serif;padding:clamp(18px,4vw,56px)}
+h1{font-size:clamp(1.6rem,3.6vw,2.6rem);letter-spacing:-.02em}
+p.s{color:var(--mut);margin:8px 0 34px;max-width:60ch}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:22px}
+a.c{background:var(--card);border-radius:20px;overflow:hidden;color:inherit;text-decoration:none;display:flex;flex-direction:column;border:1px solid #8884;transition:transform .25s,border-color .25s}
+a.c:hover{transform:translateY(-5px);border-color:var(--acc)}
+.fr{position:relative;aspect-ratio:16/10;overflow:hidden;background:#000}
+.fr iframe{position:absolute;inset:0;width:1440px;height:900px;border:0;transform:scale(var(--k,.27));transform-origin:0 0;pointer-events:none}
+.t{padding:18px 20px 22px}.t b{font-size:1.2rem;display:block}.t span{color:var(--mut);font-size:.95rem}
+</style></head>
+<body>
+<h1>PlantX — three directions</h1>
+<p class="s">Same real content, three different identities. Each page has a built-in English / Arabic (RTL) switch.</p>
+<div class="g">
+ <a class="c" href="v1-mars.html"><div class="fr"><iframe src="v1-mars.html" title="V1" loading="lazy"></iframe></div><div class="t"><b>V1 · MARS-1</b><span>Mission control. A greenhouse dome on Mars, with live climate telemetry.</span></div></a>
+ <a class="c" href="v2-periodic.html"><div class="fr"><iframe src="v2-periodic.html" title="V2" loading="lazy"></iframe></div><div class="t"><b>V2 · Periodic X</b><span>Nutrient lab. Product lines as elements, and a crop-to-product finder.</span></div></a>
+ <a class="c" href="v3-growlight.html"><div class="fr"><iframe src="v3-growlight.html" title="V3" loading="lazy"></iframe></div><div class="t"><b>V3 · Grow Light</b><span>Your cursor is the grow light. A scroll story drives a greenhouse cross-section.</span></div></a>
+</div>
+<script>
+function k(){document.querySelectorAll('.fr').forEach(f=>f.style.setProperty('--k',f.clientWidth/1440))}
+k();addEventListener('resize',k);
+</script>
+</body></html>
