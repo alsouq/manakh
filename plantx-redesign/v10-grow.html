@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PlantX Grow</title>
+<meta name="description" content="PlantX Horticulture Solutions — a crop grows as you scroll, and each stage reveals a PlantX service or product.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Readex+Pro:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{--night:#031c26;--teal:#19B6D0;--brand:#0195B1;--coral:#FF5A4F;--lime:#C8F04A;--card:#031b24d9;
+ --h:'Bricolage Grotesque','Readex Pro',sans-serif;--b:'Readex Pro','Bricolage Grotesque',sans-serif;--gut:clamp(18px,4.5vw,64px)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#031c26;color:#fff;font:400 1.02rem/1.6 var(--b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--lime);outline-offset:3px;border-radius:6px}
+.nav{position:fixed;inset-block-start:0;inset-inline:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px var(--gut);pointer-events:none}
+.nav>*{pointer-events:auto}
+.nav img{height:46px;filter:brightness(0) invert(1)}
+.nav .r{display:flex;gap:8px}
+.bt{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:99px;border:2px solid #ffffffcc;background:#031c2666;backdrop-filter:blur(8px);color:#fff;font:600 .92rem var(--b);cursor:pointer;transition:.2s}
+.bt:hover{background:#fff;color:#031c26}
+.bt.c{background:var(--coral);border-color:var(--coral)}.bt.c:hover{background:#fff;border-color:#fff;color:var(--coral)}
+
+/* STORY */
+#story{position:relative;height:680vh}
+.pin{position:sticky;inset-block-start:0;height:100vh;height:100svh;overflow:hidden}
+#cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+.veil{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#021219cc 0%,#02121955 38%,transparent 62%)}
+[dir=rtl] .veil{background:linear-gradient(270deg,#021219cc 0%,#02121955 38%,transparent 62%)}
+@media(max-width:860px){.veil{background:linear-gradient(0deg,#021219f2 0%,#021219cc 34%,transparent 58%)!important}}
+
+.intro{position:absolute;z-index:5;inset-inline-start:var(--gut);inset-block-start:50%;transform:translateY(-52%);max-width:min(760px,88vw);pointer-events:none;transition:opacity .25s}
+.intro h1{font:800 clamp(2.8rem,7.4vw,7.2rem)/.92 var(--h);font-stretch:100%;letter-spacing:-.035em;text-wrap:balance}
+[lang=ar] .intro h1{line-height:1.12;letter-spacing:0}
+.intro p{margin-top:22px;max-width:44ch;font-size:1.12rem;font-weight:300;color:#d7ecf0}
+.hint{margin-top:30px;display:inline-flex;align-items:center;gap:12px;font:600 .9rem var(--b);color:var(--lime)}
+.hint i{display:block;width:2px;height:38px;background:linear-gradient(var(--lime),transparent);animation:dr 1.6s infinite}
+@keyframes dr{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+.card{position:absolute;z-index:6;inset-inline-start:var(--gut);inset-block-start:50%;transform:translateY(-48%);width:min(470px,38vw);background:var(--card);backdrop-filter:blur(14px);border:1px solid #ffffff2e;border-radius:26px;padding:clamp(20px,2.4vw,32px);opacity:0;pointer-events:none;transition:opacity .35s}
+.card.on{opacity:1;pointer-events:auto}
+.card .k{font:600 .8rem var(--b);letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+[lang=ar] .card .k{letter-spacing:0;text-transform:none}
+.card h2{font:800 clamp(1.9rem,3.2vw,3rem)/1 var(--h);letter-spacing:-.025em;margin:10px 0 12px}
+[lang=ar] .card h2{line-height:1.2;letter-spacing:0}
+.card p{color:#cfe6ec;font-size:1.02rem}
+.card .go{display:inline-flex;margin-top:18px;padding:11px 22px;border-radius:99px;background:var(--coral);font:600 .94rem var(--b);transition:.2s}
+.card .go:hover{background:#fff;color:var(--coral)}
+.card .ps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.card .ps.two{grid-template-columns:repeat(2,1fr)}
+.card .pm{background:#ffffff12;border:1px solid #ffffff22;border-radius:16px;overflow:hidden;transition:.2s;display:flex;flex-direction:column}
+.card .pm:hover{background:#ffffff26}
+.card .pm img{aspect-ratio:1;width:100%;object-fit:cover}
+.card .pm span{padding:8px 10px 10px;font:600 .78rem/1.25 var(--b)}
+.card .pm b{display:block;color:var(--lime);font:700 .84rem var(--b);margin-top:2px}
+.card q{display:block;margin-top:16px;font:500 1.05rem/1.45 var(--b);quotes:none;border-inline-start:3px solid var(--coral);padding-inline-start:14px}
+.card q small{display:block;margin-top:6px;font-size:.8rem;color:#9fcbd4}
+.card .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+@media(max-width:860px){.card{inset-inline:12px;inset-block-start:auto;inset-block-end:12px;transform:none;width:auto;border-radius:22px;padding:18px 18px 20px;max-height:46svh;overflow:auto}.card h2{font-size:1.7rem;margin:6px 0 8px}.card p{font-size:.95rem}.card .ps{margin-top:12px;gap:8px}.card .pm span{font-size:.7rem;padding:6px 8px 8px}.intro{inset-block-start:34%}}
+
+.rail{position:absolute;z-index:7;inset-inline-end:clamp(10px,2vw,28px);inset-block-start:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.rail button{display:flex;align-items:center;gap:10px;background:none;border:0;color:#fff;font:600 .74rem var(--b);cursor:pointer;opacity:.6;padding:5px 0;transition:.25s}
+.rail button i{display:block;width:22px;height:3px;background:#fff;border-radius:2px;transition:.25s}
+.rail button span{opacity:0;transform:translateX(6px);transition:.25s;white-space:nowrap;text-shadow:0 1px 8px #000a}
+[dir=rtl] .rail button span{transform:translateX(-6px)}
+.rail button.on,.rail button:hover{opacity:1}.rail button.on i{width:46px;background:var(--lime)}.rail button.on span,.rail button:hover span{opacity:1;transform:none}
+@media(max-width:860px){.rail{inset-block-start:76px;inset-inline-end:14px;transform:none;gap:4px}.rail button span{display:none}.rail button i{width:14px}.rail button.on i{width:30px}}
+.bar{position:absolute;z-index:7;inset-inline:0;inset-block-end:0;height:4px;background:#ffffff22}
+.bar i{display:block;height:100%;width:calc(var(--p,0)*100%);background:linear-gradient(90deg,var(--teal),var(--lime))}
+[dir=rtl] .bar i{margin-inline-start:auto}
+
+/* END */
+.end{position:relative;background:linear-gradient(#1b2a5a,#0a1230);padding:clamp(70px,10vw,150px) var(--gut) 40px;text-align:center}
+.end h2{font:800 clamp(2.4rem,6.4vw,6rem)/.95 var(--h);letter-spacing:-.035em;max-width:14ch;margin-inline:auto}
+[lang=ar] .end h2{line-height:1.2;letter-spacing:0}
+.end .cta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:34px}
+.mk{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;margin-top:34px;font-weight:500}
+.mk img{height:34px;width:auto;background:#fff;border-radius:10px;padding:5px 12px}
+footer{margin-top:70px;padding-top:26px;border-top:1px solid #ffffff22;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;font-size:.9rem;color:#9fb0d0}
+footer img{height:36px;filter:brightness(0) invert(1);opacity:.85}footer nav{display:flex;gap:20px}
+@media(prefers-reduced-motion:reduce){.hint i{animation:none}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <a href="#" aria-label="PlantX"><img src="assets/logo.png" alt="PlantX Horticulture Solutions"></a>
+  <div class="r"><button class="bt" id="lang" aria-label="Language">عربي</button><a class="bt c" href="https://plantx-egypt.com" data-ar="المتجر">Shop</a></div>
+</header>
+
+<main>
+<div id="story">
+  <div class="pin" id="pin">
+    <canvas id="cv" aria-label="A tomato crop growing inside a greenhouse as you scroll" role="img"></canvas>
+    <div class="veil"></div>
+    <div class="intro" id="intro">
+      <h1 data-ar="حلول بستانية متكاملة.">Integrated horticultural solutions.</h1>
+      <p data-ar="حلول ذكية للزراعة الحديثة، من تصميم الصوب والزراعة المائية إلى تغذية النبات وإدارة المحصول.">Smart solutions for modern agriculture, from greenhouse design and hydroponics to plant nutrition and crop management.</p>
+      <div class="hint"><i></i><span data-ar="مرّر لتنمو المحصول">Scroll to grow a crop</span></div>
+    </div>
+    <div class="card" id="card" aria-live="polite"></div>
+    <nav class="rail" id="rail" aria-label="Growth stages"></nav>
+    <div class="bar"><i></i></div>
+  </div>
+</div>
+
+<section class="end" id="contact">
+  <h2 data-ar="جاهز لمشروعك القادم؟">Ready to grow your next crop?</h2>
+  <div class="cta"><a class="bt c" href="https://wa.link/l676ve" data-ar="تحدث مع خبرائنا على واتساب">Talk to our experts on WhatsApp</a><a class="bt" href="https://www.instagram.com/plantx.horticulturesolutions/">Instagram</a><a class="bt" href="https://www.linkedin.com/company/plantx-horticulture-solutions">LinkedIn</a><a class="bt" href="https://www.facebook.com/profile.php?id=61583441600375">Facebook</a></div>
+  <div class="mk"><span data-ar="متوفر أيضًا على:">Also available on</span><a href="https://www.amazon.eg/s?me=A331OR3GTRBRBM&language=en&marketplaceID=ARBP9OOSHTCHU"><img src="assets/amazon.png" alt="Amazon Egypt"></a><a href="https://www.jumia.com.eg/ar/plantx-horticulture-solution/"><img src="assets/jumia.png" alt="Jumia"></a><img src="assets/noon.png" alt="Noon"></div>
+  <footer><img src="assets/logo.png" alt="PlantX"><span>© PlantX Horticulture Solutions</span><nav><a href="https://plantx-egypt.com/pages/our-services" data-ar="الخدمات">Services</a><a href="https://plantx-egypt.com/cart" data-ar="السلة">Cart</a></nav></footer>
+</section>
+</main>
+
+<script>
+const root=document.documentElement,$=id=>document.getElementById(id);
+const ar=()=>root.lang==='ar';
+const ST=[0,.14,.32,.52,.70,.88];
+const U='https://plantx-egypt.com/';
+const PR=(n,ar_,img,u,p)=>({n,ar:ar_,img,u,p});
+const STAGES=[
+ {rail:['Greenhouse','الصوب'],k:['The structure','الهيكل'],t:['Greenhouse Solutions','حلول الصوب الزراعية'],d:['Design and development of greenhouse systems based on crop requirements, location, climate conditions, and production targets.','تصميم وتطوير أنظمة الصوب وفق متطلبات المحصول والموقع والمناخ وأهداف الإنتاج.'],u:'pages/greenhouse-solutions'},
+ {rail:['Hydroponics','الزراعة المائية'],k:['The root zone','منطقة الجذور'],t:['Hydroponic Solutions','حلول الزراعة المائية'],d:['Design and development of hydroponic systems, irrigation strategies, and nutrient programs for efficient crop production.','تصميم وتطوير أنظمة الزراعة المائية واستراتيجيات الري وبرامج التغذية لإنتاج فعّال.'],u:'pages/hydroponic-solutions'},
+ {rail:['Nutrition','التغذية'],k:['The feed','التغذية'],t:['Plant Nutrition','تغذية النبات'],d:['Developing crop-specific nutrition programs and products based on crop requirements and growth stages.','تطوير برامج ومنتجات تغذية مخصصة لكل محصول ومرحلة نمو.'],u:'pages/plant-nutrition',
+  prods:[['Leafy Greens','ورقيات','p-leafy.png','products/plantx-nutrient-solution-for-leafy-greens-a-b'],['Lettuce','خس','p-lettuce.png','products/plantx-nutrient-solution-for-lettuce-a-b'],['Herbs','أعشاب','p-herbs.png','products/plantx-nutrient-solution-for-herbs-medicinal-and-aromatic-plants-a-b']]},
+ {rail:['Crop care','إدارة المحصول'],k:['The crop','المحصول'],t:['Crop Management','إدارة المحاصيل'],d:['Optimizing crop production through irrigation, nutrition, climate management, and crop performance monitoring.','تحسين إنتاج المحصول من خلال الري والتغذية وإدارة المناخ ومتابعة أداء المحصول.'],u:'pages/crop-management'},
+ {rail:['Fruit & berry','فاكهة وتوت'],k:['The harvest ahead','قبل الحصاد'],t:['Fruit and berry nutrition','تغذية الفاكهة والتوت'],d:['Professional formulations for fruit crops, supporting strong growth and improving fruit set. A balanced feeding program for strawberries and berry crops.','تركيبات احترافية لمحاصيل الفاكهة تدعم النمو القوي وعقد الثمار، وبرنامج تغذية متوازن للفراولة والتوت.'],
+  lines:[['PlantX Fruit™','c-fruit.png','collections/plantx-fruit%E2%84%A2'],['PlantX Berry™','c-berry.png','collections/plantx-berry%E2%84%A2']]},
+ {rail:['Consultancy','الاستشارات'],k:['Harvest','الحصاد'],t:['Technical Consultancy','الاستشارات الفنية'],d:['Technical assessment and practical solutions designed to address agricultural and operational challenges.','تقييم فني وحلول عملية للتحديات الزراعية والتشغيلية.'],u:'pages/technical-consultancy',review:true}
+];
+const REV=[["This fertilizer is excellent, it's magical.","Hamada · Herbs, Medicinal & Aromatic A&B"],["Excellent fertilizer, after using my plants returned back fresh.","Customer · Indoor & Shade Plants A&B"],["Very good product.","Hamada · Herbs, Medicinal & Aromatic A&B"]];
+let stage=-1,revI=0,revT=null;
+function renderRail(){$('rail').innerHTML=STAGES.map((s,i)=>`<button data-i="${i}" class="${i===stage?'on':''}" aria-label="${s.rail[0]}"><span>${s.rail[ar()?1:0]}</span><i></i></button>`).join('')}
+function renderCard(){const c=$('card');if(stage<0){c.classList.remove('on');return}
+ const s=STAGES[stage],L=ar()?1:0;let x=`<div class="k">${s.k[L]}</div><h2>${s.t[L]}</h2><p>${s.d[L]}</p>`;
+ if(s.prods)x+=`<div class="ps">${s.prods.map(p=>`<a class="pm" href="${U}${p[3]}"><img src="assets/${p[2]}" alt=""><span>${p[L]}<b>199.99 EGP</b></span></a>`).join('')}</div>`;
+ if(s.lines)x+=`<div class="ps two">${s.lines.map(p=>`<a class="pm" href="${U}${p[2]}"><img src="assets/${p[1]}" alt=""><span>${p[0]}</span></a>`).join('')}</div>`;
+ if(s.review){const r=REV[revI%REV.length];x+=`<q id="rq" dir="ltr">${r[0]}<small>★★★★★ 5.0 · ${r[1]}</small></q>`}
+ if(s.u)x+=`<div class="row"><a class="go" href="${U}${s.u}">${ar()?'اقرأ المزيد':'Read more'}</a></div>`;
+ if(s.review)x=x.replace('<div class="row">','<div class="row"><a class="go" style="background:#25D366;color:#031c26" href="https://wa.link/l676ve">'+(ar()?'تحدث مع خبير':'Talk to an expert')+'</a>');
+ c.innerHTML=x;c.classList.add('on')}
+function setStage(i){if(i===stage)return;stage=i;renderRail();renderCard();clearInterval(revT);if(i===5)revT=setInterval(()=>{revI++;const q=$('rq');if(q){const r=REV[revI%REV.length];q.innerHTML=`${r[0]}<small>★★★★★ 5.0 · ${r[1]}</small>`}},4500)}
+$('rail').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i,st=$('story'),r=st.getBoundingClientRect(),span=st.offsetHeight-innerHeight;
+ const target=ST[i]+(i<5?(ST[i+1]-ST[i])*.5:.06);scrollTo({top:scrollY+r.top+target*span,behavior:'smooth'})});
+function setLang(l){root.lang=l;root.dir=l==='ar'?'rtl':'ltr';
+ document.querySelectorAll('[data-ar]').forEach(e=>{if(e.dataset.en===undefined)e.dataset.en=e.innerHTML;e.innerHTML=l==='ar'?e.dataset.ar:e.dataset.en});
+ $('lang').textContent=l==='ar'?'EN':'عربي';renderRail();renderCard();resize();try{localStorage.plxLang=l}catch(e){}}
+$('lang').onclick=()=>setLang(ar()?'en':'ar');
+
+/* ---------- the scene ---------- */
+const cv=$('cv'),ctx=cv.getContext('2d');
+const calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function mulberry(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const R=mulberry(7);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const sm=(a,b,x)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t)};
+const mix=(a,b,t)=>a+(b-a)*t;
+const mixc=(a,b,t)=>a.map((v,i)=>v+(b[i]-v)*t);
+const rgb=c=>`rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;
+const SKY=[[0,[3,28,38],[10,75,90]],[.2,[11,90,112],[255,184,154]],[.45,[26,167,199],[191,244,247]],[.7,[20,149,181],[255,226,154]],[.88,[18,52,92],[255,138,107]],[1,[27,42,90],[255,111,97]]];
+function sky(p){for(let i=1;i<SKY.length;i++){if(p<=SKY[i][0]){const a=SKY[i-1],b=SKY[i],t=(p-a[0])/(b[0]-a[0]);return[mixc(a[1],b[1],t),mixc(a[2],b[2],t)]}}return[SKY[5][1],SKY[5][2]]}
+let W,H,dpr,mob,sw,sh,cx,gy,fhw;
+function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=$('pin').clientHeight||innerHeight;cv.width=W*dpr;cv.height=H*dpr;mob=W<860;sw=W;sh=mob?H*.56:H;cx=mob?sw*.5:(root.dir==='rtl'?sw*.375:sw*.625);fhw=mob?sw*.47:sw*.265;gy=sh*.66}
+addEventListener('resize',resize);resize();
+const stars=Array.from({length:60},()=>[R(),R()*.55,R()*1.4+.4]);
+/* roots: deterministic tree in local units (x,y relative to base, in sh units) */
+const roots=[];(function br(x,y,ang,len,d,t0){const x2=x+Math.sin(ang)*len,y2=y+Math.cos(ang)*len;roots.push([x,y,x2,y2,d,t0,len]);if(d>=4)return;const n=d<2?3:2;for(let i=0;i<n;i++)br(x2,y2,ang+(R()-.5)*1.5+(i-(n-1)/2)*.45,len*(.62+R()*.14),d+1,t0+len*1.6)})(0,0,0,.05,0,0);
+const rootMax=Math.max(...roots.map(r=>r[5]+r[6]*1.6));
+const nodes=Array.from({length:14},(_,k)=>({s:.12+k*.062,side:k%2?1:-1,c:[mix(70,110,R()),mix(150,185,R()),mix(70,95,R())],ph:R()*6}));
+const trusses=[5,7,9,11].map((k,i)=>({k,side:i%2?1:-1,f:Array.from({length:5},(_,j)=>({t:.2+j*.19,o:R()*.35,sz:.8+R()*.35}))}));
+function rot(x,y,a){return[x*Math.cos(a)-y*Math.sin(a),x*Math.sin(a)+y*Math.cos(a)]}
+function ell(x,y,rx,ry,a){ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.beginPath();ctx.ellipse(0,0,Math.max(.01,rx),Math.max(.01,ry),0,0,6.283);ctx.restore()}
+function star(x,y,r,n,inner,rotn){ctx.beginPath();for(let i=0;i<n*2;i++){const a=rotn+i*Math.PI/n,rr=i%2?r*inner:r;ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr)}ctx.closePath()}
+
+let PS=0,P=0;
+function draw(t){
+ const p=PS,sway=calm?0:Math.sin(t*.0011)*.006*sw;
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+ const [top,bot]=sky(p);
+ let g=ctx.createLinearGradient(0,0,0,gy);g.addColorStop(0,rgb(top));g.addColorStop(1,rgb(bot));ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ const night=1-sm(0,.2,p);
+ if(night>0){ctx.fillStyle='#fff';for(const s of stars){ctx.globalAlpha=night*(.35+.5*Math.sin(t*.002*s[2]+s[0]*9)**2);ctx.fillRect(s[0]*W,s[1]*gy,s[2],s[2])}ctx.globalAlpha=1}
+ /* sun */
+ const sx=sw*(.08+.84*p),sy=gy*(.95-.78*Math.sin(Math.PI*p)),warm=mixc([255,160,110],[255,244,200],Math.sin(Math.PI*p));
+ g=ctx.createRadialGradient(sx,sy,0,sx,sy,sh*.38);g.addColorStop(0,`rgba(${warm.map(v=>v|0)},.85)`);g.addColorStop(.25,`rgba(${warm.map(v=>v|0)},.25)`);g.addColorStop(1,`rgba(${warm.map(v=>v|0)},0)`);ctx.fillStyle=g;ctx.fillRect(0,0,W,gy);
+ ctx.fillStyle=rgb(warm);ctx.beginPath();ctx.arc(sx,sy,sh*.032,0,6.283);ctx.fill();
+ /* dunes */
+ const dune=mixc(bot,[20,38,48],.62),dune2=mixc(bot,[12,30,40],.8);
+ for(const [col,amp,f,ph,base] of [[dune,.07,.0042,1.2,.0],[dune2,.05,.0068,3.1,.02]]){ctx.fillStyle=rgb(col);ctx.beginPath();ctx.moveTo(0,gy);for(let x=0;x<=W;x+=24)ctx.lineTo(x,gy-sh*(base+amp*(.5+.5*Math.sin(x*f*(900/sw)+ph))));ctx.lineTo(W,gy);ctx.fill()}
+ /* ground cross-section */
+ g=ctx.createLinearGradient(0,gy,0,H);g.addColorStop(0,'#0c3340');g.addColorStop(1,'#031219');ctx.fillStyle=g;ctx.fillRect(0,gy,W,H-gy);
+ ctx.fillStyle='#1d5565';ctx.fillRect(0,gy,W,2);
+ /* greenhouse */
+ const fG=.25+.75*sm(0,.16,p),L=cx-fhw,Rr=cx+fhw,eave=gy-.30*sh,apex=gy-.56*sh;
+ const segs=[[L,gy,L,eave],[L,eave,cx,apex],[cx,apex,Rr,eave],[Rr,eave,Rr,gy]];
+ for(let i=1;i<=6;i++){const x=L+(Rr-L)*i/7;segs.push([x,gy,x,x<cx?mix(eave,apex,(x-L)/(cx-L)):mix(apex,eave,(x-cx)/(Rr-cx))])}
+ segs.push([L,eave,Rr,eave],[L,mix(gy,eave,.5),Rr,mix(gy,eave,.5)],[cx,apex,cx,gy]);
+ for(let i=1;i<=3;i++){segs.push([cx,apex,L+(Rr-L)*i/7*.9,eave]);segs.push([cx,apex,Rr-(Rr-L)*i/7*.9,eave])}
+ const nSeg=segs.length*fG;
+ ctx.fillStyle=`rgba(150,235,245,${.07*fG})`;ctx.beginPath();ctx.moveTo(L,gy);ctx.lineTo(L,eave);ctx.lineTo(cx,apex);ctx.lineTo(Rr,eave);ctx.lineTo(Rr,gy);ctx.fill();
+ ctx.lineCap='round';
+ segs.forEach((s,i)=>{if(i>nSeg)return;const f=clamp(nSeg-i);ctx.strokeStyle=i<4?'rgba(190,245,250,.95)':'rgba(190,245,250,.5)';ctx.lineWidth=i<4?2.6:1.4;ctx.beginPath();ctx.moveTo(s[0],s[1]);ctx.lineTo(mix(s[0],s[2],f),mix(s[1],s[3],f));ctx.stroke()});
+ /* vents + airflow + sensors (crop care) */
+ const vG=sm(.5,.62,p);
+ if(fG>.8){const ang=vG*.5,len=sw*(mob?.1:.075);for(const sd of[-1,1]){const dx=(eave===0?0:(sd<0?L-cx:Rr-cx)),dy=eave-apex,n=Math.hypot(dx,dy),ux=dx/n,uy=dy/n;const[rx,ry]=rot(ux,uy,-sd*ang);ctx.strokeStyle='#8ce06a';ctx.lineWidth=3.4;ctx.beginPath();ctx.moveTo(cx+sd*sw*.006,apex+sh*.004);ctx.lineTo(cx+sd*sw*.006+rx*len,apex+sh*.004+ry*len);ctx.stroke()}}
+ if(vG>0){ctx.strokeStyle=`rgba(255,255,255,${.4*vG})`;ctx.lineWidth=1.6;for(let i=0;i<5;i++){const ph=((t*.00025+i*.2)%1),x=L+fhw*(.1+i*.4)+ph*sw*.04,y=gy-.12*sh-ph*sh*.4-i*sh*.02;ctx.globalAlpha=Math.sin(ph*Math.PI)*.8*vG;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+sw*.02,y-sh*.03,x+sw*.045,y-sh*.01);ctx.stroke()}ctx.globalAlpha=1}
+ const sG=sm(.54,.66,p);
+ if(sG>0){for(const[sx2,sy2]of[[cx-fhw*.62,gy-.2*sh],[cx+fhw*.6,gy-.3*sh],[cx+sw*.03,gy-.5*sh]]){ctx.fillStyle='#ff5a4f';ctx.beginPath();ctx.arc(sx2,sy2,sh*.007*sG,0,6.283);ctx.fill();for(let i=1;i<=2;i++){const a=((t*.0015+i*.5)%1);ctx.strokeStyle=`rgba(255,120,100,${(1-a)*.8*sG})`;ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(sx2,sy2,sh*(.008+a*.03)*sG,-2.4,-.74);ctx.stroke()}}}
+ /* reservoir (hydroponics) */
+ const hG=sm(.14,.3,p),rsX=cx-fhw*.86,rsW=fhw*1.72,rsY=gy+.03*sh,rsH=.2*sh;
+ if(hG>0){ctx.globalAlpha=hG;g=ctx.createLinearGradient(0,rsY,0,rsY+rsH);g.addColorStop(0,'#1cc0d8');g.addColorStop(1,'#0a5f78');ctx.fillStyle=g;ctx.fillRect(rsX,rsY,rsW,rsH);ctx.strokeStyle='#bff4f7';ctx.lineWidth=2;ctx.strokeRect(rsX,rsY,rsW,rsH);
+  ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=1.4;ctx.setLineDash([8,12]);ctx.lineDashOffset=-t*.03;for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(rsX+8,rsY+rsH*(.2+i*.22));ctx.lineTo(rsX+rsW-8,rsY+rsH*(.2+i*.22));ctx.stroke()}ctx.setLineDash([]);ctx.globalAlpha=1}
+ /* slab / substrate */
+ const slabW=sw*(mob?.2:.11);if(hG>0||p<.14){ctx.fillStyle='#e9eeed';ctx.fillRect(cx-slabW/2,gy-.012*sh,slabW,.03*sh);ctx.fillStyle='#16262c';ctx.fillRect(cx-slabW/2,gy+.016*sh,slabW,.014*sh)}
+ /* roots */
+ const rG=sm(.14,.46,p)*rootMax;
+ if(rG>0){ctx.strokeStyle='#f2ead4';ctx.lineCap='round';for(const r of roots){const f=clamp((rG-r[5])/(r[6]*1.6));if(f<=0)continue;ctx.lineWidth=Math.max(.8,(5-r[4])*.9);ctx.beginPath();ctx.moveTo(cx+r[0]*sh,gy+.03*sh+r[1]*sh*1.7);ctx.lineTo(cx+mix(r[0],r[2],f)*sh,gy+.03*sh+mix(r[1],r[3],f)*sh*1.7);ctx.stroke()}}
+ /* tanks A/B (nutrition) */
+ const tG=sm(.33,.46,p),tw=sw*(mob?.07:.045),th=.17*sh;
+ if(tG>0){for(const[tx,lb]of[[L+sw*.025,'A'],[Rr-sw*.025-tw,'B']]){ctx.globalAlpha=tG;ctx.fillStyle='#0b3a4a';ctx.fillRect(tx,gy-th,tw,th);ctx.fillStyle=lb==='A'?'#8ce06a':'#ffd23f';ctx.fillRect(tx,gy-th*tG,tw,th*tG);ctx.strokeStyle='#e8fbff';ctx.lineWidth=2;ctx.strokeRect(tx,gy-th,tw,th);ctx.fillStyle='#fff';ctx.font=`800 ${tw*.6}px Bricolage Grotesque, sans-serif`;ctx.textAlign='center';ctx.fillText(lb,tx+tw/2,gy-th*.45);
+   ctx.strokeStyle='#8ce06a';ctx.lineWidth=3;ctx.setLineDash([6,8]);ctx.lineDashOffset=-t*.04;ctx.beginPath();ctx.moveTo(tx+tw/2,gy);ctx.lineTo(tx+tw/2,rsY+rsH*.25);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1}}
+ /* plant */
+ const stemG=sm(.14,.56,p),maxH=.5*sh,y0=gy-.012*sh;
+ const pos=s=>[cx+.022*sw*Math.sin(s*3+.5)*s+sway*s*s,y0-s*maxH];
+ const sd=1-sm(.1,.17,p);
+ if(sd>0){ctx.fillStyle=`rgba(90,55,30,${sd})`;ctx.beginPath();ctx.ellipse(cx,y0-2,sh*.008,sh*.005,0,0,6.283);ctx.fill()}
+ if(stemG>0){ctx.lineCap='round';let prev=pos(0);for(let s=.02;s<=stemG+.001;s+=.02){const q=pos(Math.min(s,stemG));ctx.strokeStyle=rgb(mixc([78,156,74],[132,196,92],s));ctx.lineWidth=mix(.011,.0045,s)*sh;ctx.beginPath();ctx.moveTo(prev[0],prev[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();prev=q}}
+ for(const n of nodes){const lg=sm(n.s,n.s+.2,stemG);if(lg<=.02)continue;const[x,y]=pos(n.s),Lf=.17*sh*(1-.45*n.s)*lg,a=n.side*mix(.25,1.25,lg),dx=Math.sin(a),dy=-Math.cos(a),ex=x+dx*Lf,ey=y+dy*Lf+Lf*.35*lg+Math.sin(t*.0014+n.ph)*(calm?0:Lf*.03);
+  ctx.strokeStyle='#4f9a44';ctx.lineWidth=Math.max(1,sh*.003);ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+dx*Lf*.55,y+dy*Lf*.55,ex,ey);ctx.stroke();
+  ctx.fillStyle=rgb(n.c);ctx.strokeStyle='rgba(20,70,30,.55)';ctx.lineWidth=1;
+  for(let i=0;i<5;i++){const u=.3+i*.17,bx=(1-u)*(1-u)*x+2*(1-u)*u*(x+dx*Lf*.55)+u*u*ex,by=(1-u)*(1-u)*y+2*(1-u)*u*(y+dy*Lf*.55)+u*u*ey,ta=Math.atan2(ey-y,ex-x),sg=i%2?1:-1;ell(bx+Math.cos(ta+sg*1.5)*Lf*.04,by+Math.sin(ta+sg*1.5)*Lf*.04,Lf*.2,Lf*.085,ta+sg*.9);ctx.fill();ctx.stroke()}
+  ell(ex,ey,Lf*.23,Lf*.1,Math.atan2(ey-y,ex-x));ctx.fill();ctx.stroke()}
+ /* flowers then fruit */
+ const flG=sm(.5,.66,p),frG=sm(.68,.86,p),rip=sm(.76,.96,p);
+ for(const tr of trusses){const nd=nodes[tr.k];if(stemG<nd.s+.04)continue;const[x,y]=pos(nd.s+.03),ex=x+tr.side*sw*(mob?.13:.095),ey=y+sh*.06;
+  tr.f.forEach((f,j)=>{const u=f.t,qx=(1-u)*(1-u)*x+2*(1-u)*u*(x+tr.side*sw*.04)+u*u*ex,qy=(1-u)*(1-u)*y+2*(1-u)*u*(y-sh*.012)+u*u*ey;
+   if(j===0){ctx.strokeStyle='#5aa84c';ctx.lineWidth=Math.max(1,sh*.0028);ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+tr.side*sw*.04,y-sh*.012,ex,ey);ctx.stroke()}
+   if(flG>0&&frG<.97){ctx.fillStyle='#ffd23f';star(qx,qy,sh*.014*flG*(1-.85*frG),5,.5,t*.0004+j);ctx.fill()}
+   if(frG>.02){const r=sh*.027*frG*f.sz,ripe=clamp(rip*1.35-j*.06-f.o*.3),col=ripe<.5?mixc([112,178,72],[255,190,60],ripe*2):mixc([255,190,60],[226,52,40],(ripe-.5)*2),fy=qy+r*.9;
+    ctx.fillStyle=rgb(col);ctx.beginPath();ctx.arc(qx,fy,r,0,6.283);ctx.fill();ctx.fillStyle='rgba(255,255,255,.35)';ctx.beginPath();ctx.ellipse(qx-r*.3,fy-r*.35,r*.22,r*.14,-.6,0,6.283);ctx.fill();ctx.fillStyle='#3f8f3a';star(qx,fy-r*.85,r*.45,5,.45,.3);ctx.fill()}})}
+ /* harvest crates */
+ const hv=sm(.88,.98,p);
+ if(hv>0){const cw=sw*(mob?.2:.1),chh=.05*sh,bx=cx-(mob?.34:.2)*sw,by=gy;ctx.save();ctx.translate(bx,by);ctx.scale(1,hv);ctx.fillStyle='#a8743f';ctx.fillRect(0,-chh,cw,chh);ctx.strokeStyle='#6d4a26';ctx.lineWidth=2;ctx.strokeRect(0,-chh,cw,chh);ctx.beginPath();ctx.moveTo(0,-chh*.5);ctx.lineTo(cw,-chh*.5);ctx.stroke();
+  for(let i=0;i<7;i++){ctx.fillStyle=i%3?'#e2352a':'#f0553a';ctx.beginPath();ctx.arc(cw*(.1+i*.13),-chh-sh*.006-(i%2)*sh*.008,sh*.012,0,6.283);ctx.fill()}ctx.restore()}
+}
+/* progress + loop */
+const story=$('story'),pin=$('pin'),intro=$('intro');
+function readP(){const r=story.getBoundingClientRect();return clamp(-r.top/(story.offsetHeight-innerHeight))}
+let last=-1,dirty=true;
+function frame(t){P=readP();PS=calm?P:PS+(P-PS)*.12;if(Math.abs(P-PS)<.0003)PS=P;
+ draw(t);
+ intro.style.opacity=clamp(1-P/.05);
+ let i=-1;if(P>=.035){i=0;for(let k=0;k<ST.length;k++)if(P>=ST[k])i=k}
+ setStage(i);pin.style.setProperty('--p',P);$('pin').querySelector('.bar').style.setProperty('--p',P);
+ requestAnimationFrame(frame)}
+setLang(function(){try{return(localStorage.plxLang==='ar'||location.hash==='#ar')?'ar':'en'}catch(e){return'en'}}());
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
