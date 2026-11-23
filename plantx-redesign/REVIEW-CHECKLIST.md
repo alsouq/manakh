@@ -21,11 +21,11 @@ Use this list to sign off (or remove) every number and claim. "Source" says wher
 | # | Item | State |
 |---|---|---|
 | B1 | Proof numbers shown (5 services, 5 product lines, 3 marketplaces, 5.0 rating from 5 reviews) | Real, taken from plantx-egypt.com on the build date. Re-check before publishing |
-| B2 | Project facts (location, area, crop, system, result) | **Not provided.** The Projects page shows empty dashes. Send photos and facts |
+| B2 | Project photos and facts | **Photos: done.** The Projects page and the strips on the service pages use the 21 photos from plantx-egypt.com/pages/projects (12 Saudi Arabia, 9 Egypt), labelled only by country. **Facts still missing:** project names, locations, areas, systems and results are not written anywhere. Send them to add a full page per project. Confirm you are happy to show these photos (they carry the PlantX watermark) |
 | B3 | Years of experience, number of greenhouses, hectares, governorates | **Not provided and not written anywhere.** Send real figures if you want them shown |
 | B4 | Prices (199.99 EGP, old price 220.00 EGP) | Copied from the store on the build date. Must match the store at publish time |
 | B5 | Customer reviews (5 on the store) | Real quotes with the store names. Ask permission before showing names beyond the store |
-| B6 | WhatsApp number | Only the short link wa.link/l676ve is known. A short link cannot carry a pre-filled message. Provide the number in international format (no plus sign) and set `WA_NUMBER` in `v15-contact.html` |
+| B6 | WhatsApp number | **Done.** +20 103 600 4753, read from the wa.link short link used on plantx-egypt.com (it redirects to api.whatsapp.com/send?phone=201036004753). The consultation form opens wa.me with the message pre-filled. Confirm this is the number you want customers to use |
 | B7 | Email and phone for the contact page | Not provided |
 | B8 | Instagram posts on the Knowledge page | Real posts, listed by their public URLs, with the first words of each caption. Check that you are happy to feature them |
 
