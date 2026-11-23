@@ -56,6 +56,7 @@ footer{background:#02121a;padding:26px var(--gut);display:flex;flex-wrap:wrap;ga
 .chips2{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.chips2 button{padding:9px 18px;border-radius:99px;border:2px solid #ffffff66;background:transparent;color:#fff;font:600 .92rem var(--b);cursor:pointer;transition:.2s}.chips2 button:hover{border-color:#fff}.chips2 button[aria-pressed=true]{background:#fff;color:#031c26;border-color:#fff}
 .fres{margin-top:22px;display:grid;grid-template-columns:minmax(0,200px) 1fr;gap:20px;align-items:center;background:#ffffff0d;border:1px solid #ffffff22;border-radius:24px;padding:16px;max-width:680px}.fres img{border-radius:16px;aspect-ratio:3/4;object-fit:cover;width:100%}.fres h3{font:var(--hw) 1.3rem/1.2 var(--h);margin-bottom:8px}.fres .pr{display:flex;gap:10px;align-items:baseline;margin-bottom:14px}.fres .pr b{font:var(--hw) 1.8rem var(--h);color:var(--lime)}.fres .pr s{opacity:.6}
 @media(max-width:560px){.fres{grid-template-columns:1fr 1.4fr;padding:12px}}
+.pstrip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.pstrip a{display:block;border-radius:16px;overflow:hidden;aspect-ratio:4/3;border:1px solid #ffffff22}.pstrip img{width:100%;height:100%;object-fit:cover;transition:transform .5s}.pstrip a:hover img{transform:scale(1.06)}@media(max-width:640px){.pstrip{grid-template-columns:repeat(2,1fr)}}
 /* simulator */
 .simgrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.8fr);gap:18px;align-items:stretch;margin-top:24px}
 .pin{position:relative;height:clamp(380px,64vh,640px);border-radius:26px;overflow:hidden;border:1px solid #ffffff2e;background:#06222d}.pin canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -96,6 +97,8 @@ footer{background:#02121a;padding:26px var(--gut);display:flex;flex-wrap:wrap;ga
 .pj .bd{padding:18px 20px 22px}.pj h3{font:var(--hw) 1.25rem/1.2 var(--h);margin-bottom:12px}
 .pj dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.92rem}.pj dt{color:#9fcbd4}.pj dd{color:#fff}
 .notice{max-width:780px;margin-top:18px;background:#ffffff12;border-inline-start:4px solid var(--lime);border-radius:12px;padding:14px 18px;color:#e4f2f5}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:10px;margin-top:22px}.gal .ph{position:relative;display:block;aspect-ratio:1;border-radius:16px;overflow:hidden;border:1px solid #ffffff22}.gal .ph[hidden]{display:none}.gal img{width:100%;height:100%;object-fit:cover;transition:transform .5s}.gal .ph:hover img{transform:scale(1.06)}.gal .ph span{position:absolute;inset-inline-start:10px;inset-block-end:10px;background:#031c26cc;color:#fff;padding:3px 12px;border-radius:99px;font:600 .8rem var(--b)}
+.lb{position:fixed;inset:0;z-index:100;background:#02121aee;display:grid;place-items:center;padding:20px}.lb[hidden]{display:none}.lb img{max-width:min(92vw,1000px);max-height:86vh;border-radius:14px;object-fit:contain}.lb button{position:absolute;background:#ffffff1f;border:1px solid #ffffff55;color:#fff;border-radius:50%;width:48px;height:48px;font-size:1.6rem;cursor:pointer;line-height:1}.lb .x{inset-block-start:16px;inset-inline-end:16px}.lb .p{inset-inline-start:14px;inset-block-start:50%}.lb .nx{inset-inline-end:14px;inset-block-start:50%}
 .kn{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px;margin-top:24px}
 .kc{background:#ffffff0c;border:1px solid #ffffff22;border-radius:22px;padding:20px 22px;display:flex;flex-direction:column;gap:12px;transition:.2s}.kc:hover{background:#ffffff16}
 .kc .tg{align-self:flex-start;background:var(--lime);color:#031c26;border-radius:99px;padding:3px 12px;font:700 .78rem var(--b)}
@@ -131,6 +134,7 @@ footer{background:#02121a;padding:26px var(--gut);display:flex;flex-wrap:wrap;ga
  <div class="row"><button class="bt" id="copy" type="button" data-ar="انسخ الرسالة">Copy the message</button><a class="bt g" id="wa" target="_blank" rel="noopener" href="https://wa.link/l676ve" data-ar="افتح واتساب">Open WhatsApp</a></div>
  <p class="msg" id="note"></p>
 </div>
+<p class="notice"><span data-ar="واتساب PlantX:">PlantX WhatsApp:</span> <strong dir="ltr" style="user-select:all">+20 103 600 4753</strong></p>
 <p class="notice" data-ar="هذا النموذج لا يرسل بياناتك لأي خادم. بياناتك تبقى في متصفحك حتى ترسل الرسالة بنفسك على واتساب.">This form does not send your details to any server. They stay in your browser until you send the message yourself on WhatsApp.</p>
 </div></section></main>
 <footer><img src="assets/logo-tight.png" alt="PlantX"><span>© PlantX Horticulture Solutions</span><nav class="fl"><a href="v15-projects.html" data-ar="المشاريع">Projects</a><a href="v15-knowledge.html" data-ar="معرفة">Knowledge</a><a href="v15-contact.html" data-ar="اطلب استشارة">Consultation</a><a href="v15-home.html" data-ar="الرئيسية">Home</a></nav></footer>
@@ -144,7 +148,7 @@ function setLang(l){root.lang=l;root.dir=l==='ar'?'rtl':'ltr';document.querySele
  $('lang').textContent=l==='ar'?'EN':'عربي';if(window.onLang)onLang(l);try{localStorage.plxLang=l}catch(e){}}
 $('lang').onclick=()=>setLang(ar()?'en':'ar');
 
-const WA_NUMBER=''; /* set to the international number without +, e.g. 2010xxxxxxxx, so the message arrives pre-filled */
+const WA_NUMBER='201036004753'; /* PlantX WhatsApp number from the wa.link short link on plantx-egypt.com */
 const NOTE={copied:['Copied. Paste it in the WhatsApp chat.','تم النسخ. الصقها في محادثة واتساب.'],manual:['Copy was blocked here: select the text above and copy it by hand.','تعذّر النسخ تلقائيًا: حدّد النص بالأعلى وانسخه يدويًا.'],nonum:['Opening WhatsApp does not fill the message by itself. Copy it first, then paste it in the chat.','فتح واتساب لا يملأ الرسالة تلقائيًا. انسخها أولًا ثم الصقها في المحادثة.'],withnum:['WhatsApp opens with your message ready. Check it and press send.','يفتح واتساب والرسالة جاهزة. راجعها ثم اضغط إرسال.']};
 let lastMsg='',lastNote='';
 function showNote(k){lastNote=k;$('note').textContent=NOTE[k][ar()?1:0]}
