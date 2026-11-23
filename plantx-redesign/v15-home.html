@@ -127,6 +127,9 @@ footer img{height:40px;filter:none}footer nav{display:flex;gap:20px}
 .who{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;pointer-events:auto;font:600 .92rem var(--b);color:#d7ecf0}.who .bt{padding:8px 16px;font-size:.86rem}@media(max-height:700px){.hint{display:none}}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .fl{display:flex;flex-wrap:wrap;gap:16px}
+.pband{background:#052a37;padding:clamp(56px,8vw,110px) var(--gut)}.pband .pw{max-width:1360px;margin-inline:auto}.pband h2{font:var(--hw) clamp(1.9rem,4.2vw,3.5rem)/1.05 var(--h);letter-spacing:var(--hls);max-width:20ch;margin-bottom:30px;text-wrap:balance}
+.pstrip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.pstrip a{display:block;border-radius:16px;overflow:hidden;aspect-ratio:4/3;border:1px solid #ffffff22}.pstrip img{width:100%;height:100%;object-fit:cover;transition:transform .5s}.pstrip a:hover img{transform:scale(1.06)}@media(max-width:640px){.pstrip{grid-template-columns:repeat(2,1fr)}}
+.nav.solid{background:#031c26e8;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 1px 0 #ffffff1a}.nav.solid:before{display:none}
 </style>
 </head>
 <body>
@@ -155,11 +158,12 @@ footer img{height:40px;filter:none}footer nav{display:flex;gap:20px}
   </div>
 </div>
 
+<section class="pband"><div class="pw"><h2 data-ar="من مشاريعنا في السعودية ومصر">From our projects in Saudi Arabia and Egypt</h2><div class="pstrip"><a href="v15-projects.html#p3"><img src="assets/proj-03.jpg" alt="PlantX project photo, Saudi Arabia" loading="lazy"></a><a href="v15-projects.html#p16"><img src="assets/proj-16.jpg" alt="PlantX project photo, Egypt" loading="lazy"></a><a href="v15-projects.html#p18"><img src="assets/proj-18.jpg" alt="PlantX project photo, Egypt" loading="lazy"></a><a href="v15-projects.html#p0"><img src="assets/proj-00.jpg" alt="PlantX project photo, Saudi Arabia" loading="lazy"></a><a href="v15-projects.html#p12"><img src="assets/proj-12.jpg" alt="PlantX project photo, Egypt" loading="lazy"></a><a href="v15-projects.html#p6"><img src="assets/proj-06.jpg" alt="PlantX project photo, Saudi Arabia" loading="lazy"></a></div><p style="margin-top:22px"><a class="bt" href="v15-projects.html" data-ar="شاهد كل صور المشاريع">See all project photos</a></p></div></section>
 <section class="end" id="contact">
   <h2 data-ar="جاهز لمشروعك القادم؟">Ready to grow your next crop?</h2>
   <div class="cta"><a class="bt c" href="v15-contact.html" data-ar="اطلب استشارة">Request a consultation</a><a class="bt g" href="https://wa.link/l676ve" data-ar="تحدث مع خبرائنا على واتساب">Talk to our experts on WhatsApp</a><a class="bt" href="https://www.instagram.com/plantx.horticulturesolutions/">Instagram</a><a class="bt" href="https://www.linkedin.com/company/plantx-horticulture-solutions">LinkedIn</a><a class="bt" href="https://www.facebook.com/profile.php?id=61583441600375">Facebook</a></div>
   <div class="mk"><span data-ar="متوفر أيضًا على:">Also available on</span><a href="https://www.amazon.eg/s?me=A331OR3GTRBRBM&language=en&marketplaceID=ARBP9OOSHTCHU"><img src="assets/amazon.png" alt="Amazon Egypt"></a><a href="https://www.jumia.com.eg/ar/plantx-horticulture-solution/"><img src="assets/jumia.png" alt="Jumia"></a><img src="assets/noon.png" alt="Noon"></div>
-  <footer><img src="assets/logo-tight.png" alt="PlantX"><span>© PlantX Horticulture Solutions</span><nav class="fl"><a href="v15-projects.html" data-ar="المشاريع">Projects</a><a href="v15-knowledge.html" data-ar="معرفة">Knowledge</a><a href="v15-contact.html" data-ar="اطلب استشارة">Consultation</a><a href="https://plantx-egypt.com/pages/our-services" data-ar="الخدمات">Services</a><a href="https://plantx-egypt.com/cart" data-ar="السلة">Cart</a></nav></footer>
+  <footer><img src="assets/logo-tight.png" alt="PlantX"><span>© PlantX Horticulture Solutions</span><nav class="fl"><a href="v15-about.html" data-ar="من نحن">About</a><a href="v15-projects.html" data-ar="المشاريع">Projects</a><a href="v15-knowledge.html" data-ar="معرفة">Knowledge</a><a href="v15-contact.html" data-ar="اطلب استشارة">Consultation</a><a href="https://plantx-egypt.com/pages/our-services" data-ar="الخدمات">Services</a><a href="https://plantx-egypt.com/cart" data-ar="السلة">Cart</a></nav></footer>
 </section>
 </main>
 
@@ -483,7 +487,7 @@ let _fn=0;function frame(t){if(LITE&&(_fn++&1)){requestAnimationFrame(frame);ret
  setStage(i);pin.style.setProperty('--p',P);$('pin').querySelector('.bar').style.setProperty('--p',P);
  requestAnimationFrame(frame)}
 setLang(function(){try{const pref=localStorage.plxLang;return(pref==='ar'||location.hash==='#ar'||(!pref&&location.hash!=='#en'&&/^ar/i.test(navigator.language||'')))?'ar':'en'}catch(e){return'en'}}());
-applyFont();requestAnimationFrame(frame);
+applyFont();(function(){const nav=document.querySelector('.nav'),st=document.getElementById('story');function u(){nav.classList.toggle('solid',st.getBoundingClientRect().bottom<nav.offsetHeight+2)}addEventListener('scroll',u,{passive:true});addEventListener('resize',u);u()})();requestAnimationFrame(frame);
 </script>
 </body>
 </html>
