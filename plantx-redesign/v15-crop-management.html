@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PlantX Crop Management</title><meta name="description" content="Precision Management for Better Crop Performance"><link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Readex+Pro:wght@300..700&family=Sora:wght@400..800&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400..900&display=swap" rel="stylesheet">
+<style>
+:root{--hw:700;--hls:-.012em;--night:#031c26;--deep:#052a37;--teal:#19B6D0;--coral:#FF5A4F;--lime:#C8F04A;--h:'Bricolage Grotesque','Readex Pro',sans-serif;--b:'Readex Pro','Bricolage Grotesque',sans-serif;--gut:clamp(18px,4.5vw,72px)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{background:var(--night);color:#fff;font:400 1.02rem/1.65 var(--b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--lime);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1360px;margin-inline:auto;padding-inline:var(--gut)}
+.nav{position:fixed;inset-block-start:0;inset-inline:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px var(--gut)}
+.nav:before{content:"";position:absolute;inset:0 0 -26px;background:linear-gradient(#021219d9,transparent);pointer-events:none;z-index:-1}
+.nav img{height:46px;filter:brightness(0) invert(1)}.nav .r{display:flex;gap:8px;align-items:center}
+.bt{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:99px;border:2px solid #ffffffcc;background:#031c2666;backdrop-filter:blur(8px);color:#fff;font:600 .92rem var(--b);cursor:pointer;transition:.2s}
+.bt:hover{background:#fff;color:#031c26}.bt.c{background:var(--coral);border-color:var(--coral)}.bt.c:hover{background:#fff;border-color:#fff;color:var(--coral)}
+.bt.g{background:#25D366;border-color:#25D366;color:#031c26}.bt.g:hover{background:#fff;border-color:#fff}
+.hero{position:relative;min-height:min(78svh,720px);display:flex;align-items:flex-end;isolation:isolate;overflow:hidden}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,#031c26 4%,#031c26d0 32%,#031c2677 66%,#031c2699 100%)}
+.hero .wrap{padding-block:130px 56px;width:100%}
+.k{font:600 .82rem var(--b);letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}[lang=ar] .k{letter-spacing:0;text-transform:none}
+.hero h1{font:var(--hw) clamp(2.5rem,min(7vw,13svh),6.4rem)/1 var(--h);letter-spacing:var(--hls);margin:10px 0 12px;text-wrap:balance}
+[lang=ar] .hero h1,[lang=ar] h2,[lang=ar] h3{line-height:1.2;letter-spacing:0}
+.hero h2{font:500 clamp(1.15rem,2.2vw,1.8rem)/1.25 var(--h);color:var(--lime);margin-bottom:18px}
+.hero p{max-width:62ch;color:#d3e8ee;margin-bottom:12px}
+.hero .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.sec{padding-block:clamp(56px,8vw,110px)}.sec.alt{background:var(--deep)}
+.sec h2.t{font:var(--hw) clamp(1.9rem,4.2vw,3.5rem)/1.05 var(--h);letter-spacing:var(--hls);max-width:18ch;margin-bottom:34px;text-wrap:balance}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.card{background:#ffffff0c;border:1px solid #ffffff22;border-radius:22px;padding:26px 24px 28px;transition:.25s}
+.card:hover{background:#ffffff14;transform:translateY(-4px)}
+.card:before{content:"";display:block;width:34px;height:5px;border-radius:3px;background:var(--lime);margin-bottom:18px}
+.card h3{font:var(--hw) 1.28rem/1.2 var(--h);letter-spacing:var(--hls);margin-bottom:10px}.card p{color:#c6dde3;font-size:.98rem}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:0;border-top:2px solid #ffffff44}
+.st{padding:24px 20px 10px 0;border-inline-end:1px solid #ffffff1f}.st:last-child{border:0}
+.st b{display:block;font:var(--hw) 2.6rem/1 var(--h);color:var(--lime);margin-bottom:10px}
+.st h3{font:var(--hw) 1.15rem/1.2 var(--h);margin-bottom:8px}.st p{font-size:.93rem;color:#b9d3da}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 24px}.chain span{padding:12px 22px;border-radius:99px;background:var(--lime);color:#031c26;font:var(--hw) 1.05rem var(--h)}.chain i{font-style:normal;color:var(--teal);font-size:1.4rem}
+[dir=rtl] .chain i{display:inline-block;transform:scaleX(-1)}
+.note{max-width:66ch;color:#cfe3e9;font-size:1.08rem}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.pills span{padding:9px 18px;border-radius:99px;border:1.5px solid #ffffff55;font-weight:500}
+.prods{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:14px;margin-top:30px}
+.prod{background:#ffffff0f;border:1px solid #ffffff22;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:.2s}.prod:hover{background:#ffffff1c}
+.prod img{aspect-ratio:1;width:100%;object-fit:cover}.prod div{padding:12px 14px 16px;font:600 .85rem/1.3 var(--b);display:flex;flex-direction:column;gap:6px;flex:1}.prod b{margin-top:auto;color:var(--lime);font-size:.95rem}
+.cta2{background:linear-gradient(120deg,#0195b1,#052a37);text-align:center;padding:clamp(56px,9vw,120px) var(--gut)}
+.cta2 h2{font:var(--hw) clamp(2rem,5vw,4.4rem)/1.05 var(--h);letter-spacing:var(--hls);max-width:16ch;margin-inline:auto;text-wrap:balance}
+.cta2 p{max-width:58ch;margin:16px auto 0;color:#dff3f7}.cta2 .row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:28px}
+.others{padding-block:44px}.others h3{font:600 .9rem var(--b);color:#9fcbd4;margin-bottom:14px}.others .row{display:flex;flex-wrap:wrap;gap:8px}
+.others a{padding:10px 20px;border-radius:99px;border:1.5px solid #ffffff44;font-weight:600;font-size:.92rem;transition:.2s}.others a:hover,.others a[aria-current]{background:#fff;color:#031c26;border-color:#fff}
+footer{background:#02121a;padding:26px var(--gut);display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;font-size:.9rem;color:#8fb0bd}footer img{height:34px;filter:brightness(0) invert(1);opacity:.85}
+/* simulator */
+.simgrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.8fr);gap:18px;align-items:stretch;margin-top:24px}
+.pin{position:relative;height:clamp(380px,64vh,640px);border-radius:26px;overflow:hidden;border:1px solid #ffffff2e;background:#06222d}.pin canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.simcard{background:#031b24d9;border:1px solid #ffffff2e;border-radius:26px;padding:22px;max-height:clamp(380px,64vh,640px);overflow:auto}
+.crops{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px;font:600 .9rem var(--b);color:#d7ecf0}
+.crops button{padding:8px 18px;border-radius:99px;border:2px solid #ffffffaa;background:#031c2688;color:#fff;font:600 .9rem var(--b);cursor:pointer}.crops button[aria-pressed=true]{background:#fff;color:#031c26;border-color:#fff}
+.auto{margin-top:2px}.auto .ai{font-size:.9rem;color:#b8dbe3;margin-bottom:10px}
+.seg{display:inline-flex;border:2px solid #ffffff55;border-radius:99px;overflow:hidden}.seg button{padding:8px 20px;background:transparent;border:0;color:#fff;font:700 .9rem var(--b);cursor:pointer}.seg button[aria-pressed=true]{background:#C8F04A;color:#031c26}
+.pre{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px;font-size:.82rem;color:#b8dbe3}.pre button{padding:5px 12px;border-radius:99px;border:1.5px solid #ffffff55;background:transparent;color:#fff;font:600 .8rem var(--b);cursor:pointer}.pre button:hover{border-color:#fff}
+.auto .cr{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin-top:10px;font-size:.88rem}.auto .cr b{font-weight:700;color:var(--lime)}.auto input[type=range]{grid-column:1/-1;width:100%;accent-color:#C8F04A}
+.inl{margin-top:14px;font:700 .95rem var(--b)}.auto .gauge{position:relative;height:10px;border-radius:6px;margin-top:16px}.auto .gauge i{position:absolute;inset-block-start:-4px;width:4px;height:18px;background:#fff;border-radius:2px;transform:translateX(-50%);box-shadow:0 0 8px #000a}[dir=rtl] .auto .gauge i{transform:translateX(50%)}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:12px}.acts div{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;font-size:.8rem}.acts i{display:block;height:6px;background:#ffffff22;border-radius:4px;overflow:hidden}.acts u{display:block;height:100%;background:#8ae89a;border-radius:4px;transition:width .15s}
+.auto .gs{margin-top:12px;font:600 .88rem/1.4 var(--b)}.auto small{display:block;margin-top:8px;color:#9fcbd4;font-size:.76rem}
+@media(max-width:900px){.simgrid{grid-template-columns:1fr}.simcard{max-height:none}.pin{height:clamp(300px,52vh,460px)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<header class="nav"><a href="v15-home.html" aria-label="PlantX home"><img src="assets/logo.png" alt="PlantX Horticulture Solutions"></a>
+<div class="r"><a class="bt" href="v15-home.html" data-ar="الرئيسية">Home</a><button class="bt" id="lang">عربي</button><a class="bt c" href="https://plantx-egypt.com" data-ar="المتجر">Shop</a></div></header>
+<main>
+<section class="hero"><img src="assets/s-crop.jpg" alt=""><div class="wrap">
+<span class="k" data-ar="خدمة من PlantX">A PlantX service</span><h1 data-ar="إدارة المحاصيل">Crop Management</h1><h2 data-ar="إدارة دقيقة لأداء أفضل للمحصول">Precision Management for Better Crop Performance</h2><p data-ar="في PlantX للحلول البستانية نقدم خدمات فنية لإدارة المحاصيل تهدف إلى تحسين نمو النبات ورفع أداء المحصول والحفاظ على إنتاج منتظم طوال دورة النمو.">At PlantX Horticulture Solutions, we provide technical crop management services designed to optimize plant growth, improve crop performance, and maintain consistent production throughout the growing cycle.</p><p data-ar="نجمع بين معرفة المحصول والإدارة البيئية والري وتغذية النبات والخبرة العملية لنساعد المزارعين على اتخاذ قرارات أفضل في كل مرحلة من الإنتاج.">We combine crop knowledge, environmental management, irrigation, plant nutrition, and practical field experience to help growers make better decisions at every stage of production.</p>
+<div class="cta"><a class="bt g" href="https://wa.link/l676ve" data-ar="تحدث مع خبرائنا">Talk to our experts</a><a class="bt" href="#more" data-ar="ما نقدمه">What we provide</a></div></div></section>
+<section class="sec" id="more"><div class="wrap"><h2 class="t" data-ar="خدمات إدارة المحاصيل">Our crop management services</h2><div class="cards"><article class="card"><h3 data-ar="تخطيط المحصول واستراتيجية الإنتاج">Crop Planning &amp; Production Strategy</h3><p data-ar="وضع خطط إنتاج حسب نوع المحصول والصنف ونظام الزراعة ودورة الإنتاج والإنتاجية المستهدفة.">Developing production plans based on crop type, variety, growing system, production cycle, and target yield.</p></article><article class="card"><h3 data-ar="إدارة نمو النبات">Plant Growth Management</h3><p data-ar="متابعة تطور النبات وتعديل الممارسات الزراعية للحفاظ على توازن النمو الخضري والثمري.">Monitoring plant development and adjusting cultivation practices to maintain balanced vegetative and reproductive growth.</p></article><article class="card"><h3 data-ar="إدارة الري والتسميد">Irrigation &amp; Fertigation Management</h3><p data-ar="إدارة عدد مرات الري وكمية المياه والتسميد وEC وpH حسب احتياجات المحصول والظروف البيئية.">Managing irrigation frequency, water application, fertigation, EC, and pH according to crop requirements and environmental conditions.</p></article><article class="card"><h3 data-ar="إدارة تغذية النبات">Plant Nutrition Management</h3><p data-ar="متابعة احتياجات المحصول الغذائية وتعديل برامج التغذية على مدار مراحل النمو.">Monitoring crop nutritional requirements and adjusting feeding programs throughout different growth stages.</p></article><article class="card"><h3 data-ar="الإدارة البيئية">Environmental Management</h3><p data-ar="تحسين الحرارة والرطوبة والتهوية والإضاءة وغيرها من الظروف البيئية المؤثرة على نمو المحصول.">Optimizing temperature, humidity, ventilation, light, and other environmental conditions affecting crop development.</p></article><article class="card"><h3 data-ar="متابعة الآفات والأمراض">Pest &amp; Disease Monitoring</h3><p data-ar="فحص دوري للمحصول وتحديد مبكر لمشكلات الآفات والأمراض المحتملة، مع استراتيجيات مكافحة متكاملة عند الحاجة.">Regular crop scouting and early identification of potential pest and disease problems, with integrated management strategies when required.</p></article><article class="card"><h3 data-ar="تربية المحصول وإدارة المجموع الخضري">Crop Training &amp; Canopy Management</h3><p data-ar="إرشاد فني للتقليم والتربية والتدعيم وإزالة الأوراق وإدارة المجموع الخضري للحفاظ على توازن النبات ونفاذ الضوء.">Technical guidance on pruning, training, trellising, leaf removal, and canopy management to maintain proper plant balance and light penetration.</p></article><article class="card"><h3 data-ar="متابعة أداء المحصول">Crop Performance Monitoring</h3><p data-ar="تتبع مؤشرات الإنتاج واستجابات المحصول لاكتشاف المشكلات مبكرًا وتحسين الأداء باستمرار.">Tracking key production indicators and crop responses to identify problems early and continuously improve crop performance.</p></article></div></div></section>
+<section class="sec" id="auto"><div class="wrap"><span class="k" data-ar="جرّب بنفسك">Try it yourself</span><h2 class="t" style="margin-top:8px" data-ar="صوبة أوتوماتيك بالكامل">An automatic greenhouse</h2><p class="note" data-ar="غيّر الطقس الخارجي وبدّل بين التشغيل التلقائي واليدوي، وشاهد الفتحات والتظليل والرذاذ والتدفئة وهي تعمل. محاكاة مبسّطة لتوضيح الفكرة.">Change the outside weather and switch between automatic and manual, and watch the vents, shade, misting and heating react. A simplified simulation to show the idea.</p><div class="crops"><span data-ar="المحصول:">Crop:</span><button data-c="tomato"></button><button data-c="strawberry"></button><button data-c="lettuce"></button></div><div class="simgrid"><div class="pin" id="pin"><canvas id="cv" aria-label="Greenhouse simulation" role="img"></canvas></div><div class="simcard" id="card"></div></div></div></section><section class="sec alt"><div class="wrap"><h2 class="t" data-ar="ندير كل مرحلة من مراحل المحصول">Managing every stage of the crop</h2><div class="steps"><div class="st"><b>1</b><h3 data-ar="التأسيس">Establishment</h3><p data-ar="دعم تأسيس صحي للنبات ونمو مبكر للجذور والمجموع الخضري.">Supporting healthy plant establishment and early root and vegetative development.</p></div><div class="st"><b>2</b><h3 data-ar="النمو الخضري">Vegetative Growth</h3><p data-ar="إدارة بنية النبات والتغذية والري والظروف البيئية.">Managing plant structure, nutrition, irrigation, and environmental conditions.</p></div><div class="st"><b>3</b><h3 data-ar="الإزهار وعقد الثمار">Flowering &amp; Fruit Set</h3><p data-ar="تحسين توازن النبات وظروف النمو لدعم الإزهار ونجاح تكوّن الثمار.">Optimizing plant balance and growing conditions to support flowering and successful fruit development.</p></div><div class="st"><b>4</b><h3 data-ar="نمو الثمار">Fruit Development</h3><p data-ar="إدارة التغذية والري والمناخ وحمل المحصول لدعم جودة الثمار وانتظامها.">Managing nutrition, irrigation, climate, and crop load to support fruit quality and consistency.</p></div><div class="st"><b>5</b><h3 data-ar="الحصاد وتحسين الإنتاج">Harvest &amp; Production Optimization</h3><p data-ar="الحفاظ على أداء المحصول وتحسين الإنتاج خلال فترة الحصاد.">Maintaining crop performance and optimizing production through the harvesting period.</p></div></div></div></section>
+<section class="cta2"><h2 data-ar="من الزراعة إلى الحصاد، ندير من أجل الأداء.">From Planting to Harvest, We Manage for Performance.</h2><p data-ar="تساعد PlantX المزارعين على الحفاظ على محاصيل صحية ونمو متوازن وإنتاج منتظم وحصاد أعلى جودة عبر إدارة عملية قائمة على البيانات.">PlantX helps growers maintain healthy crops, balanced growth, consistent production, and better-quality harvests through data-driven and practical crop management.</p><div class="row"><a class="bt g" href="https://wa.link/l676ve"><span data-ar="تحدث مع فريق إدارة المحاصيل">Talk to Our Crop Management Team</span></a></div></section>
+<section class="others"><div class="wrap"><h3 data-ar="خدمات أخرى">Other services</h3><div class="row"><a href="v15-greenhouse.html" data-ar="حلول الصوب الزراعية">Greenhouse Solutions</a><a href="v15-hydroponic.html" data-ar="حلول الزراعة المائية">Hydroponic Solutions</a><a href="v15-crop-management.html" aria-current=page data-ar="إدارة المحاصيل">Crop Management</a><a href="v15-plant-nutrition.html" data-ar="تغذية النبات">Plant Nutrition</a><a href="v15-technical-consultancy.html" data-ar="الاستشارات الفنية">Technical Consultancy</a></div></div></section>
+</main>
+<footer><img src="assets/logo.png" alt="PlantX"><span>© PlantX Horticulture Solutions</span><a href="v15-home.html" data-ar="العودة للرئيسية">Back to home</a></footer>
+<script>
+const root=document.documentElement,$=id=>document.getElementById(id);const ar=()=>root.lang==='ar';
+const FNT={bricolage:["'Bricolage Grotesque','Readex Pro',sans-serif",700,'-.012em'],sora:["'Sora','Readex Pro',sans-serif",700,'-.025em'],dm:["'DM Serif Display','Readex Pro',serif",400,'-.005em'],fraunces:["'Fraunces','Readex Pro',serif",800,'-.02em'],readex:["'Readex Pro',sans-serif",700,'-.015em']};
+try{const f=FNT[localStorage.plxFont];if(f){root.style.setProperty('--h',f[0]);root.style.setProperty('--hw',f[1]);root.style.setProperty('--hls',f[2])}}catch(e){}
+
+const CROPN={tomato:['Tomato','طماطم'],strawberry:['Strawberry','فراولة'],lettuce:['Lettuce','خس']};
+function setLang(l){root.lang=l;root.dir=l==='ar'?'rtl':'ltr';document.querySelectorAll('[data-ar]').forEach(e=>{if(e.dataset.en===undefined)e.dataset.en=e.innerHTML;e.innerHTML=l==='ar'?e.dataset.ar:e.dataset.en});
+ $('lang').textContent=l==='ar'?'EN':'عربي';if(window.renderSim)renderSim();try{localStorage.plxLang=l}catch(e){}}
+$('lang').onclick=()=>setLang(ar()?'en':'ar');
+const AUTO={mode:'auto',Tout:22,RHout:60,Tin:23,e:0,vent:.15,shade:0,fog:0,heat:0,vpd:1,rh:60,why:'hold',limit:false,irr:0};
+const svp=t=>.6108*Math.exp(17.27*t/(t+237.3));AUTO.e=svp(23)*.6;
+/* Simplified model for illustration only: first-order air temperature and vapour pressure, rule-based controller. */
+function stepSim(dt,p){const A=AUTO,sunF=Math.max(.15,Math.sin(Math.PI*clamp(p))),[lo,hi]=VR[crop],eOut=svp(A.Tout)*A.RHout/100,rhIn=clamp(A.e/svp(A.Tin)),vp=svp(A.Tin)-A.e;
+ let tv=.15,ts=0,tf=0,th=0,why='hold';
+ if(A.mode==='auto'){
+  if(A.Tin<18){th=1;tv=.05;why='cold'}
+  else if(vp<lo){tv=.7;th=A.Tin<24?.4:0;why='humid'}
+  else if(A.Tin>26||vp>hi){ts=clamp((A.Tin-22)/5);tv=A.Tout<A.Tin?.85:.25;tf=vp>hi?clamp((vp-hi)/.7):0;why=tf>.05?'hotdrymist':'hotdry'}
+ }else{tv=0;why='manual'}
+ const mv=(x,tg,r)=>x+clamp(tg-x,-r*dt,r*dt);
+ A.vent=mv(A.vent,tv,.25);A.shade=mv(A.shade,ts,.2);A.fog=mv(A.fog,tf,.3);A.heat=mv(A.heat,th,.2);
+ const gain=5*sunF*(1-.5*A.shade)*(1-.8*A.vent),Teq=A.Tout+gain-12*A.fog*(1-rhIn)+9*A.heat,eEq=eOut+.6*(1-.85*A.vent)+1.4*A.fog;
+ A.Tin+=(Teq-A.Tin)*Math.min(1,dt/5);A.e+=(eEq-A.e)*Math.min(1,dt/4);A.e=Math.min(A.e,svp(A.Tin)*.99);
+ A.vpd=svp(A.Tin)-A.e;A.rh=clamp(A.e/svp(A.Tin))*100;
+ A.limit=A.mode==='auto'&&(A.vpd>hi+.7||A.Tin>32)&&A.shade>.9&&A.vent>.2;A.why=A.limit?'limit':why;
+ A.irr=(Math.floor(performance.now()/1000)%10)<3&&sunF>.25?1:0}
+const WHY={cold:['Cold: closing vents and heating','بارد: إغلاق الفتحات والتدفئة'],humid:['Humid air: venting to dehumidify','هواء رطب: تهوية لتقليل الرطوبة'],hotdry:['Hot: shading and venting','حار: تظليل وتهوية'],hotdrymist:['Hot and dry: shading, venting and misting','حار وجاف: تظليل وتهوية ورذاذ'],hold:['In range: holding','ضمن النطاق: مستقر'],manual:['Manual: automation is off, nothing reacts','يدوي: التشغيل الآلي متوقف ولا شيء يستجيب'],limit:['Limit reached: outside heat is more than cooling can offset','بلغ الحد الأقصى: حرارة الخارج أكبر من قدرة التبريد']};
+function autoHTML(){const L=ar()?1:0,T=(a,b)=>L?b:a;
+ return `<div class="auto"><p class="ai">${T('Integration of monitoring and control technologies to help manage climate, irrigation, nutrition, and crop conditions.','دمج تقنيات المراقبة والتحكم للمساعدة في إدارة المناخ والري والتغذية وظروف المحصول.')}</p>
+ <div class="seg" id="mode" role="group"><button data-m="auto">${T('Auto','تلقائي')}</button><button data-m="manual">${T('Manual','يدوي')}</button></div>
+ <div class="pre"><span>${T('Outside weather','الطقس الخارجي')}</span><button data-w="mild">${T('Mild day','يوم معتدل')}</button><button data-w="hot">${T('Hot dry day','يوم حار جاف')}</button><button data-w="cold">${T('Cold humid night','ليلة باردة رطبة')}</button></div>
+ <div class="cr"><label for="tT">${T('Outside temperature','الحرارة الخارجية')}</label><b id="tTv" dir="ltr"></b><input id="tT" type="range" min="5" max="42" step="1" value="${AUTO.Tout}"></div>
+ <div class="cr"><label for="tH">${T('Outside humidity','الرطوبة الخارجية')}</label><b id="tHv" dir="ltr"></b><input id="tH" type="range" min="10" max="95" step="1" value="${AUTO.RHout}"></div>
+ <div class="inl" id="inl" dir="ltr"></div><div class="gauge" id="gg"><i id="gm"></i></div>
+ <div class="acts"><div><span>${T('Vents','الفتحات')}</span><i><u id="a-vent"></u></i></div><div><span>${T('Shade','التظليل')}</span><i><u id="a-shade"></u></i></div><div><span>${T('Misting','الرذاذ')}</span><i><u id="a-fog"></u></i></div><div><span>${T('Heating','التدفئة')}</span><i><u id="a-heat"></u></i></div></div>
+ <div class="gs" id="gs"></div><small>${T('Simulation with a simplified model, to show the idea. A real system needs commissioning, sensor checks and a manual override.','محاكاة بنموذج مبسّط لتوضيح الفكرة. النظام الحقيقي يحتاج تشغيلًا تجريبيًا وفحص حساسات وتحكمًا يدويًا احتياطيًا.')}</small></div>`}
+let _au=0;function updateAuto(){if(!$('inl'))return;const A=AUTO,[lo,hi]=VR[crop],M=4,pc=v=>Math.min(100,v/M*100)+'%';
+ document.querySelectorAll('#mode button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===A.mode));
+ $('tTv').textContent=A.Tout+' °C';$('tHv').textContent=A.RHout+' %';
+ $('inl').textContent=(ar()?'':'Inside ')+A.Tin.toFixed(1)+' °C · '+A.rh.toFixed(0)+' % · VPD '+A.vpd.toFixed(2)+' kPa';
+ const g=$('gg');g.style.background=`linear-gradient(90deg,#4aa3ff 0 ${pc(lo)},#5bd66b ${pc(lo)} ${pc(hi)},#ff9f45 ${pc(hi)} 100%)`;$('gm').style.insetInlineStart=pc(A.vpd);
+ for(const k of ['vent','shade','fog','heat'])$('a-'+k).style.width=(A[k]*100)+'%';
+ const st=A.vpd<lo?0:A.vpd>hi?2:1;$('gs').textContent=WHY[A.why][ar()?1:0];$('gs').style.color=A.limit?'#ff8a7a':['#7ec0ff','#8ae89a','#ffb877'][st]}
+const PRE={mild:[22,60],hot:[36,25],cold:[12,90]};
+$('card').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.m){AUTO.mode=b.dataset.m}else if(b.dataset.w){[AUTO.Tout,AUTO.RHout]=PRE[b.dataset.w];$('tT').value=AUTO.Tout;$('tH').value=AUTO.RHout}});
+$('card').addEventListener('input',e=>{if(e.target.id==='tT')AUTO.Tout=+e.target.value;else if(e.target.id==='tH')AUTO.RHout=+e.target.value});
+/* ---------- the scene ---------- */
+const cv=$('cv'),ctx=cv.getContext('2d');
+const calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function mulberry(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const R=mulberry(7);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const sm=(a,b,x)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t)};
+const mix=(a,b,t)=>a+(b-a)*t;
+const mixc=(a,b,t)=>a.map((v,i)=>v+(b[i]-v)*t);
+const rgb=c=>`rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;
+const SKY=[[0,[3,28,38],[10,75,90]],[.2,[11,90,112],[255,184,154]],[.45,[26,167,199],[191,244,247]],[.7,[20,149,181],[255,226,154]],[.88,[18,52,92],[255,138,107]],[1,[27,42,90],[255,111,97]]];
+function sky(p){for(let i=1;i<SKY.length;i++){if(p<=SKY[i][0]){const a=SKY[i-1],b=SKY[i],t=(p-a[0])/(b[0]-a[0]);return[mixc(a[1],b[1],t),mixc(a[2],b[2],t)]}}return[SKY[5][1],SKY[5][2]]}
+let W,H,dpr,mob,sw,sh,cx,gy,fhw;
+function resize(){dpr=Math.min(devicePixelRatio||1,2);W=$('pin').clientWidth;H=$('pin').clientHeight;cv.width=W*dpr;cv.height=H*dpr;mob=innerWidth<860;sw=W;sh=H;cx=sw*.5;fhw=mob?sw*.46:sw*.34;gy=sh*.66}
+addEventListener('resize',resize);resize();
+const stars=Array.from({length:60},()=>[R(),R()*.55,R()*1.4+.4]);
+/* roots: deterministic tree in local units (x,y relative to base, in sh units) */
+const roots=[];(function br(x,y,ang,len,d,t0){const x2=x+Math.sin(ang)*len,y2=y+Math.cos(ang)*len;roots.push([x,y,x2,y2,d,t0,len]);if(d>=4)return;const n=d<2?3:2;for(let i=0;i<n;i++)br(x2,y2,ang+(R()-.5)*1.5+(i-(n-1)/2)*.45,len*(.62+R()*.14),d+1,t0+len*1.6)})(0,0,0,.05,0,0);
+const rootMax=Math.max(...roots.map(r=>r[5]+r[6]*1.6));
+const nodes=Array.from({length:14},(_,k)=>({s:.12+k*.062,side:k%2?1:-1,c:[mix(70,110,R()),mix(150,185,R()),mix(70,95,R())],ph:R()*6}));
+const trusses=[5,7,9,11].map((k,i)=>({k,side:i%2?1:-1,f:Array.from({length:5},(_,j)=>({t:.2+j*.19,o:R()*.35,sz:.8+R()*.35}))}));
+function rot(x,y,a){return[x*Math.cos(a)-y*Math.sin(a),x*Math.sin(a)+y*Math.cos(a)]}
+function ell(x,y,rx,ry,a){ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.beginPath();ctx.ellipse(0,0,Math.max(.01,rx),Math.max(.01,ry),0,0,6.283);ctx.restore()}
+function leaflet(x,y,len,wd,a){ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.beginPath();const N=8,w=t=>wd*Math.pow(Math.sin(Math.PI*Math.min(t*.98+.02,1)),.7);
+ ctx.moveTo(0,0);for(let i=1;i<=N;i++){const t=i/N;ctx.lineTo(len*t,-w(t)*(i%2?1:.74))}
+ for(let i=N;i>=1;i--){const t=i/N;ctx.lineTo(len*t,w(t)*(i%2?1:.74))}
+ ctx.closePath();ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(len*.92,0);ctx.strokeStyle='rgba(20,70,30,.35)';ctx.stroke();ctx.restore()}
+function toothed(x,y,len,wd,a){ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.beginPath();const N=12,w=t=>wd*Math.pow(Math.sin(Math.PI*Math.pow(Math.min(t*.98+.02,1),.62)),.85);
+ ctx.moveTo(0,0);for(let i=1;i<=N;i++){const t=i/N;ctx.lineTo(len*t,-w(t)*(i%2?1:.84))}for(let i=N;i>=1;i--){const t=i/N;ctx.lineTo(len*t,w(t)*(i%2?1:.84))}
+ ctx.closePath();ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(len*.9,0);ctx.strokeStyle='rgba(20,70,30,.3)';ctx.stroke();ctx.restore()}
+function star(x,y,r,n,inner,rotn){ctx.beginPath();for(let i=0;i<n*2;i++){const a=rotn+i*Math.PI/n,rr=i%2?r*inner:r;ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr)}ctx.closePath()}
+
+
+/* ---------- crops ---------- */
+let crop='tomato';
+/* climate: vapour-pressure deficit (kPa) from air temperature and relative humidity (Tetens formula) */
+let T=24,RH=70,hiS=0,loS=0;
+const VR={tomato:[.8,1.2],strawberry:[.6,1],lettuce:[.6,1]};
+function vpd(t,rh){return .6108*Math.exp(17.27*t/(t+237.3))*(1-rh/100)}
+const CROPS={tomato:{en:'Tomato',ar:'طماطم'},strawberry:{en:'Strawberry',ar:'فراولة'},lettuce:{en:'Lettuce',ar:'خس'}};
+const picked=new Set(),falling=[],pile=[];let hits=[],harvested=0;
+const R2=mulberry(21);
+const drops=Array.from({length:30},()=>[R2(),R2(),.6+R2()*.9,.4+R2(),R2()]);
+const sbLeaves=Array.from({length:9},(_,i)=>({a:(i-4)*.34+(R2()-.5)*.12,L:.7+R2()*.3,c:[mix(70,105,R2()),mix(150,180,R2()),mix(65,90,R2())],ph:R2()*6}));
+const sbStalks=Array.from({length:8},(_,i)=>({side:i%2?1:-1,off:.03+Math.floor(i/2)*.024,h:.1+R2()*.07,f:.85+R2()*.3,o:R2()*.4}));
+const lt=Array.from({length:22},(_,i)=>{const layer=i<6?0:i<12?1:i<18?2:3,n=layer<3?6:4,k=layer<3?i-layer*6:i-18;return{layer,a:(k/(n-1)-.5)*2*(1.25-layer*.3)+(R2()-.5)*.15,ph:R2()*6,s:.85+R2()*.3}});
+function crate(){const w=sw*(mob?.2:.1),h=.05*sh;return{x:cx-(mob?.34:.2)*sw,w,h}}
+function ruffle(len,wd,ph,a){ctx.save();ctx.rotate(a);ctx.beginPath();const N=14,w=t=>wd*Math.pow(Math.sin(Math.PI*Math.min(t*.97+.03,1)),.6)*(1+.16*Math.sin(t*20+ph));
+ ctx.moveTo(0,0);for(let i=1;i<=N;i++){const t=i/N;ctx.lineTo(len*t,-w(t))}for(let i=N;i>=1;i--){const t=i/N;ctx.lineTo(len*t,w(t))}ctx.closePath();ctx.fill();ctx.stroke();ctx.restore()}
+function seedDot(y0,p){const sd=1-sm(.1,.17,p);if(sd>0){ctx.fillStyle=`rgba(90,55,30,${sd})`;ctx.beginPath();ctx.ellipse(cx,y0-2,sh*.008,sh*.005,0,0,6.283);ctx.fill()}}
+function drawTomato(t,p,sway){
+ const stemG=sm(.14,.56,p),maxH=.5*sh,y0=gy-.012*sh;
+ const pos=s=>[cx+.022*sw*Math.sin(s*3+.5)*s+sway*s*s,y0-s*maxH];
+ seedDot(y0,p);
+ if(stemG>0){ctx.lineCap='round';let prev=pos(0);for(let s=.02;s<=stemG+.001;s+=.02){const q=pos(Math.min(s,stemG));ctx.strokeStyle=rgb(mixc([78,156,74],[132,196,92],s));ctx.lineWidth=mix(.011,.0045,s)*sh;ctx.beginPath();ctx.moveTo(prev[0],prev[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();prev=q}}
+ for(const n of nodes){const lg=sm(n.s,n.s+.2,stemG);if(lg<=.02)continue;const[x,y]=pos(n.s),Lf=.17*sh*(1-.45*n.s)*lg,a=n.side*mix(.25,1.25,lg),dx=Math.sin(a),dy=-Math.cos(a),ex=x+dx*Lf,ey=y+dy*Lf+Lf*.35*lg*(1+1.3*hiS)+Math.sin(t*.0014+n.ph)*(calm?0:Lf*.03);
+  ctx.strokeStyle='#4f9a44';ctx.lineWidth=Math.max(1,sh*.003);ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+dx*Lf*.55,y+dy*Lf*.55,ex,ey);ctx.stroke();
+  ctx.fillStyle=rgb(mixc(n.c,[168,176,96],hiS*.55));ctx.strokeStyle='rgba(20,70,30,.55)';ctx.lineWidth=1;
+  for(let i=0;i<5;i++){const u=.3+i*.17,bx=(1-u)*(1-u)*x+2*(1-u)*u*(x+dx*Lf*.55)+u*u*ex,by=(1-u)*(1-u)*y+2*(1-u)*u*(y+dy*Lf*.55)+u*u*ey,ta=Math.atan2(ey-y,ex-x),sg=i%2?1:-1;leaflet(bx,by,Lf*.36,Lf*.1,ta+sg*.95)}
+  leaflet(ex,ey,Lf*.34,Lf*.11,Math.atan2(ey-y,ex-x))}
+ /* flowers then fruit */
+ const flG=sm(.5,.66,p),frG=sm(.68,.86,p),rip=sm(.76,.96,p);
+ for(const tr of trusses){const nd=nodes[tr.k];if(stemG<nd.s+.04)continue;const[x,y]=pos(nd.s+.03),ex=x+tr.side*sw*(mob?.16:.12),ey=y+sh*.1;
+  tr.f.forEach((f,j)=>{const u=f.t,qx=(1-u)*(1-u)*x+2*(1-u)*u*(x+tr.side*sw*.04)+u*u*ex,qy=(1-u)*(1-u)*y+2*(1-u)*u*(y-sh*.012)+u*u*ey;
+   if(j===0){ctx.strokeStyle='#5aa84c';ctx.lineWidth=Math.max(1,sh*.0028);ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+tr.side*sw*.04,y-sh*.012,ex,ey);ctx.stroke()}
+   if(flG>0&&frG<.97){ctx.fillStyle='#ffd23f';star(qx,qy,sh*.014*flG*(1-.85*frG),5,.5,t*.0004+j);ctx.fill()}
+   if(frG>.02&&!picked.has('t'+trusses.indexOf(tr)+'-'+j)){const r=sh*.027*frG*f.sz,ripe=clamp(rip*1.35-j*.06-f.o*.3),col=ripe<.5?mixc([112,178,72],[255,190,60],ripe*2):mixc([255,190,60],[226,52,40],(ripe-.5)*2),fy=qy+r*.9+(j%2)*r*.75;ctx.strokeStyle='#5aa84c';ctx.lineWidth=Math.max(1,sh*.0022);ctx.beginPath();ctx.moveTo(qx,qy);ctx.lineTo(qx,fy-r*.8);ctx.stroke();
+    ctx.fillStyle=rgb(col);ctx.beginPath();ctx.arc(qx,fy,r,0,6.283);ctx.fill();ctx.fillStyle='rgba(255,255,255,.35)';ctx.beginPath();ctx.ellipse(qx-r*.3,fy-r*.35,r*.22,r*.14,-.6,0,6.283);ctx.fill();ctx.fillStyle='#3f8f3a';star(qx,fy-r*.85,r*.45,5,.45,.3);ctx.fill();if(ripe>.75)hits.push({id:'t'+trusses.indexOf(tr)+'-'+j,x:qx,y:fy,r:r*1.3,col:col})}})}
+ 
+}
+function drawStrawberry(t,p,sway){
+ const y0=gy-.012*sh,lg=sm(.14,.5,p);seedDot(y0,p);
+ ctx.lineCap='round';
+ for(const l of sbLeaves){if(lg<=.02)continue;const Lp=.17*sh*l.L*lg,a=l.a*.72,cx2=cx+Math.sin(a)*Lp*.5+sway*.3,cy2=y0-Math.cos(a)*Lp*.95,ex=cx+Math.sin(a)*Lp+sway*.6,ey=y0-Math.cos(a)*Lp*.82+Lp*(.08+.25*hiS)*Math.abs(Math.sin(a))+(calm?0:Math.sin(t*.0014+l.ph)*Lp*.02);
+  ctx.strokeStyle='#4f9a44';ctx.lineWidth=Math.max(1.4,sh*.0035);ctx.beginPath();ctx.moveTo(cx,y0);ctx.quadraticCurveTo(cx2,cy2,ex,ey);ctx.stroke();
+  const da=Math.atan2(ey-cy2,ex-cx2),ln=.085*sh*lg,wd=.05*sh*lg;ctx.fillStyle=rgb(mixc(l.c,[168,176,96],hiS*.55));ctx.strokeStyle='rgba(20,70,30,.5)';ctx.lineWidth=1;
+  toothed(ex,ey,ln,wd,da);toothed(ex,ey,ln*.9,wd*.95,da-.95);toothed(ex,ey,ln*.9,wd*.95,da+.95)}
+ const frG=sm(.66,.84,p),rip=sm(.76,.96,p);
+ sbStalks.forEach((s,i)=>{const sg=sm(.5+i*.012,.64+i*.012,p);if(sg<=0)return;
+  const sx=cx+s.side*sw*.004,sy=y0-.012*sh,qx=cx+s.side*sw*s.off*1.3,qy=y0-sh*s.h,ex=cx+s.side*sw*(.05+s.off*.95),ey=gy-.09*sh+(i%3)*sh*.022;
+  const at=u=>[(1-u)*(1-u)*sx+2*(1-u)*u*qx+u*u*ex,(1-u)*(1-u)*sy+2*(1-u)*u*qy+u*u*ey];
+  ctx.strokeStyle='#5aa84c';ctx.lineWidth=Math.max(1.2,sh*.003);ctx.beginPath();ctx.moveTo(sx,sy);for(let u=.05;u<=sg+.001;u+=.05){const q=at(Math.min(u,sg));ctx.lineTo(q[0],q[1])}ctx.stroke();
+  const [px,py]=at(sg);
+  if(frG<.06){ctx.fillStyle='#fff';for(let k=0;k<5;k++){const aa=k*1.2566+.3;ctx.beginPath();ctx.arc(px+Math.cos(aa)*sh*.009,py+Math.sin(aa)*sh*.009,sh*.0075,0,6.283);ctx.fill()}ctx.fillStyle='#ffd23f';ctx.beginPath();ctx.arc(px,py,sh*.005,0,6.283);ctx.fill();return}
+  const id='s'+i;if(picked.has(id))return;
+  const r=sh*.026*frG*s.f,ripe=clamp(rip*1.35-i*.05-s.o*.3),col=ripe<.5?mixc([205,225,160],[245,160,140],ripe*2):mixc([245,160,140],[218,36,48],(ripe-.5)*2),fy=py+r*1.2;
+  ctx.save();ctx.translate(px,fy);ctx.fillStyle=rgb(col);ctx.beginPath();ctx.moveTo(0,-r);ctx.bezierCurveTo(r*1.15,-r,r*1.05,r*.45,0,r*1.55);ctx.bezierCurveTo(-r*1.05,r*.45,-r*1.15,-r,0,-r);ctx.fill();
+  ctx.fillStyle='rgba(255,230,120,.8)';for(let k=0;k<6;k++){ctx.fillRect((k%3-1)*r*.42,(Math.floor(k/3)*.8-.1)*r,1.5,1.5)}ctx.restore();
+  ctx.fillStyle='#3f8f3a';star(px,fy-r*.95,r*.55,5,.4,.3);ctx.fill();
+  if(ripe>.75)hits.push({id,x:px,y:fy,r:r*1.3,col:col})})
+}
+function drawLettuce(t,p,sway){
+ const y0=gy-.012*sh;seedDot(y0,p);
+ if(picked.has('head')){ctx.fillStyle='#b5db86';ctx.fillRect(cx-sh*.012,y0-sh*.022,sh*.024,sh*.022);return}
+ for(const l of lt){const g=sm(.14+l.layer*.07,.46+l.layer*.07,p);if(g<=.02)continue;
+  const len=sh*(.24-l.layer*.035)*g*l.s,wd=sh*(.085-l.layer*.008)*g*l.s,w2=calm?0:Math.sin(t*.0012+l.ph)*.03,col=mixc(mixc([86,158,70],[165,214,110],l.layer/3),[170,178,100],hiS*.5);
+  ctx.fillStyle=rgb(col);ctx.strokeStyle='rgba(20,70,30,.45)';ctx.lineWidth=1;ctx.save();ctx.translate(cx+sway*.4,y0);ruffle(len,wd,l.ph,-Math.PI/2+l.a*(1+.28*hiS)+w2);ctx.restore()}
+ if(PS>.74)hits.push({id:'head',x:cx,y:y0-sh*.13,r:sh*.17,col:[130,190,90]});
+}
+
+let PS=0,P=0;
+function draw(t){
+ const p=PS,sway=calm?0:Math.sin(t*.0011)*.006*sw;
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+ const [top,bot]=sky(p);
+ let g=ctx.createLinearGradient(0,0,0,gy);g.addColorStop(0,rgb(top));g.addColorStop(1,rgb(bot));ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ const night=1-sm(0,.2,p);
+ if(night>0){ctx.fillStyle='#fff';for(const s of stars){ctx.globalAlpha=night*(.35+.5*Math.sin(t*.002*s[2]+s[0]*9)**2);ctx.fillRect(s[0]*W,s[1]*gy,s[2],s[2])}ctx.globalAlpha=1}
+ /* sun */
+ const sx=sw*(.08+.84*p),sy=gy*(.95-.78*Math.sin(Math.PI*p)),warm=mixc([255,160,110],[255,244,200],Math.sin(Math.PI*p));
+ g=ctx.createRadialGradient(sx,sy,0,sx,sy,sh*.38);g.addColorStop(0,`rgba(${warm.map(v=>v|0)},.85)`);g.addColorStop(.25,`rgba(${warm.map(v=>v|0)},.25)`);g.addColorStop(1,`rgba(${warm.map(v=>v|0)},0)`);ctx.fillStyle=g;ctx.fillRect(0,0,W,gy);
+ ctx.fillStyle=rgb(warm);ctx.beginPath();ctx.arc(sx,sy,sh*.032,0,6.283);ctx.fill();
+ /* dunes */
+ const dune=mixc(bot,[20,38,48],.62),dune2=mixc(bot,[12,30,40],.8);
+ for(const [col,amp,f,ph,base] of [[dune,.07,.0042,1.2,.0],[dune2,.05,.0068,3.1,.02]]){ctx.fillStyle=rgb(col);ctx.beginPath();ctx.moveTo(0,gy);for(let x=0;x<=W;x+=24)ctx.lineTo(x,gy-sh*(base+amp*(.5+.5*Math.sin(x*f*(900/sw)+ph))));ctx.lineTo(W,gy);ctx.fill()}
+ /* ground cross-section */
+ g=ctx.createLinearGradient(0,gy,0,H);g.addColorStop(0,'#0c3340');g.addColorStop(1,'#031219');ctx.fillStyle=g;ctx.fillRect(0,gy,W,H-gy);
+ ctx.fillStyle='#1d5565';ctx.fillRect(0,gy,W,2);
+ /* greenhouse */
+ const fG=.25+.75*sm(0,.16,p),L=cx-fhw,Rr=cx+fhw,eave=gy-.30*sh,apex=gy-.56*sh;
+ const segs=[[L,gy,L,eave],[L,eave,cx,apex],[cx,apex,Rr,eave],[Rr,eave,Rr,gy]];
+ for(let i=1;i<=6;i++){const x=L+(Rr-L)*i/7;segs.push([x,gy,x,x<cx?mix(eave,apex,(x-L)/(cx-L)):mix(apex,eave,(x-cx)/(Rr-cx))])}
+ segs.push([L,eave,Rr,eave],[L,mix(gy,eave,.5),Rr,mix(gy,eave,.5)],[cx,apex,cx,gy]);
+ for(let i=1;i<=3;i++){segs.push([cx,apex,L+(Rr-L)*i/7*.9,eave]);segs.push([cx,apex,Rr-(Rr-L)*i/7*.9,eave])}
+ const nSeg=segs.length*fG;
+ ctx.fillStyle=`rgba(150,235,245,${.07*fG})`;ctx.beginPath();ctx.moveTo(L,gy);ctx.lineTo(L,eave);ctx.lineTo(cx,apex);ctx.lineTo(Rr,eave);ctx.lineTo(Rr,gy);ctx.fill();
+ ctx.lineCap='round';
+ segs.forEach((s,i)=>{if(i>nSeg)return;const f=clamp(nSeg-i);ctx.strokeStyle=i<4?'rgba(190,245,250,.95)':'rgba(190,245,250,.5)';ctx.lineWidth=i<4?2.6:1.4;ctx.beginPath();ctx.moveTo(s[0],s[1]);ctx.lineTo(mix(s[0],s[2],f),mix(s[1],s[3],f));ctx.stroke()});
+ /* condensation when the air is humid */
+ if(loS>.03&&fG>.8){ctx.fillStyle=`rgba(235,248,255,${.12*loS})`;ctx.beginPath();ctx.moveTo(L,gy);ctx.lineTo(L,eave);ctx.lineTo(cx,apex);ctx.lineTo(Rr,eave);ctx.lineTo(Rr,gy);ctx.fill();
+  const roofY=x=>x<cx?mix(eave,apex,(x-L)/(cx-L)):mix(apex,eave,(x-cx)/(Rr-cx));
+  for(const d of drops){const x=L+(Rr-L)*d[0],y=roofY(x)+sh*.012+d[1]*sh*.1+((t*.00004*d[3]+d[4])%1)*sh*.04;if(y>gy-.02*sh)continue;ctx.fillStyle=`rgba(225,246,255,${.6*loS})`;ctx.beginPath();ctx.ellipse(x,y,sh*.0042*d[2],sh*.0068*d[2],0,0,6.283);ctx.fill()}}
+ /* vents + airflow + sensors (crop care) */
+ const vG=sm(.5,.62,p),aG=sm(.48,.6,p);
+ if(fG>.8){const ang=AUTO.vent*.55,len=sw*(mob?.1:.075);for(const sd of[-1,1]){const dx=(eave===0?0:(sd<0?L-cx:Rr-cx)),dy=eave-apex,n=Math.hypot(dx,dy),ux=dx/n,uy=dy/n;const[rx,ry]=rot(ux,uy,-sd*ang);ctx.strokeStyle='#8ce06a';ctx.lineWidth=3.4;ctx.beginPath();ctx.moveTo(cx+sd*sw*.006,apex+sh*.004);ctx.lineTo(cx+sd*sw*.006+rx*len,apex+sh*.004+ry*len);ctx.stroke()}}
+ const wv=vG*clamp(AUTO.vent*2);if(wv>0){ctx.strokeStyle=`rgba(255,255,255,${.4*wv})`;ctx.lineWidth=1.6;for(let i=0;i<5;i++){const ph=((t*.00025+i*.2)%1),x=L+fhw*(.1+i*.4)+ph*sw*.04,y=gy-.12*sh-ph*sh*.4-i*sh*.02;ctx.globalAlpha=Math.sin(ph*Math.PI)*.8*wv;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+sw*.02,y-sh*.03,x+sw*.045,y-sh*.01);ctx.stroke()}ctx.globalAlpha=1}
+ const sG=sm(.54,.66,p);
+ if(sG>0){for(const[sx2,sy2]of[[cx-fhw*.62,gy-.2*sh],[cx+fhw*.6,gy-.3*sh],[cx+sw*.03,gy-.5*sh]]){ctx.fillStyle=(hiS>.15?'#ff9f45':loS>.15?'#4aa3ff':'#5bd66b');ctx.beginPath();ctx.arc(sx2,sy2,sh*.007*sG,0,6.283);ctx.fill();for(let i=1;i<=2;i++){const a=((t*.0015+i*.5)%1);ctx.strokeStyle=`rgba(255,120,100,${(1-a)*.8*sG})`;ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(sx2,sy2,sh*(.008+a*.03)*sG,-2.4,-.74);ctx.stroke()}}}
+ /* automation hardware: shade screens, floor heating, controller cabinet and wires */
+ if(aG>0){const A=AUTO,sy=eave+.014*sh;
+  if(A.shade>.02){ctx.fillStyle=`rgba(6,18,26,${.55*Math.min(1,A.shade*3)})`;const w=fhw*A.shade;ctx.fillRect(L,sy,w,sh*.012);ctx.fillRect(Rr-w,sy,w,sh*.012)}
+  ctx.strokeStyle='rgba(190,245,250,.35)';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(L,sy);ctx.lineTo(Rr,sy);ctx.stroke();
+  if(A.heat>.04){g=ctx.createLinearGradient(L,0,Rr,0);g.addColorStop(0,'rgba(255,150,60,0)');g.addColorStop(.5,`rgba(255,150,60,${.9*A.heat})`);g.addColorStop(1,'rgba(255,150,60,0)');ctx.strokeStyle=g;ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(L+sw*.06,gy-.008*sh);ctx.lineTo(Rr-sw*.06,gy-.008*sh);ctx.stroke()}
+  const cw=sw*(mob?.05:.03),chh=.075*sh,kx=Rr-sw*(mob?.14:.1)-cw,ky=gy-chh;ctx.globalAlpha=aG;ctx.fillStyle='#0b2a36';ctx.fillRect(kx,ky,cw,chh);ctx.strokeStyle='#8fe9f5';ctx.lineWidth=1.6;ctx.strokeRect(kx,ky,cw,chh);
+  const led=A.limit?'#ff5a4f':A.mode==='auto'?'#5bd66b':'#ff9f45',on=A.limit?(Math.sin(t*.012)>0):(A.mode==='auto'?true:Math.sin(t*.004)>-.2);ctx.fillStyle=on?led:'#244';ctx.beginPath();ctx.arc(kx+cw/2,ky+chh*.2,Math.max(3,sh*.007),0,6.283);ctx.fill();
+  ctx.fillStyle='#8fe9f5';for(let i=0;i<3;i++)ctx.fillRect(kx+cw*.2,ky+chh*(.42+i*.15),cw*.6,2);
+  const wires=[[[kx+cw/2,ky],[kx+cw/2,eave-.03*sh],[cx+.03*sw,apex+.035*sh]],[[kx+cw/2,ky],[kx+cw/2,sy],[Rr-.01*sw,sy]],[[kx+cw/2,ky],[kx+cw/2,gy-.44*sh],[cx+.14*sw,gy-.44*sh]]];
+  ctx.strokeStyle='rgba(143,233,245,.45)';ctx.lineWidth=1.2;ctx.setLineDash([3,5]);for(const w of wires){ctx.beginPath();w.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.stroke()}ctx.setLineDash([]);
+  if(A.mode==='auto'){ctx.fillStyle='#8ae89a';wires.forEach((w,k)=>{const len=[0,1].map(i=>Math.hypot(w[i+1][0]-w[i][0],w[i+1][1]-w[i][1])),tot=len[0]+len[1];for(let j=0;j<2;j++){let d=((t*.00055+k*.31+j*.5)%1)*tot,seg=d<len[0]?0:1;if(seg)d-=len[0];const f=d/len[seg];ctx.beginPath();ctx.arc(mix(w[seg][0],w[seg+1][0],f),mix(w[seg][1],w[seg+1][1],f),2.4,0,6.283);ctx.fill()}})}
+  ctx.globalAlpha=1}
+ /* reservoir (hydroponics) */
+ const hG=sm(.14,.3,p),rsX=cx-fhw*.86,rsW=fhw*1.72,rsY=gy+.03*sh,rsH=.2*sh;
+ if(hG>0){ctx.globalAlpha=hG;g=ctx.createLinearGradient(0,rsY,0,rsY+rsH);g.addColorStop(0,'#1cc0d8');g.addColorStop(1,'#0a5f78');ctx.fillStyle=g;ctx.fillRect(rsX,rsY,rsW,rsH);ctx.strokeStyle='#bff4f7';ctx.lineWidth=2;ctx.strokeRect(rsX,rsY,rsW,rsH);
+  ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=1.4;ctx.setLineDash([8,12]);ctx.lineDashOffset=-t*.03;for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(rsX+8,rsY+rsH*(.2+i*.22));ctx.lineTo(rsX+rsW-8,rsY+rsH*(.2+i*.22));ctx.stroke()}ctx.setLineDash([]);ctx.globalAlpha=1}
+ /* slab / substrate */
+ const slabW=sw*(mob?.2:.11);if(hG>0||p<.14){ctx.fillStyle='#e9eeed';ctx.fillRect(cx-slabW/2,gy-.012*sh,slabW,.03*sh);ctx.fillStyle='#16262c';ctx.fillRect(cx-slabW/2,gy+.016*sh,slabW,.014*sh)}
+ /* roots */
+ const rG=sm(.14,.46,p)*rootMax;
+ if(rG>0){ctx.strokeStyle='#f2ead4';ctx.lineCap='round';for(const r of roots){const f=clamp((rG-r[5])/(r[6]*1.6));if(f<=0)continue;ctx.lineWidth=Math.max(.8,(5-r[4])*.9);ctx.beginPath();ctx.moveTo(cx+r[0]*sh,gy+.03*sh+r[1]*sh*1.7);ctx.lineTo(cx+mix(r[0],r[2],f)*sh,gy+.03*sh+mix(r[1],r[3],f)*sh*1.7);ctx.stroke()}}
+ /* tanks A/B (nutrition) */
+ const tG=sm(.33,.46,p),tw=sw*(mob?.07:.045),th=.17*sh;
+ if(tG>0){for(const[tx,lb]of[[L+sw*.025,'A'],[Rr-sw*.025-tw,'B']]){ctx.globalAlpha=tG;ctx.fillStyle='#0b3a4a';ctx.fillRect(tx,gy-th,tw,th);ctx.fillStyle=lb==='A'?'#8ce06a':'#ffd23f';ctx.fillRect(tx,gy-th*tG,tw,th*tG);ctx.strokeStyle='#e8fbff';ctx.lineWidth=2;ctx.strokeRect(tx,gy-th,tw,th);ctx.fillStyle='#fff';ctx.font=`800 ${tw*.6}px Bricolage Grotesque, sans-serif`;ctx.textAlign='center';ctx.fillText(lb,tx+tw/2,gy-th*.45);
+   ctx.strokeStyle='#8ce06a';ctx.lineWidth=3;ctx.setLineDash([6,8]);ctx.lineDashOffset=-t*.04;ctx.beginPath();ctx.moveTo(tx+tw/2,gy);ctx.lineTo(tx+tw/2,rsY+rsH*.25);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1}}
+ /* plant by crop */
+ hits=[];
+ if(crop==='tomato')drawTomato(t,p,sway);else if(crop==='strawberry')drawStrawberry(t,p,sway);else drawLettuce(t,p,sway);
+ /* seed caption */
+ if(p<.14&&!mob){ctx.globalAlpha=1-sm(.05,.13,p);ctx.fillStyle='#fff';ctx.font=`600 ${Math.max(12,sh*.016)}px Readex Pro, sans-serif`;ctx.textAlign='center';ctx.fillText((ar()?CROPS[crop].ar+' - بذرة':CROPS[crop].en+' seed'),cx,gy+.068*sh);ctx.globalAlpha=1}
+ /* misting nozzles */
+ if(AUTO.fog>.03&&aG>0){const fy=gy-.44*sh;ctx.fillStyle='#bff4f7';for(let i=0;i<5;i++)ctx.fillRect(cx+(i-2)*.07*sw-2,fy-3,4,5);
+  for(let i=0;i<46;i++){const fr=((t*.0004*(1+i%3)+i*.37)%1),x=cx+(i/45-.5)*.28*sw+Math.sin(t*.001+i)*sw*.008,y=fy+fr*sh*.2;ctx.fillStyle=`rgba(215,245,255,${.5*AUTO.fog*(1-fr)})`;ctx.beginPath();ctx.arc(x,y,sh*.004*(1+fr),0,6.283);ctx.fill()}}
+ /* harvest crate, pile and falling fruit */
+ const cg=crate(),hv=sm(.88,.98,p);
+ if(hv>0){ctx.save();ctx.translate(cg.x,gy);ctx.scale(1,hv);ctx.fillStyle='#a8743f';ctx.fillRect(0,-cg.h,cg.w,cg.h);ctx.strokeStyle='#6d4a26';ctx.lineWidth=2;ctx.strokeRect(0,-cg.h,cg.w,cg.h);ctx.beginPath();ctx.moveTo(0,-cg.h*.5);ctx.lineTo(cg.w,-cg.h*.5);ctx.stroke();ctx.restore();
+  pile.forEach((q,i)=>{ctx.fillStyle=rgb(q.col);ctx.beginPath();ctx.arc(cg.x+cg.w*(.1+(i%6)*.16),gy-cg.h-q.r*.55-Math.floor(i/6)*q.r*1.3,q.r,0,6.283);ctx.fill()})}
+ for(let i=falling.length-1;i>=0;i--){const f=falling[i];f.vy+=sh*.0012;f.y+=f.vy;f.x+=(f.tx-f.x)*.07;if(f.y>=f.ty){harvested++;pile.push({col:f.col,r:f.r*.8});falling.splice(i,1);continue}ctx.fillStyle=rgb(f.col);ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,6.283);ctx.fill()}
+}
+
+function renderSim(){const c=$('card');c.innerHTML=autoHTML();updateAuto();document.querySelectorAll('.crops button').forEach(b=>{b.textContent=CROPN[b.dataset.c][ar()?1:0];b.setAttribute('aria-pressed',b.dataset.c===crop)})}
+document.querySelector('.crops').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;crop=b.dataset.c;renderSim()});
+PS=.7;P=.7;let _last=0,_vis=true;new IntersectionObserver(e=>_vis=e[0].isIntersecting).observe($('pin'));
+function loop(t){const dt=Math.min(.1,(t-(_last||t))/1000);_last=t;if(_vis){stepSim(dt,PS);const [lo,hi]=VR[crop];hiS+=(clamp((AUTO.vpd-hi)/1.2)-hiS)*.08;loS+=(clamp((lo-AUTO.vpd)/.4)-loS)*.08;draw(t);if(_au++%4===0)updateAuto()}requestAnimationFrame(loop)}
+renderSim();requestAnimationFrame(loop);
+try{if(localStorage.plxLang==='ar'||location.hash==='#ar')setLang('ar')}catch(e){}</script></body></html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PlantX Hydroponic Solutions</title><meta name="description" content="Smart Soilless Growing for Modern Agriculture"><link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Readex+Pro:wght@300..700&family=Sora:wght@400..800&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400..900&display=swap" rel="stylesheet">
+<style>
+:root{--hw:700;--hls:-.012em;--night:#031c26;--deep:#052a37;--teal:#19B6D0;--coral:#FF5A4F;--lime:#C8F04A;--h:'Bricolage Grotesque','Readex Pro',sans-serif;--b:'Readex Pro','Bricolage Grotesque',sans-serif;--gut:clamp(18px,4.5vw,72px)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{background:var(--night);color:#fff;font:400 1.02rem/1.65 var(--b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--lime);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1360px;margin-inline:auto;padding-inline:var(--gut)}
+.nav{position:fixed;inset-block-start:0;inset-inline:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px var(--gut)}
+.nav:before{content:"";position:absolute;inset:0 0 -26px;background:linear-gradient(#021219d9,transparent);pointer-events:none;z-index:-1}
+.nav img{height:46px;filter:brightness(0) invert(1)}.nav .r{display:flex;gap:8px;align-items:center}
+.bt{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:99px;border:2px solid #ffffffcc;background:#031c2666;backdrop-filter:blur(8px);color:#fff;font:600 .92rem var(--b);cursor:pointer;transition:.2s}
+.bt:hover{background:#fff;color:#031c26}.bt.c{background:var(--coral);border-color:var(--coral)}.bt.c:hover{background:#fff;border-color:#fff;color:var(--coral)}
+.bt.g{background:#25D366;border-color:#25D366;color:#031c26}.bt.g:hover{background:#fff;border-color:#fff}
+.hero{position:relative;min-height:min(78svh,720px);display:flex;align-items:flex-end;isolation:isolate;overflow:hidden}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,#031c26 4%,#031c26d0 32%,#031c2677 66%,#031c2699 100%)}
+.hero .wrap{padding-block:130px 56px;width:100%}
+.k{font:600 .82rem var(--b);letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}[lang=ar] .k{letter-spacing:0;text-transform:none}
+.hero h1{font:var(--hw) clamp(2.5rem,min(7vw,13svh),6.4rem)/1 var(--h);letter-spacing:var(--hls);margin:10px 0 12px;text-wrap:balance}
+[lang=ar] .hero h1,[lang=ar] h2,[lang=ar] h3{line-height:1.2;letter-spacing:0}
+.hero h2{font:500 clamp(1.15rem,2.2vw,1.8rem)/1.25 var(--h);color:var(--lime);margin-bottom:18px}
+.hero p{max-width:62ch;color:#d3e8ee;margin-bottom:12px}
+.hero .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.sec{padding-block:clamp(56px,8vw,110px)}.sec.alt{background:var(--deep)}
+.sec h2.t{font:var(--hw) clamp(1.9rem,4.2vw,3.5rem)/1.05 var(--h);letter-spacing:var(--hls);max-width:18ch;margin-bottom:34px;text-wrap:balance}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.card{background:#ffffff0c;border:1px solid #ffffff22;border-radius:22px;padding:26px 24px 28px;transition:.25s}
+.card:hover{background:#ffffff14;transform:translateY(-4px)}
+.card:before{content:"";display:block;width:34px;height:5px;border-radius:3px;background:var(--lime);margin-bottom:18px}
+.card h3{font:var(--hw) 1.28rem/1.2 var(--h);letter-spacing:var(--hls);margin-bottom:10px}.card p{color:#c6dde3;font-size:.98rem}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:0;border-top:2px solid #ffffff44}
+.st{padding:24px 20px 10px 0;border-inline-end:1px solid #ffffff1f}.st:last-child{border:0}
+.st b{display:block;font:var(--hw) 2.6rem/1 var(--h);color:var(--lime);margin-bottom:10px}
+.st h3{font:var(--hw) 1.15rem/1.2 var(--h);margin-bottom:8px}.st p{font-size:.93rem;color:#b9d3da}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 24px}.chain span{padding:12px 22px;border-radius:99px;background:var(--lime);color:#031c26;font:var(--hw) 1.05rem var(--h)}.chain i{font-style:normal;color:var(--teal);font-size:1.4rem}
+[dir=rtl] .chain i{display:inline-block;transform:scaleX(-1)}
+.note{max-width:66ch;color:#cfe3e9;font-size:1.08rem}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.pills span{padding:9px 18px;border-radius:99px;border:1.5px solid #ffffff55;font-weight:500}
+.prods{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:14px;margin-top:30px}
+.prod{background:#ffffff0f;border:1px solid #ffffff22;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:.2s}.prod:hover{background:#ffffff1c}
+.prod img{aspect-ratio:1;width:100%;object-fit:cover}.prod div{padding:12px 14px 16px;font:600 .85rem/1.3 var(--b);display:flex;flex-direction:column;gap:6px;flex:1}.prod b{margin-top:auto;color:var(--lime);font-size:.95rem}
+.cta2{background:linear-gradient(120deg,#0195b1,#052a37);text-align:center;padding:clamp(56px,9vw,120px) var(--gut)}
+.cta2 h2{font:var(--hw) clamp(2rem,5vw,4.4rem)/1.05 var(--h);letter-spacing:var(--hls);max-width:16ch;margin-inline:auto;text-wrap:balance}
+.cta2 p{max-width:58ch;margin:16px auto 0;color:#dff3f7}.cta2 .row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:28px}
+.others{padding-block:44px}.others h3{font:600 .9rem var(--b);color:#9fcbd4;margin-bottom:14px}.others .row{display:flex;flex-wrap:wrap;gap:8px}
+.others a{padding:10px 20px;border-radius:99px;border:1.5px solid #ffffff44;font-weight:600;font-size:.92rem;transition:.2s}.others a:hover,.others a[aria-current]{background:#fff;color:#031c26;border-color:#fff}
+footer{background:#02121a;padding:26px var(--gut);display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;font-size:.9rem;color:#8fb0bd}footer img{height:34px;filter:brightness(0) invert(1);opacity:.85}
+/* simulator */
+.simgrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.8fr);gap:18px;align-items:stretch;margin-top:24px}
+.pin{position:relative;height:clamp(380px,64vh,640px);border-radius:26px;overflow:hidden;border:1px solid #ffffff2e;background:#06222d}.pin canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.simcard{background:#031b24d9;border:1px solid #ffffff2e;border-radius:26px;padding:22px;max-height:clamp(380px,64vh,640px);overflow:auto}
+.crops{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px;font:600 .9rem var(--b);color:#d7ecf0}
+.crops button{padding:8px 18px;border-radius:99px;border:2px solid #ffffffaa;background:#031c2688;color:#fff;font:600 .9rem var(--b);cursor:pointer}.crops button[aria-pressed=true]{background:#fff;color:#031c26;border-color:#fff}
+.auto{margin-top:2px}.auto .ai{font-size:.9rem;color:#b8dbe3;margin-bottom:10px}
+.seg{display:inline-flex;border:2px solid #ffffff55;border-radius:99px;overflow:hidden}.seg button{padding:8px 20px;background:transparent;border:0;color:#fff;font:700 .9rem var(--b);cursor:pointer}.seg button[aria-pressed=true]{background:#C8F04A;color:#031c26}
+.pre{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px;font-size:.82rem;color:#b8dbe3}.pre button{padding:5px 12px;border-radius:99px;border:1.5px solid #ffffff55;background:transparent;color:#fff;font:600 .8rem var(--b);cursor:pointer}.pre button:hover{border-color:#fff}
+.auto .cr{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin-top:10px;font-size:.88rem}.auto .cr b{font-weight:700;color:var(--lime)}.auto input[type=range]{grid-column:1/-1;width:100%;accent-color:#C8F04A}
+.inl{margin-top:14px;font:700 .95rem var(--b)}.auto .gauge{position:relative;height:10px;border-radius:6px;margin-top:16px}.auto .gauge i{position:absolute;inset-block-start:-4px;width:4px;height:18px;background:#fff;border-radius:2px;transform:translateX(-50%);box-shadow:0 0 8px #000a}[dir=rtl] .auto .gauge i{transform:translateX(50%)}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:12px}.acts div{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;font-size:.8rem}.acts i{display:block;height:6px;background:#ffffff22;border-radius:4px;overflow:hidden}.acts u{display:block;height:100%;background:#8ae89a;border-radius:4px;transition:width .15s}
+.auto .gs{margin-top:12px;font:600 .88rem/1.4 var(--b)}.auto small{display:block;margin-top:8px;color:#9fcbd4;font-size:.76rem}
+@media(max-width:900px){.simgrid{grid-template-columns:1fr}.simcard{max-height:none}.pin{height:clamp(300px,52vh,460px)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<header class="nav"><a href="v15-home.html" aria-label="PlantX home"><img src="assets/logo.png" alt="PlantX Horticulture Solutions"></a>
+<div class="r"><a class="bt" href="v15-home.html" data-ar="الرئيسية">Home</a><button class="bt" id="lang">عربي</button><a class="bt c" href="https://plantx-egypt.com" data-ar="المتجر">Shop</a></div></header>
+<main>
+<section class="hero"><img src="assets/s-hydro.jpg" alt=""><div class="wrap">
+<span class="k" data-ar="خدمة من PlantX">A PlantX service</span><h1 data-ar="حلول الزراعة المائية">Hydroponic Solutions</h1><h2 data-ar="زراعة بدون تربة ذكية للزراعة الحديثة">Smart Soilless Growing for Modern Agriculture</h2><p data-ar="في PlantX للحلول البستانية نقدم حلولًا فنية لأنظمة الإنتاج المائي مصممة حول احتياجات المحصول وأهداف الإنتاج وظروف النمو.">At PlantX Horticulture Solutions, we provide technical solutions for hydroponic production systems designed around crop requirements, production goals, and growing conditions.</p><p data-ar="من اختيار النظام وتصميمه إلى إدارة التغذية وتحسين المحصول، نساعد المزارعين على بناء عمليات مائية فعّالة تركّز على صحة النبات وكفاءة الموارد وانتظام الإنتاج.">From system selection and design to nutrient management and crop optimization, we help growers build efficient hydroponic operations focused on plant health, resource efficiency, and consistent production.</p>
+<div class="cta"><a class="bt g" href="https://wa.link/l676ve" data-ar="تحدث مع خبرائنا">Talk to our experts</a><a class="bt" href="#more" data-ar="ما نقدمه">What we provide</a></div></div></section>
+<section class="sec" id="more"><div class="wrap"><h2 class="t" data-ar="خدماتنا في الزراعة المائية">Our hydroponic services</h2><div class="cards"><article class="card"><h3 data-ar="تصميم أنظمة الزراعة المائية">Hydroponic System Design</h3><p data-ar="تصميم وتخطيط أنظمة الزراعة المائية حسب نوع المحصول والمساحة المتاحة وأهداف الإنتاج ومتطلبات المشروع.">Design and planning of hydroponic systems according to crop type, available space, production targets, and project requirements.</p></article><article class="card"><h3 data-ar="اختيار النظام">System Selection</h3><p data-ar="إرشاد فني لاختيار أنسب نظام زراعة، ومنها NFT والزراعة على بيئات وأنظمة الزراعة بدون تربة الأخرى.">Technical guidance in selecting the most suitable growing system, including NFT, substrate culture, and other soilless production systems.</p></article><article class="card"><h3 data-ar="إدارة التغذية">Nutrient Management</h3><p data-ar="تطوير وتحسين برامج تغذية خاصة بكل محصول، تشمل EC وpH وتوازن العناصر وإدارة التسميد.">Development and optimization of crop-specific nutrient programs, including EC, pH, nutrient balance, and fertigation management.</p></article><article class="card"><h3 data-ar="الري والتسميد">Irrigation &amp; Fertigation</h3><p data-ar="تصميم وتحسين أنظمة الري والتسميد لإيصال الماء والعناصر الغذائية بكفاءة وانتظام.">Design and optimization of irrigation and fertigation systems to deliver water and nutrients efficiently and consistently.</p></article><article class="card"><h3 data-ar="متابعة المحصول وتحسينه">Crop Monitoring &amp; Optimization</h3><p data-ar="متابعة أداء المحصول ومعايير الإنتاج لاكتشاف المشكلات وتحسين ظروف النمو.">Monitoring crop performance and production parameters to identify issues and improve growing conditions.</p></article><article class="card"><h3 data-ar="حل مشكلات الأنظمة">System Troubleshooting</h3><p data-ar="تقييم فني وحل مشكلات أنظمة الزراعة المائية، ومنها الري والصرف وإيصال العناصر وظروف منطقة الجذور.">Technical assessment and troubleshooting of hydroponic system problems, including irrigation, drainage, nutrient delivery, and root-zone conditions.</p></article></div></div></section>
+<section class="sec alt"><div class="wrap"><h2 class="t" data-ar="من تصميم النظام إلى إنتاج المحصول">From system design to crop production</h2><div class="steps"><div class="st"><b>1</b><h3 data-ar="تقييم">Assess</h3><p data-ar="نفهم المحصول والموقع وأهداف الإنتاج والموارد المتاحة.">We understand the crop, location, production goals, and available resources.</p></div><div class="st"><b>2</b><h3 data-ar="تصميم">Design</h3><p data-ar="نطوّر نظام الزراعة المائية وأسلوب الإنتاج المناسب.">We develop the appropriate hydroponic system and production approach.</p></div><div class="st"><b>3</b><h3 data-ar="تنفيذ">Implement</h3><p data-ar="ندعم تركيب النظام وإعداده وتشغيله.">We support system installation, setup, and commissioning.</p></div><div class="st"><b>4</b><h3 data-ar="إدارة">Manage</h3><p data-ar="نحسّن الري والتغذية وظروف النمو.">We optimize irrigation, nutrition, and growing conditions.</p></div><div class="st"><b>5</b><h3 data-ar="تحسين">Improve</h3><p data-ar="نتابع الأداء ونحسّن نظام الإنتاج باستمرار.">We monitor performance and continuously optimize the production system.</p></div></div></div></section>
+<section class="cta2"><h2 data-ar="ازرع بلا تربة. ازرع بدقة.">Grow Without Soil. Grow With Precision.</h2><p data-ar="ابنِ نظام إنتاج مائي مصممًا حول محصولك وأهدافك.">Build a hydroponic production system designed around your crop and your goals.</p><div class="row"><a class="bt g" href="https://wa.link/l676ve"><span data-ar="تحدث مع خبراء الزراعة المائية">Talk to Our Hydroponic Experts</span></a></div></section>
+<section class="others"><div class="wrap"><h3 data-ar="خدمات أخرى">Other services</h3><div class="row"><a href="v15-greenhouse.html" data-ar="حلول الصوب الزراعية">Greenhouse Solutions</a><a href="v15-hydroponic.html" aria-current=page data-ar="حلول الزراعة المائية">Hydroponic Solutions</a><a href="v15-crop-management.html" data-ar="إدارة المحاصيل">Crop Management</a><a href="v15-plant-nutrition.html" data-ar="تغذية النبات">Plant Nutrition</a><a href="v15-technical-consultancy.html" data-ar="الاستشارات الفنية">Technical Consultancy</a></div></div></section>
+</main>
+<footer><img src="assets/logo.png" alt="PlantX"><span>© PlantX Horticulture Solutions</span><a href="v15-home.html" data-ar="العودة للرئيسية">Back to home</a></footer>
+<script>
+const root=document.documentElement,$=id=>document.getElementById(id);const ar=()=>root.lang==='ar';
+const FNT={bricolage:["'Bricolage Grotesque','Readex Pro',sans-serif",700,'-.012em'],sora:["'Sora','Readex Pro',sans-serif",700,'-.025em'],dm:["'DM Serif Display','Readex Pro',serif",400,'-.005em'],fraunces:["'Fraunces','Readex Pro',serif",800,'-.02em'],readex:["'Readex Pro',sans-serif",700,'-.015em']};
+try{const f=FNT[localStorage.plxFont];if(f){root.style.setProperty('--h',f[0]);root.style.setProperty('--hw',f[1]);root.style.setProperty('--hls',f[2])}}catch(e){}
+
+const CROPN={tomato:['Tomato','طماطم'],strawberry:['Strawberry','فراولة'],lettuce:['Lettuce','خس']};
+function setLang(l){root.lang=l;root.dir=l==='ar'?'rtl':'ltr';document.querySelectorAll('[data-ar]').forEach(e=>{if(e.dataset.en===undefined)e.dataset.en=e.innerHTML;e.innerHTML=l==='ar'?e.dataset.ar:e.dataset.en});
+ $('lang').textContent=l==='ar'?'EN':'عربي';if(window.renderSim)renderSim();try{localStorage.plxLang=l}catch(e){}}
+$('lang').onclick=()=>setLang(ar()?'en':'ar');
+try{if(localStorage.plxLang==='ar'||location.hash==='#ar')setLang('ar')}catch(e){}</script></body></html>
