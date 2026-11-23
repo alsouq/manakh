@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PlantX Grow</title>
 <meta name="description" content="PlantX Horticulture Solutions — a crop grows as you scroll, and each stage reveals a PlantX service or product.">
-<link rel="icon" href="assets/logo.png">
+<link rel="icon" href="assets/logo.png"><meta property="og:site_name" content="PlantX Horticulture Solutions"><meta property="og:type" content="website"><meta property="og:title" content="PlantX Horticulture Solutions"><meta property="og:description" content="Integrated horticultural solutions: greenhouse design, hydroponics, plant nutrition, crop management and technical consultancy."><meta property="og:image" content="https://plantx-egypt.com/cdn/shop/files/Plant_1_-Photoroom.png?v=1786528633&width=600"><meta name="twitter:card" content="summary"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"PlantX Horticulture Solutions","url":"https://plantx-egypt.com","logo":"https://plantx-egypt.com/cdn/shop/files/Plant_1_-Photoroom.png?v=1786528633&width=600","sameAs":["https://www.facebook.com/profile.php?id=61583441600375","https://www.instagram.com/plantx.horticulturesolutions/","https://www.linkedin.com/company/plantx-horticulture-solutions"]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Sora:wght@400..800&family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,400..900&family=Readex+Pro:wght@300..700&display=swap" rel="stylesheet">
 <style>
@@ -124,6 +124,9 @@ footer img{height:40px;filter:none}footer nav{display:flex;gap:20px}
 .card.t2 q{display:none}.card.t2 .pm img{display:none}.card.t2 .ps{margin-top:10px}
 .card.t3 p,.card.t3 .rec,.card.t3 .hv{display:none}
 .nav .bt{padding:10px 18px}@media(max-width:420px){.nav .bt{padding:8px 13px;font-size:.84rem}.nav img{height:40px}.nav{padding-inline:14px}}
+.who{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;pointer-events:auto;font:600 .92rem var(--b);color:#d7ecf0}.who .bt{padding:8px 16px;font-size:.86rem}@media(max-height:700px){.hint{display:none}}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.fl{display:flex;flex-wrap:wrap;gap:16px}
 </style>
 </head>
 <body>
@@ -134,6 +137,7 @@ footer img{height:40px;filter:none}footer nav{display:flex;gap:20px}
 <div class="ftp" id="ftp" hidden></div>
 
 <main>
+<div class="sr-only"><h1>PlantX Horticulture Solutions: integrated horticultural solutions</h1><p>Smart solutions for modern agriculture, from greenhouse design and hydroponics to plant nutrition and crop management.</p><h2><a href="v15-greenhouse.html">Greenhouse Solutions</a></h2><p>At PlantX Horticulture Solutions, we design and support greenhouse systems tailored to crop requirements, local climate conditions, production targets, and available resources.</p><h2><a href="v15-hydroponic.html">Hydroponic Solutions</a></h2><p>At PlantX Horticulture Solutions, we provide technical solutions for hydroponic production systems designed around crop requirements, production goals, and growing conditions.</p><h2><a href="v15-crop-management.html">Crop Management</a></h2><p>At PlantX Horticulture Solutions, we provide technical crop management services designed to optimize plant growth, improve crop performance, and maintain consistent production throughout the growing cycle.</p><h2><a href="v15-plant-nutrition.html">Plant Nutrition</a></h2><p>At PlantX Horticulture Solutions, we provide precision plant nutrition solutions designed around the specific needs of each crop and growth stage.</p><h2><a href="v15-technical-consultancy.html">Technical Consultancy</a></h2><p>At PlantX Horticulture Solutions, we provide specialized technical consultancy for greenhouse, hydroponic, and controlled-environment agriculture projects.</p><h2>Nutrient solutions</h2><ul><li><a href="https://plantx-egypt.com/products/plantx-nutrient-solution-for-herbs-medicinal-and-aromatic-plants-a-b">PlantX Nutrient Solution for Herbs, Medicinal and Aromatic Plants A&amp;B</a>, 199.99 EGP</li><li><a href="https://plantx-egypt.com/products/plantx-nutrient-solution-for-leafy-greens-a-b">PlantX Nutrient Solution for Leafy Greens</a>, 199.99 EGP</li><li><a href="https://plantx-egypt.com/products/plantx-nutrient-solution-for-lettuce-a-b">PlantX Nutrient Solution for Lettuce</a>, 199.99 EGP</li><li><a href="https://plantx-egypt.com/products/plantx-nutrient-solution-for-flowering-ornamental-plants-a-b">PlantX Nutrient Solution for Flowering Ornamental Plants A&amp;B</a>, 199.99 EGP</li><li><a href="https://plantx-egypt.com/products/plantx-nutrient-solution-for-indoor-plants">PlantX Nutrient Solution for Indoor Ornamental Plants and Shade Plants A&amp;B</a>, 199.99 EGP</li></ul><nav><a href="v15-projects.html">Projects</a> <a href="v15-knowledge.html">Knowledge</a> <a href="v15-contact.html">Request a consultation</a></nav></div><noscript><p style="padding:100px 20px;color:#fff">This page shows an animated greenhouse scene that needs JavaScript. The service pages work without it: <a style="color:#C8F04A" href="v15-greenhouse.html">Greenhouse Solutions</a> <a style="color:#C8F04A" href="v15-hydroponic.html">Hydroponic Solutions</a> <a style="color:#C8F04A" href="v15-crop-management.html">Crop Management</a> <a style="color:#C8F04A" href="v15-plant-nutrition.html">Plant Nutrition</a> <a style="color:#C8F04A" href="v15-technical-consultancy.html">Technical Consultancy</a></p></noscript>
 <div id="story">
   <div class="pin" id="pin">
     <canvas id="cv" aria-label="A tomato crop growing inside a greenhouse as you scroll" role="img"></canvas>
@@ -142,6 +146,7 @@ footer img{height:40px;filter:none}footer nav{display:flex;gap:20px}
       <h1 data-ar="حلول بستانية متكاملة.">Integrated horticultural solutions.</h1>
       <p data-ar="حلول ذكية للزراعة الحديثة، من تصميم الصوب والزراعة المائية إلى تغذية النبات وإدارة المحصول.">Smart solutions for modern agriculture, from greenhouse design and hydroponics to plant nutrition and crop management.</p>
       <div class="pick" id="pick"><span data-ar="اختر محصولك:">Choose your crop:</span><button data-c="tomato" aria-pressed="true"></button><button data-c="strawberry" aria-pressed="false"></button><button data-c="lettuce" aria-pressed="false"></button></div>
+      <div class="who" id="who"><span data-ar="أنا:">I am:</span><a class="bt" href="v15-greenhouse.html" data-ar="صاحب مزرعة أو صوبة">A farm or greenhouse owner</a><a class="bt" href="v15-plant-nutrition.html" data-ar="أزرع في البيت أو أشتري تغذية">Growing at home or buying nutrition</a></div>
       <div class="hint"><i></i><span data-ar="مرّر لتنمو المحصول">Scroll to grow a crop</span></div>
     </div>
     <div class="card" id="card" aria-live="polite"></div>
@@ -152,14 +157,14 @@ footer img{height:40px;filter:none}footer nav{display:flex;gap:20px}
 
 <section class="end" id="contact">
   <h2 data-ar="جاهز لمشروعك القادم؟">Ready to grow your next crop?</h2>
-  <div class="cta"><a class="bt c" href="https://wa.link/l676ve" data-ar="تحدث مع خبرائنا على واتساب">Talk to our experts on WhatsApp</a><a class="bt" href="https://www.instagram.com/plantx.horticulturesolutions/">Instagram</a><a class="bt" href="https://www.linkedin.com/company/plantx-horticulture-solutions">LinkedIn</a><a class="bt" href="https://www.facebook.com/profile.php?id=61583441600375">Facebook</a></div>
+  <div class="cta"><a class="bt c" href="v15-contact.html" data-ar="اطلب استشارة">Request a consultation</a><a class="bt g" href="https://wa.link/l676ve" data-ar="تحدث مع خبرائنا على واتساب">Talk to our experts on WhatsApp</a><a class="bt" href="https://www.instagram.com/plantx.horticulturesolutions/">Instagram</a><a class="bt" href="https://www.linkedin.com/company/plantx-horticulture-solutions">LinkedIn</a><a class="bt" href="https://www.facebook.com/profile.php?id=61583441600375">Facebook</a></div>
   <div class="mk"><span data-ar="متوفر أيضًا على:">Also available on</span><a href="https://www.amazon.eg/s?me=A331OR3GTRBRBM&language=en&marketplaceID=ARBP9OOSHTCHU"><img src="assets/amazon.png" alt="Amazon Egypt"></a><a href="https://www.jumia.com.eg/ar/plantx-horticulture-solution/"><img src="assets/jumia.png" alt="Jumia"></a><img src="assets/noon.png" alt="Noon"></div>
-  <footer><img src="assets/logo-tight.png" alt="PlantX"><span>© PlantX Horticulture Solutions</span><nav><a href="https://plantx-egypt.com/pages/our-services" data-ar="الخدمات">Services</a><a href="https://plantx-egypt.com/cart" data-ar="السلة">Cart</a></nav></footer>
+  <footer><img src="assets/logo-tight.png" alt="PlantX"><span>© PlantX Horticulture Solutions</span><nav class="fl"><a href="v15-projects.html" data-ar="المشاريع">Projects</a><a href="v15-knowledge.html" data-ar="معرفة">Knowledge</a><a href="v15-contact.html" data-ar="اطلب استشارة">Consultation</a><a href="https://plantx-egypt.com/pages/our-services" data-ar="الخدمات">Services</a><a href="https://plantx-egypt.com/cart" data-ar="السلة">Cart</a></nav></footer>
 </section>
 </main>
 
 <script>
-const root=document.documentElement,$=id=>document.getElementById(id);
+const root=document.documentElement,$=id=>document.getElementById(id);const LITE=/[?&]lite=1/.test(location.search)||matchMedia('(prefers-reduced-motion:reduce)').matches||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2)||(navigator.deviceMemory&&navigator.deviceMemory<=2);
 const ar=()=>root.lang==='ar';
 const ST=[0,.14,.32,.52,.70,.88];
 const U='https://plantx-egypt.com/';
@@ -262,7 +267,7 @@ const rgb=c=>`rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;
 const SKY=[[0,[3,28,38],[10,75,90]],[.2,[11,90,112],[255,184,154]],[.45,[26,167,199],[191,244,247]],[.7,[20,149,181],[255,226,154]],[.88,[18,52,92],[255,138,107]],[1,[27,42,90],[255,111,97]]];
 function sky(p){for(let i=1;i<SKY.length;i++){if(p<=SKY[i][0]){const a=SKY[i-1],b=SKY[i],t=(p-a[0])/(b[0]-a[0]);return[mixc(a[1],b[1],t),mixc(a[2],b[2],t)]}}return[SKY[5][1],SKY[5][2]]}
 let W,H,dpr,mob,sw,sh,cx,gy,fhw;
-function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=$('pin').clientHeight||innerHeight;cv.width=W*dpr;cv.height=H*dpr;mob=W<860;sw=W;sh=mob?H*.56:H;cx=mob?sw*.5:(root.dir==='rtl'?sw*.32:sw*.68);fhw=mob?sw*.47:(sw<1150?sw*.215:sw*.25);gy=sh*(mob?.8:.66)}
+function resize(){dpr=LITE?1:Math.min(devicePixelRatio||1,2);W=innerWidth;H=$('pin').clientHeight||innerHeight;cv.width=W*dpr;cv.height=H*dpr;mob=W<860;sw=W;sh=mob?H*.56:H;cx=mob?sw*.5:(root.dir==='rtl'?sw*.32:sw*.68);fhw=mob?sw*.47:(sw<1150?sw*.215:sw*.25);gy=sh*(mob?.8:.66)}
 addEventListener('resize',resize);resize();
 const stars=Array.from({length:60},()=>[R(),R()*.55,R()*1.4+.4]);
 /* roots: deterministic tree in local units (x,y relative to base, in sh units) */
@@ -468,7 +473,7 @@ cv.addEventListener('pointermove',e=>{if(P<.86){cv.style.cursor='';return}const 
 const story=$('story'),pin=$('pin'),intro=$('intro');
 function readP(){const r=story.getBoundingClientRect();return clamp(-r.top/(story.offsetHeight-innerHeight))}
 let last=-1,dirty=true;
-function frame(t){P=readP();PS=calm?P:PS+(P-PS)*.12;if(Math.abs(P-PS)<.0003)PS=P;
+let _fn=0;function frame(t){if(LITE&&(_fn++&1)){requestAnimationFrame(frame);return}P=readP();PS=calm?P:PS+(P-PS)*.12;if(Math.abs(P-PS)<.0003)PS=P;
  draw(t);
  {const dt=Math.min(.1,(t-(window._t0||t))/1000);window._t0=t;stepSim(dt,PS);const [lo,hi]=VR[crop];hiS+=(clamp((AUTO.vpd-hi)/1.2)-hiS)*.08;loS+=(clamp((lo-AUTO.vpd)/.4)-loS)*.08;}
  intro.style.opacity=clamp(1-P/.05);intro.style.visibility=P>.06?'hidden':'visible';
@@ -477,7 +482,7 @@ function frame(t){P=readP();PS=calm?P:PS+(P-PS)*.12;if(Math.abs(P-PS)<.0003)PS=P
  let i=-1;if(P>=.035){i=0;for(let k=0;k<ST.length;k++)if(P>=ST[k])i=k}
  setStage(i);pin.style.setProperty('--p',P);$('pin').querySelector('.bar').style.setProperty('--p',P);
  requestAnimationFrame(frame)}
-setLang(function(){try{return(localStorage.plxLang==='ar'||location.hash==='#ar')?'ar':'en'}catch(e){return'en'}}());
+setLang(function(){try{const pref=localStorage.plxLang;return(pref==='ar'||location.hash==='#ar'||(!pref&&location.hash!=='#en'&&/^ar/i.test(navigator.language||'')))?'ar':'en'}catch(e){return'en'}}());
 applyFont();requestAnimationFrame(frame);
 </script>
 </body>
