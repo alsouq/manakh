@@ -61,6 +61,7 @@ footer{background:#02121a;padding:26px var(--gut);display:flex;flex-wrap:wrap;ga
 .auto .cr{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin-top:10px;font-size:.88rem}.auto .cr b{font-weight:700;color:var(--lime)}.auto input[type=range]{grid-column:1/-1;width:100%;accent-color:#C8F04A}
 .inl{margin-top:14px;font:700 .95rem var(--b)}.auto .gauge{position:relative;height:10px;border-radius:6px;margin-top:16px}.auto .gauge i{position:absolute;inset-block-start:-4px;width:4px;height:18px;background:#fff;border-radius:2px;transform:translateX(-50%);box-shadow:0 0 8px #000a}[dir=rtl] .auto .gauge i{transform:translateX(50%)}
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:12px}.acts div{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;font-size:.8rem}.acts i{display:block;height:6px;background:#ffffff22;border-radius:4px;overflow:hidden}.acts u{display:block;height:100%;background:#8ae89a;border-radius:4px;transition:width .15s}
+.feed{margin-top:8px;font:600 .8rem var(--b);color:#d7ecf0}.feed .d{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline:3px 5px}.feed .ec{background:#ffb347}.feed .ph{background:#4aa3ff}
 .auto .gs{margin-top:12px;font:600 .88rem/1.4 var(--b)}.auto small{display:block;margin-top:8px;color:#9fcbd4;font-size:.76rem}
 @media(max-width:900px){.simgrid{grid-template-columns:1fr}.simcard{max-height:none}.pin{height:clamp(300px,52vh,460px)}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -90,7 +91,7 @@ const CROPN={tomato:['Tomato','طماطم'],strawberry:['Strawberry','فراول
 function setLang(l){root.lang=l;root.dir=l==='ar'?'rtl':'ltr';document.querySelectorAll('[data-ar]').forEach(e=>{if(e.dataset.en===undefined)e.dataset.en=e.innerHTML;e.innerHTML=l==='ar'?e.dataset.ar:e.dataset.en});
  $('lang').textContent=l==='ar'?'EN':'عربي';if(window.renderSim)renderSim();try{localStorage.plxLang=l}catch(e){}}
 $('lang').onclick=()=>setLang(ar()?'en':'ar');
-const AUTO={mode:'auto',Tout:22,RHout:60,Tin:23,e:0,vent:.15,shade:0,fog:0,heat:0,vpd:1,rh:60,why:'hold',limit:false,irr:0};
+const AUTO={mode:'auto',Tout:22,RHout:60,Tin:23,e:0,vent:.15,shade:0,fog:0,heat:0,vpd:1,rh:60,why:'hold',limit:false,irr:0,vM:0,vA:0,vB:0,ec:2,pHv:5.8};
 const svp=t=>.6108*Math.exp(17.27*t/(t+237.3));AUTO.e=svp(23)*.6;
 /* Simplified model for illustration only: first-order air temperature and vapour pressure, rule-based controller. */
 function stepSim(dt,p){const A=AUTO,sunF=Math.max(.15,Math.sin(Math.PI*clamp(p))),[lo,hi]=VR[crop],eOut=svp(A.Tout)*A.RHout/100,rhIn=clamp(A.e/svp(A.Tin)),vp=svp(A.Tin)-A.e;
@@ -106,7 +107,7 @@ function stepSim(dt,p){const A=AUTO,sunF=Math.max(.15,Math.sin(Math.PI*clamp(p))
  A.Tin+=(Teq-A.Tin)*Math.min(1,dt/5);A.e+=(eEq-A.e)*Math.min(1,dt/4);A.e=Math.min(A.e,svp(A.Tin)*.99);
  A.vpd=svp(A.Tin)-A.e;A.rh=clamp(A.e/svp(A.Tin))*100;
  A.limit=A.mode==='auto'&&(A.vpd>hi+.7||A.Tin>32)&&A.shade>.9&&A.vent>.2;A.why=A.limit?'limit':why;
- A.irr=(Math.floor(performance.now()/1000)%10)<3&&sunF>.25?1:0}
+ A.irr=(Math.floor(performance.now()/1000)%10)<3&&sunF>.25?1:0;{const ms=performance.now(),seq=(ms%1600)<800;A.vM=A.irr;A.vA=A.irr&&seq?1:0;A.vB=A.irr&&!seq?1:0;A.ec=2+(A.irr?.06*Math.sin(ms*.004):0);A.pHv=5.8+(A.irr?.05*Math.cos(ms*.003):0)}}
 const WHY={cold:['Cold: closing vents and heating','بارد: إغلاق الفتحات والتدفئة'],humid:['Humid air: venting to dehumidify','هواء رطب: تهوية لتقليل الرطوبة'],hotdry:['Hot: shading and venting','حار: تظليل وتهوية'],hotdrymist:['Hot and dry: shading, venting and misting','حار وجاف: تظليل وتهوية ورذاذ'],hold:['In range: holding','ضمن النطاق: مستقر'],manual:['Manual: automation is off, nothing reacts','يدوي: التشغيل الآلي متوقف ولا شيء يستجيب'],limit:['Limit reached: outside heat is more than cooling can offset','بلغ الحد الأقصى: حرارة الخارج أكبر من قدرة التبريد']};
 function autoHTML(){const L=ar()?1:0,T=(a,b)=>L?b:a;
  return `<div class="auto"><p class="ai">${T('Integration of monitoring and control technologies to help manage climate, irrigation, nutrition, and crop conditions.','دمج تقنيات المراقبة والتحكم للمساعدة في إدارة المناخ والري والتغذية وظروف المحصول.')}</p>
@@ -114,13 +115,13 @@ function autoHTML(){const L=ar()?1:0,T=(a,b)=>L?b:a;
  <div class="pre"><span>${T('Outside weather','الطقس الخارجي')}</span><button data-w="mild">${T('Mild day','يوم معتدل')}</button><button data-w="hot">${T('Hot dry day','يوم حار جاف')}</button><button data-w="cold">${T('Cold humid night','ليلة باردة رطبة')}</button></div>
  <div class="cr"><label for="tT">${T('Outside temperature','الحرارة الخارجية')}</label><b id="tTv" dir="ltr"></b><input id="tT" type="range" min="5" max="42" step="1" value="${AUTO.Tout}"></div>
  <div class="cr"><label for="tH">${T('Outside humidity','الرطوبة الخارجية')}</label><b id="tHv" dir="ltr"></b><input id="tH" type="range" min="10" max="95" step="1" value="${AUTO.RHout}"></div>
- <div class="inl" id="inl" dir="ltr"></div><div class="gauge" id="gg"><i id="gm"></i></div>
+ <div class="inl" id="inl" dir="ltr"></div><div class="feed" id="feed" dir="ltr"></div><div class="gauge" id="gg"><i id="gm"></i></div>
  <div class="acts"><div><span>${T('Vents','الفتحات')}</span><i><u id="a-vent"></u></i></div><div><span>${T('Side curtains','الستائر الجانبية')}</span><i><u id="a-side"></u></i></div><div><span>${T('Shade curtain','ستارة التظليل')}</span><i><u id="a-shade"></u></i></div><div><span>${T('Misting','الرذاذ')}</span><i><u id="a-fog"></u></i></div><div><span>${T('Heating','التدفئة')}</span><i><u id="a-heat"></u></i></div><div><span>${T('Irrigation','الري')}</span><i><u id="a-irr"></u></i></div></div>
  <div class="gs" id="gs"></div><small>${T('Simulation with a simplified model, to show the idea. A real system needs commissioning, sensor checks and a manual override.','محاكاة بنموذج مبسّط لتوضيح الفكرة. النظام الحقيقي يحتاج تشغيلًا تجريبيًا وفحص حساسات وتحكمًا يدويًا احتياطيًا.')}</small></div>`}
 let _au=0;function updateAuto(){if(!$('inl'))return;const A=AUTO,[lo,hi]=VR[crop],M=4,pc=v=>Math.min(100,v/M*100)+'%';
  document.querySelectorAll('#mode button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===A.mode));
  $('tTv').textContent=A.Tout+' °C';$('tHv').textContent=A.RHout+' %';
- $('inl').textContent=(ar()?'':'Inside ')+A.Tin.toFixed(1)+' °C · '+A.rh.toFixed(0)+' % · VPD '+A.vpd.toFixed(2)+' kPa';
+ $('inl').textContent=(ar()?'':'Inside ')+A.Tin.toFixed(1)+' °C · '+A.rh.toFixed(0)+' % · VPD '+A.vpd.toFixed(2)+' kPa';{const A2=AUTO,o=v=>v?'\u25cf':'\u25cb';$('feed').innerHTML='<span class="d ec"></span>EC '+A2.ec.toFixed(2)+' mS/cm &nbsp; <span class="d ph"></span>pH '+A2.pHv.toFixed(1)+' &nbsp; '+(ar()?'Valves ':'Valves ')+'A'+o(A2.vA)+' B'+o(A2.vB)+' Main'+o(A2.vM)}
  const g=$('gg');g.style.background=`linear-gradient(90deg,#4aa3ff 0 ${pc(lo)},#5bd66b ${pc(lo)} ${pc(hi)},#ff9f45 ${pc(hi)} 100%)`;$('gm').style.insetInlineStart=pc(A.vpd);
  {const V={vent:A.vent,side:clamp(A.vent*1.15),shade:A.shade,fog:A.fog,heat:A.heat,irr:A.irr};for(const k in V)$('a-'+k).style.width=(V[k]*100)+'%'}
  const st=A.vpd<lo?0:A.vpd>hi?2:1;$('gs').textContent=WHY[A.why][ar()?1:0];$('gs').style.color=A.limit?'#ff8a7a':['#7ec0ff','#8ae89a','#ffb877'][st]}
@@ -261,7 +262,7 @@ function draw(t){
   for(const d of drops){const x=L+(Rr-L)*d[0],y=roofY(x)+sh*.012+d[1]*sh*.1+((t*.00004*d[3]+d[4])%1)*sh*.04;if(y>gy-.02*sh)continue;ctx.fillStyle=`rgba(225,246,255,${.6*loS})`;ctx.beginPath();ctx.ellipse(x,y,sh*.0042*d[2],sh*.0068*d[2],0,0,6.283);ctx.fill()}}
  /* vents + airflow + sensors (crop care) */
  const vG=sm(.5,.62,p),aG=sm(.48,.6,p);
- const UW=sw*(mob?.072:.046),UG=sw*(mob?.012:.01),UH=.17*sh,UPAD=sw*.012,UTOT=2*UW+UG,UX=Rr-sw*.03-UTOT-2*UPAD,UCX=UX+UPAD+UTOT/2;
+ const UW=sw*(mob?.072:.046),UG=sw*(mob?.012:.01),UH=.17*sh,UPAD=sw*.012,UTOT=2*UW+UG,UX=Rr-sw*.03-UTOT-2*UPAD,UCX=UX+UPAD+UTOT/2,UY=gy-.058*sh;
  if(fG>.8){const ang=AUTO.vent*.55,len=sw*(mob?.1:.075);for(const sd of[-1,1]){const dx=(eave===0?0:(sd<0?L-cx:Rr-cx)),dy=eave-apex,n=Math.hypot(dx,dy),ux=dx/n,uy=dy/n;const[rx,ry]=rot(ux,uy,-sd*ang);ctx.strokeStyle='#8ce06a';ctx.lineWidth=3.4;ctx.beginPath();ctx.moveTo(cx+sd*sw*.006,apex+sh*.004);ctx.lineTo(cx+sd*sw*.006+rx*len,apex+sh*.004+ry*len);ctx.stroke()}}
  const wv=vG*clamp(AUTO.vent*2);if(wv>0){ctx.strokeStyle=`rgba(255,255,255,${.4*wv})`;ctx.lineWidth=1.6;for(let i=0;i<5;i++){const ph=((t*.00025+i*.2)%1),x=L+fhw*(.1+i*.4)+ph*sw*.04,y=gy-.12*sh-ph*sh*.4-i*sh*.02;ctx.globalAlpha=Math.sin(ph*Math.PI)*.8*wv;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+sw*.02,y-sh*.03,x+sw*.045,y-sh*.01);ctx.stroke()}ctx.globalAlpha=1}
  const sG=sm(.54,.66,p);
@@ -288,7 +289,7 @@ function draw(t){
   ctx.fillStyle='#8fe9f5';for(let i=0;i<3;i++)ctx.fillRect(kx+cw*.2,ky+chh*(.42+i*.15),cw*.6,2);
   const wires=[[[kx+cw/2,ky],[kx+cw/2,eave-.03*sh],[cx+.03*sw,apex+.035*sh]],[[kx+cw/2,ky],[kx+cw/2,sy],[UCX,sy]],[[kx+cw/2,ky],[kx+cw/2,gy-.44*sh],[cx-.14*sw,gy-.44*sh]]];
   ctx.strokeStyle='rgba(143,233,245,.45)';ctx.lineWidth=1.2;ctx.setLineDash([3,5]);for(const w of wires){ctx.beginPath();w.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.stroke()}
-  ctx.beginPath();ctx.moveTo(UCX,sy);ctx.lineTo(UCX,gy-UH-.036*sh);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.moveTo(UCX,sy);ctx.lineTo(UCX,UY-UH-.036*sh);ctx.stroke();ctx.setLineDash([]);
   if(A.mode==='auto'){ctx.fillStyle='#8ae89a';wires.forEach((w,k)=>{const len=[0,1].map(i=>Math.hypot(w[i+1][0]-w[i][0],w[i+1][1]-w[i][1])),tot=len[0]+len[1];for(let j=0;j<2;j++){let d=((t*.00055+k*.31+j*.5)%1)*tot,seg=d<len[0]?0:1;if(seg)d-=len[0];const f=d/len[seg];ctx.beginPath();ctx.arc(mix(w[seg][0],w[seg+1][0],f),mix(w[seg][1],w[seg+1][1],f),2.4,0,6.283);ctx.fill()}})}
   ctx.globalAlpha=1}
  /* reservoir (hydroponics) */
@@ -300,23 +301,28 @@ function draw(t){
  /* roots */
  const rG=sm(.14,.46,p)*rootMax;
  if(rG>0){ctx.strokeStyle='#f2ead4';ctx.lineCap='round';for(const r of roots){const f=clamp((rG-r[5])/(r[6]*1.6));if(f<=0)continue;ctx.lineWidth=Math.max(.8,(5-r[4])*.9);ctx.beginPath();ctx.moveTo(cx+r[0]*sh,gy+.03*sh+r[1]*sh*1.7);ctx.lineTo(cx+mix(r[0],r[2],f)*sh,gy+.03*sh+mix(r[1],r[3],f)*sh*1.7);ctx.stroke()}}
- /* irrigation unit: tanks A and B side by side, one pump, one feed line */
+ /* irrigation unit: tanks A and B side by side, solenoid valves, EC and pH probes, one pump, one feed line */
  const tG=sm(.33,.46,p);
- if(tG>0){const A=AUTO,irr=A.irr,ux=UX+UPAD,jy=gy+.016*sh,pr=.009*sh;ctx.globalAlpha=tG;
-  const bx=UX,by=gy-UH-.036*sh,bw=UTOT+2*UPAD,bh=UH+.036*sh;
+ if(tG>0){const A=AUTO,ux=UX+UPAD,jy=gy-.016*sh,pr=Math.max(6,sh*.011),vs=Math.max(8,sh*.016);ctx.globalAlpha=tG;
+  const bx=UX,by=UY-UH-.036*sh,bw=UTOT+2*UPAD,bh=gy-by,ax=ux+UW/2,bxc=ux+UW+UG+UW/2,okc='#5bd66b',cl='#6b7f86';
   ctx.fillStyle='rgba(8,38,50,.55)';ctx.strokeStyle='#8fe9f5';ctx.lineWidth=1.6;ctx.beginPath();if(ctx.roundRect)ctx.roundRect(bx,by,bw,bh,8);else ctx.rect(bx,by,bw,bh);ctx.fill();ctx.stroke();
-  ctx.fillStyle='#8fe9f5';ctx.textAlign='center';ctx.direction=ar()?'rtl':'ltr';{const lab=ar()?'وحدة الري':'Irrigation unit';let fs=Math.max(8,sh*.0155);ctx.font=`700 ${fs}px Readex Pro, sans-serif`;const tw0=ctx.measureText(lab).width,maxw=bw-.03*sh;if(tw0>maxw){fs=Math.max(7,fs*maxw/tw0);ctx.font=`700 ${fs}px Readex Pro, sans-serif`}ctx.fillText(lab,UCX,by+.024*sh);ctx.direction='ltr'}
-  ctx.fillStyle=irr?'#5bd66b':'#2b4a52';ctx.beginPath();ctx.arc(bx+bw-.012*sh,by+.014*sh,Math.max(2.5,sh*.005),0,6.283);ctx.fill();
-  const lines=[[ux,'A','#8ce06a'],[ux+UW+UG,'B','#ffd23f']];
-  for(const [tx,lb,col] of lines){
-   ctx.fillStyle='#0b3a4a';ctx.fillRect(tx,gy-UH,UW,UH);ctx.fillStyle=col;ctx.fillRect(tx,gy-UH*.8*tG,UW,UH*.8*tG);
-   ctx.strokeStyle='#e8fbff';ctx.lineWidth=2;ctx.strokeRect(tx,gy-UH,UW,UH);ctx.fillStyle='#e8fbff';ctx.fillRect(tx+UW*.35,gy-UH-.008*sh,UW*.3,.008*sh);
-   ctx.fillStyle='#fff';ctx.font=`800 ${UW*.6}px Bricolage Grotesque, sans-serif`;ctx.fillText(lb,tx+UW/2,gy-UH*.42);
-   ctx.strokeStyle=col;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(tx+UW/2,gy);ctx.lineTo(tx+UW/2,jy);ctx.stroke()}
-  ctx.strokeStyle='#bff4f7';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(ux+UW/2,jy);ctx.lineTo(ux+UW+UG+UW/2,jy);ctx.stroke();
-  ctx.save();ctx.strokeStyle='#bff4f7';ctx.lineWidth=3;ctx.setLineDash([6,7]);ctx.lineDashOffset=-t*.05*(irr?1:.1);ctx.beginPath();ctx.moveTo(UCX,jy+pr);ctx.lineTo(UCX,rsY+rsH*.25);ctx.stroke();ctx.restore();
+  {const lab=ar()?'وحدة الري':'Irrigation unit';ctx.fillStyle='#8fe9f5';ctx.textAlign='center';ctx.direction=ar()?'rtl':'ltr';let fs=Math.max(8,sh*.0155);ctx.font=`700 ${fs}px Readex Pro, sans-serif`;const tw0=ctx.measureText(lab).width,maxw=bw-.03*sh;if(tw0>maxw){fs=Math.max(7,fs*maxw/tw0);ctx.font=`700 ${fs}px Readex Pro, sans-serif`}ctx.fillText(lab,UCX,by+.024*sh);ctx.direction='ltr'}
+  ctx.fillStyle=A.irr?okc:'#2b4a52';ctx.beginPath();ctx.arc(bx+bw-.012*sh,by+.014*sh,Math.max(2.5,sh*.005),0,6.283);ctx.fill();
+  const bowtie=(x,y,s2,open)=>{ctx.fillStyle=open?okc:cl;ctx.strokeStyle='#e8fbff';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x-s2,y-s2*.7);ctx.lineTo(x+s2,y+s2*.7);ctx.lineTo(x+s2,y-s2*.7);ctx.lineTo(x-s2,y+s2*.7);ctx.closePath();ctx.fill();ctx.stroke();ctx.fillStyle='#0b2a36';ctx.fillRect(x-s2*.45,y-s2*1.5,s2*.9,s2*.8);ctx.strokeRect(x-s2*.45,y-s2*1.5,s2*.9,s2*.8);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,y-s2*.7);ctx.stroke()};
+  for(const [tx,tc,lb,col,open] of [[ux,ax,'A','#8ce06a',A.vA],[ux+UW+UG,bxc,'B','#ffd23f',A.vB]]){
+   ctx.fillStyle='#0b3a4a';ctx.fillRect(tx,UY-UH,UW,UH);ctx.fillStyle=col;ctx.fillRect(tx,UY-UH*.8*tG,UW,UH*.8*tG);
+   ctx.strokeStyle='#e8fbff';ctx.lineWidth=2;ctx.strokeRect(tx,UY-UH,UW,UH);ctx.fillStyle='#e8fbff';ctx.fillRect(tx+UW*.35,UY-UH-.008*sh,UW*.3,.008*sh);
+   ctx.fillStyle='#fff';ctx.font=`800 ${UW*.6}px Bricolage Grotesque, sans-serif`;ctx.fillText(lb,tx+UW/2,UY-UH*.42);
+   ctx.strokeStyle=open?col:'#46616a';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(tc,UY);ctx.lineTo(tc,jy);ctx.stroke();
+   bowtie(tc,UY+.026*sh,vs*.7,open)}
+  /* manifold with EC (amber) and pH (blue) probes */
+  ctx.strokeStyle='#bff4f7';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(ax,jy);ctx.lineTo(bxc,jy);ctx.stroke();
+  for(const [fx,pc] of [[mix(ax,UCX,.55),'#ffb347'],[mix(bxc,UCX,.55),'#4aa3ff']]){ctx.strokeStyle='#e8fbff';ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(fx,jy);ctx.lineTo(fx,jy-.014*sh);ctx.stroke();ctx.fillStyle=pc;ctx.beginPath();ctx.arc(fx,jy-.018*sh,Math.max(3,sh*.0065),0,6.283);ctx.fill();ctx.stroke()}
+  /* pump and feed line with its main valve */
+  ctx.save();ctx.strokeStyle=A.vM?'#bff4f7':'#46616a';ctx.lineWidth=3;ctx.setLineDash([6,7]);ctx.lineDashOffset=-t*.05*(A.vM?1:0);ctx.beginPath();ctx.moveTo(UCX,jy+pr);ctx.lineTo(UCX,rsY+rsH*.25);ctx.stroke();ctx.restore();
+  bowtie(UCX,gy+.013*sh,Math.max(5,vs*.5),A.vM);
   ctx.fillStyle='#0b3a4a';ctx.strokeStyle='#8fe9f5';ctx.lineWidth=1.8;ctx.beginPath();ctx.arc(UCX,jy,pr,0,6.283);ctx.fill();ctx.stroke();
-  const ang=t*.012*(irr?1:0);ctx.strokeStyle='#e8fbff';ctx.lineWidth=2;ctx.beginPath();for(let k=0;k<3;k++){const a=ang+k*2.094;ctx.moveTo(UCX,jy);ctx.lineTo(UCX+Math.cos(a)*pr*.85,jy+Math.sin(a)*pr*.85)}ctx.stroke();
+  const ang=t*.012*(A.irr?1:0);ctx.strokeStyle='#e8fbff';ctx.lineWidth=2;ctx.beginPath();for(let k=0;k<3;k++){const a=ang+k*2.094;ctx.moveTo(UCX,jy);ctx.lineTo(UCX+Math.cos(a)*pr*.85,jy+Math.sin(a)*pr*.85)}ctx.stroke();
   ctx.globalAlpha=1}
  /* plant by crop */
  hits=[];
