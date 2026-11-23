@@ -172,6 +172,10 @@ const nodes=Array.from({length:14},(_,k)=>({s:.12+k*.062,side:k%2?1:-1,c:[mix(70
 const trusses=[5,7,9,11].map((k,i)=>({k,side:i%2?1:-1,f:Array.from({length:5},(_,j)=>({t:.2+j*.19,o:R()*.35,sz:.8+R()*.35}))}));
 function rot(x,y,a){return[x*Math.cos(a)-y*Math.sin(a),x*Math.sin(a)+y*Math.cos(a)]}
 function ell(x,y,rx,ry,a){ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.beginPath();ctx.ellipse(0,0,Math.max(.01,rx),Math.max(.01,ry),0,0,6.283);ctx.restore()}
+function leaflet(x,y,len,wd,a){ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.beginPath();const N=8,w=t=>wd*Math.pow(Math.sin(Math.PI*Math.min(t*.98+.02,1)),.7);
+ ctx.moveTo(0,0);for(let i=1;i<=N;i++){const t=i/N;ctx.lineTo(len*t,-w(t)*(i%2?1:.74))}
+ for(let i=N;i>=1;i--){const t=i/N;ctx.lineTo(len*t,w(t)*(i%2?1:.74))}
+ ctx.closePath();ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(len*.92,0);ctx.strokeStyle='rgba(20,70,30,.35)';ctx.stroke();ctx.restore()}
 function star(x,y,r,n,inner,rotn){ctx.beginPath();for(let i=0;i<n*2;i++){const a=rotn+i*Math.PI/n,rr=i%2?r*inner:r;ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr)}ctx.closePath()}
 
 let PS=0,P=0;
@@ -230,15 +234,15 @@ function draw(t){
  for(const n of nodes){const lg=sm(n.s,n.s+.2,stemG);if(lg<=.02)continue;const[x,y]=pos(n.s),Lf=.17*sh*(1-.45*n.s)*lg,a=n.side*mix(.25,1.25,lg),dx=Math.sin(a),dy=-Math.cos(a),ex=x+dx*Lf,ey=y+dy*Lf+Lf*.35*lg+Math.sin(t*.0014+n.ph)*(calm?0:Lf*.03);
   ctx.strokeStyle='#4f9a44';ctx.lineWidth=Math.max(1,sh*.003);ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+dx*Lf*.55,y+dy*Lf*.55,ex,ey);ctx.stroke();
   ctx.fillStyle=rgb(n.c);ctx.strokeStyle='rgba(20,70,30,.55)';ctx.lineWidth=1;
-  for(let i=0;i<5;i++){const u=.3+i*.17,bx=(1-u)*(1-u)*x+2*(1-u)*u*(x+dx*Lf*.55)+u*u*ex,by=(1-u)*(1-u)*y+2*(1-u)*u*(y+dy*Lf*.55)+u*u*ey,ta=Math.atan2(ey-y,ex-x),sg=i%2?1:-1;ell(bx+Math.cos(ta+sg*1.5)*Lf*.04,by+Math.sin(ta+sg*1.5)*Lf*.04,Lf*.2,Lf*.085,ta+sg*.9);ctx.fill();ctx.stroke()}
-  ell(ex,ey,Lf*.23,Lf*.1,Math.atan2(ey-y,ex-x));ctx.fill();ctx.stroke()}
+  for(let i=0;i<5;i++){const u=.3+i*.17,bx=(1-u)*(1-u)*x+2*(1-u)*u*(x+dx*Lf*.55)+u*u*ex,by=(1-u)*(1-u)*y+2*(1-u)*u*(y+dy*Lf*.55)+u*u*ey,ta=Math.atan2(ey-y,ex-x),sg=i%2?1:-1;leaflet(bx,by,Lf*.36,Lf*.1,ta+sg*.95)}
+  leaflet(ex,ey,Lf*.34,Lf*.11,Math.atan2(ey-y,ex-x))}
  /* flowers then fruit */
  const flG=sm(.5,.66,p),frG=sm(.68,.86,p),rip=sm(.76,.96,p);
- for(const tr of trusses){const nd=nodes[tr.k];if(stemG<nd.s+.04)continue;const[x,y]=pos(nd.s+.03),ex=x+tr.side*sw*(mob?.13:.095),ey=y+sh*.06;
+ for(const tr of trusses){const nd=nodes[tr.k];if(stemG<nd.s+.04)continue;const[x,y]=pos(nd.s+.03),ex=x+tr.side*sw*(mob?.16:.12),ey=y+sh*.1;
   tr.f.forEach((f,j)=>{const u=f.t,qx=(1-u)*(1-u)*x+2*(1-u)*u*(x+tr.side*sw*.04)+u*u*ex,qy=(1-u)*(1-u)*y+2*(1-u)*u*(y-sh*.012)+u*u*ey;
    if(j===0){ctx.strokeStyle='#5aa84c';ctx.lineWidth=Math.max(1,sh*.0028);ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+tr.side*sw*.04,y-sh*.012,ex,ey);ctx.stroke()}
    if(flG>0&&frG<.97){ctx.fillStyle='#ffd23f';star(qx,qy,sh*.014*flG*(1-.85*frG),5,.5,t*.0004+j);ctx.fill()}
-   if(frG>.02){const r=sh*.027*frG*f.sz,ripe=clamp(rip*1.35-j*.06-f.o*.3),col=ripe<.5?mixc([112,178,72],[255,190,60],ripe*2):mixc([255,190,60],[226,52,40],(ripe-.5)*2),fy=qy+r*.9;
+   if(frG>.02){const r=sh*.027*frG*f.sz,ripe=clamp(rip*1.35-j*.06-f.o*.3),col=ripe<.5?mixc([112,178,72],[255,190,60],ripe*2):mixc([255,190,60],[226,52,40],(ripe-.5)*2),fy=qy+r*.9+(j%2)*r*.75;ctx.strokeStyle='#5aa84c';ctx.lineWidth=Math.max(1,sh*.0022);ctx.beginPath();ctx.moveTo(qx,qy);ctx.lineTo(qx,fy-r*.8);ctx.stroke();
     ctx.fillStyle=rgb(col);ctx.beginPath();ctx.arc(qx,fy,r,0,6.283);ctx.fill();ctx.fillStyle='rgba(255,255,255,.35)';ctx.beginPath();ctx.ellipse(qx-r*.3,fy-r*.35,r*.22,r*.14,-.6,0,6.283);ctx.fill();ctx.fillStyle='#3f8f3a';star(qx,fy-r*.85,r*.45,5,.45,.3);ctx.fill()}})}
  /* harvest crates */
  const hv=sm(.88,.98,p);
