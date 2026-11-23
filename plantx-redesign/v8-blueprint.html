@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PlantX Blueprint</title>
+<meta name="description" content="PlantX Horticulture Solutions — engineered growing systems from the greenhouse structure to the root zone.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Readex+Pro:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#061B2E;--navy2:#0B2C47;--line:#5CD6E8;--teal:#0195B1;--red:#E31C23;--frost:#CFE7EE;--white:#fff;
+ --f:'Archivo','Readex Pro',sans-serif;--gut:clamp(18px,4.5vw,72px)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--frost);font:400 1.05rem/1.65 var(--f);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.wrap{max-width:1500px;margin-inline:auto;padding-inline:var(--gut)}
+.hd{font-family:var(--f);font-weight:800;font-stretch:125%;font-variation-settings:'wdth' 125;letter-spacing:-.02em;line-height:.98;color:#fff}
+[lang=ar] .hd{font-stretch:100%;font-variation-settings:normal;letter-spacing:0;line-height:1.2}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;background:var(--red);color:#fff;font:700 .95rem var(--f);border:0;cursor:pointer;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));transition:.2s}
+.btn:hover{background:#fff;color:var(--navy)}
+.btn.o{background:transparent;box-shadow:inset 0 0 0 2px var(--line);color:#fff}.btn.o:hover{background:var(--line);color:var(--navy)}
+.tag{font:600 .78rem var(--f);letter-spacing:.12em;color:var(--line);text-transform:uppercase}
+[lang=ar] .tag{letter-spacing:0;text-transform:none}
+
+/* HEADER */
+.top{position:sticky;inset-block-start:0;z-index:60;background:#061B2Eee;backdrop-filter:blur(10px);border-bottom:1px solid #5cd6e833}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-block:10px}
+.top img{height:46px;filter:brightness(0) invert(1)}
+.top ul{display:flex;gap:28px;list-style:none;font-weight:600;font-size:.92rem}
+.top ul a:hover{color:var(--line)}
+.top .r{display:flex;gap:8px;align-items:center}
+.top .btn{padding:10px 20px}
+.lg{width:42px;height:42px;border:1.5px solid var(--line);background:transparent;color:#fff;font:700 .8rem var(--f);cursor:pointer;transition:.2s}.lg:hover{background:var(--line);color:var(--navy)}
+@media(max-width:900px){.top ul{display:none}}
+
+/* HERO */
+.hero{position:relative;background:var(--navy);background-image:linear-gradient(#5cd6e810 1px,transparent 1px),linear-gradient(90deg,#5cd6e810 1px,transparent 1px);background-size:40px 40px;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr);gap:clamp(20px,4vw,70px);align-items:center;padding-block:clamp(40px,6vw,90px)}
+.hero h1{font-size:clamp(2.2rem,4.3vw,4.2rem);margin-block:16px 20px}
+.hero p.l{max-width:44ch;font-size:1.1rem}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.sy{margin-top:30px;border-top:1px solid #5cd6e855}
+.sy button{display:flex;width:100%;justify-content:space-between;gap:14px;text-align:start;background:transparent;border:0;border-bottom:1px solid #5cd6e855;color:var(--frost);font:500 .98rem var(--f);padding:11px 4px;cursor:pointer;transition:.2s}
+.sy button b{color:var(--line);font-weight:600;white-space:nowrap}
+.sy button:hover,.sy button.on{background:#5cd6e814;color:#fff;padding-inline:14px}
+.sy button.on b{color:var(--red)}
+.bp{width:100%;height:auto;overflow:visible}
+.bp *{vector-effect:non-scaling-stroke}
+.bp .dr{fill:none;stroke:var(--line);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.4s cubic-bezier(.4,.1,.2,1) forwards}
+.bp .dr:nth-child(2n){animation-delay:.25s}.bp .dr:nth-child(3n){animation-delay:.5s}
+@keyframes draw{to{stroke-dashoffset:0}}
+.bp .fl{fill:#5cd6e812;stroke:none}
+.bp .tx{fill:var(--line);font:600 11px var(--f);letter-spacing:.1em}
+.bp [data-p]{transition:opacity .3s}
+.bp[data-k] [data-p]{opacity:.28}
+.bp[data-k="gh"] [data-p="gh"],.bp[data-k="climate"] [data-p="climate"],.bp[data-k="irr"] [data-p="irr"],.bp[data-k="sub"] [data-p="sub"],.bp[data-k="nut"] [data-p="nut"],.bp[data-k="mon"] [data-p="mon"]{opacity:1}
+.bp[data-k="gh"] [data-p="gh"] .dr,.bp[data-k="climate"] [data-p="climate"] .dr,.bp[data-k="irr"] [data-p="irr"] .dr,.bp[data-k="sub"] [data-p="sub"] .dr,.bp[data-k="nut"] [data-p="nut"] .dr,.bp[data-k="mon"] [data-p="mon"] .dr{stroke:var(--red);stroke-width:2.6}
+.flowl{stroke-dasharray:5 7!important;animation:fl 1s linear infinite!important;stroke-dashoffset:0}
+@keyframes fl{to{stroke-dashoffset:-24}}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+
+/* PROOF */
+.proof{background:var(--red);color:#fff}
+.proof .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.proof .s{padding:clamp(24px,3.6vw,46px) 22px;border-inline-start:1px solid #ffffff55}
+.proof .s:first-child{border-inline-start:0}
+.proof b{display:block;font:800 clamp(3rem,5.4vw,5rem)/.9 var(--f);font-stretch:125%;font-variation-settings:'wdth' 125}
+.proof span{display:block;margin-top:10px;font-weight:500;max-width:24ch}
+
+/* CONSOLE (services) */
+.sec{padding-block:clamp(60px,9vw,130px)}
+.sec h2{font-size:clamp(2rem,4.6vw,4.2rem);max-width:16ch}
+.con{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:0;margin-top:46px;border:1px solid #5cd6e855}
+.tabs{border-inline-end:1px solid #5cd6e855}
+.tabs button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:12px;text-align:start;padding:clamp(18px,2.6vw,30px) clamp(16px,2.4vw,30px);background:transparent;border:0;border-bottom:1px solid #5cd6e833;color:var(--frost);font:700 clamp(1.1rem,1.9vw,1.6rem) var(--f);cursor:pointer;transition:.25s}
+.tabs button:last-child{border-bottom:0}
+.tabs button svg{width:22px;height:22px;flex:none;opacity:0;transition:.25s}[dir=rtl] .tabs button svg{transform:scaleX(-1)}
+.tabs button:hover{background:#5cd6e80f}
+.tabs button.on{background:#fff;color:var(--navy)}.tabs button.on svg{opacity:1;color:var(--red)}
+.pnl{position:relative;min-height:440px;overflow:hidden;background:var(--navy2)}
+.pnl img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;transition:opacity .4s}
+.pnl:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 20%,#061B2Ef2)}
+.pnl .in{position:absolute;inset-inline:0;inset-block-end:0;padding:clamp(22px,3vw,44px);z-index:2}
+.pnl h3{font:800 clamp(1.8rem,3vw,2.8rem)/1 var(--f);font-stretch:115%;font-variation-settings:'wdth' 115;color:#fff;margin-bottom:12px}
+.pnl p{max-width:50ch;margin-bottom:20px}
+.pnl.sw img{opacity:0}
+@media(max-width:860px){.con{grid-template-columns:1fr}.tabs{border-inline-end:0;border-bottom:1px solid #5cd6e855}.pnl{min-height:380px}}
+
+/* SPEC SHEET */
+.spec{background:#fff;color:var(--navy)}
+.spec h2{color:var(--navy)}
+.tbl{margin-top:36px;border-top:3px solid var(--navy)}
+.rw{display:grid;grid-template-columns:84px minmax(0,1fr) auto auto;gap:22px;align-items:center;padding:14px 6px;border-bottom:1px solid #06304a22;transition:background .2s}
+.rw:hover{background:#eef6f9}
+.rw img{width:84px;height:84px;object-fit:cover}
+.rw h3{font:600 clamp(1rem,1.6vw,1.2rem)/1.3 var(--f)}
+.rw .p{font:800 1.5rem var(--f);font-stretch:115%;font-variation-settings:'wdth' 115;color:var(--red);white-space:nowrap}.rw .p s{font:500 .85rem var(--f);color:#6b8088;margin-inline-start:8px}
+.rw .btn{padding:10px 18px;font-size:.88rem}
+@media(max-width:760px){.rw{grid-template-columns:64px 1fr;gap:12px}.rw img{width:64px;height:64px}.rw .p,.rw .btn{grid-column:2}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chips a{padding:9px 18px;border:1.5px solid var(--navy);font-weight:600;font-size:.92rem;transition:.2s}.chips a:hover{background:var(--navy);color:#fff}
+.mk{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:30px;font-weight:500}
+.mk img{height:34px;width:auto;background:#fff;padding:5px 12px;box-shadow:0 0 0 1px #06304a33}
+
+/* GANTT */
+.gantt{margin-top:48px;display:grid;gap:12px}
+.gr{display:grid;grid-template-columns:minmax(150px,.5fr) minmax(0,2.5fr);gap:20px;align-items:center}
+.gr .n{font:700 1.02rem var(--f);color:#fff}.gr .n small{display:block;font:400 .86rem var(--f);color:var(--frost)}
+.gr .tr{position:relative;height:46px;border:1px solid #5cd6e840;background:#5cd6e80a;background-image:linear-gradient(90deg,#5cd6e822 1px,transparent 1px);background-size:20% 100%}
+.gr .bar{position:absolute;inset-block:5px;inset-inline-start:calc(var(--s)*20%);width:0;background:var(--red);transition:width 1.1s cubic-bezier(.3,.7,.2,1);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,0 100%)}
+[dir=rtl] .gr .bar{clip-path:polygon(10px 0,100% 0,100% 100%,10px 100%,0 50%)}
+.gantt.go .bar{width:20%}
+.gantt.go .gr:nth-child(2) .bar{transition-delay:.25s}.gantt.go .gr:nth-child(3) .bar{transition-delay:.5s}.gantt.go .gr:nth-child(4) .bar{transition-delay:.75s}.gantt.go .gr:nth-child(5) .bar{transition-delay:1s}
+@media(max-width:700px){.gr{grid-template-columns:1fr;gap:8px}}
+
+/* REVIEWS */
+.rv{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:40px}
+.rc{background:var(--navy2);border-inline-start:4px solid var(--red);padding:26px;display:flex;flex-direction:column;gap:14px}
+.rc .s{color:var(--red);letter-spacing:3px}
+.rc q{font:500 1.15rem/1.45 var(--f);quotes:none;color:#fff}
+.rc small{margin-top:auto;color:var(--line)}
+
+/* CONTACT */
+.ct{background:var(--teal);color:#fff;text-align:center;padding:clamp(70px,10vw,150px) var(--gut)}
+.ct h2{font-size:clamp(2.2rem,6vw,5.6rem);max-width:14ch;margin-inline:auto}
+.ct .cta{justify-content:center}
+.ct .btn.o{box-shadow:inset 0 0 0 2px #fff}.ct .btn.o:hover{background:#fff;color:var(--teal)}
+footer{background:#041423;padding:28px 0;font-size:.9rem;color:#8fb0bd}
+footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+footer img{height:38px;filter:brightness(0) invert(1);opacity:.85}footer nav{display:flex;gap:20px}
+@media(prefers-reduced-motion:reduce){.bp .dr{animation:none;stroke-dashoffset:0}.flowl{animation:none!important}*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a href="#" aria-label="PlantX"><img src="assets/logo.png" alt="PlantX Horticulture Solutions"></a>
+  <ul><li><a href="#systems" data-ar="الأنظمة">Systems</a></li><li><a href="#services" data-ar="الخدمات">Services</a></li><li><a href="#products" data-ar="المنتجات">Products</a></li><li><a href="#process" data-ar="كيف نعمل">Process</a></li><li><a href="#contact" data-ar="تواصل">Contact</a></li></ul>
+  <div class="r"><button class="lg" id="lang" aria-label="Language">AR</button><a class="btn" href="https://plantx-egypt.com" data-ar="المتجر">Shop</a></div>
+</div></header>
+
+<main>
+<section class="hero" id="systems"><div class="wrap">
+  <div>
+    <span class="tag" data-ar="PlantX للحلول البستانية">PlantX Horticulture Solutions</span>
+    <h1 class="hd" data-ar="من هيكل الصوبة إلى منطقة الجذور.">From the greenhouse structure to the root zone.</h1>
+    <p class="l" data-ar="حلول ذكية للزراعة الحديثة، من تصميم الصوب والزراعة المائية إلى تغذية النبات وإدارة المحصول.">Smart solutions for modern agriculture, from greenhouse design and hydroponics to plant nutrition and crop management.</p>
+    <div class="sy" id="sy">
+      <button data-k="gh"><span data-ar="هيكل الصوبة وتخطيطها">Structure and layout</span><b>Greenhouse</b></button>
+      <button data-k="climate"><span data-ar="التهوية والتحكم في المناخ">Ventilation and climate control</span><b>Climate</b></button>
+      <button data-k="irr"><span data-ar="الري والتسميد">Irrigation and fertigation</span><b>Fertigation</b></button>
+      <button data-k="sub"><span data-ar="أنظمة الزراعة المائية والبيئات">Hydroponic and substrate systems</span><b>Hydroponics</b></button>
+      <button data-k="nut"><span data-ar="برامج التغذية A&B">A&amp;B nutrition programs</span><b>Nutrition</b></button>
+      <button data-k="mon"><span data-ar="متابعة أداء المحصول">Crop performance monitoring</span><b>Monitoring</b></button>
+    </div>
+    <div class="cta"><a class="btn" href="#services" data-ar="استكشف حلولنا">Explore our solutions</a><a class="btn o" href="#contact" data-ar="تحدث مع خبير">Talk to an expert</a></div>
+  </div>
+  <svg class="bp" id="bp" viewBox="0 0 900 620" role="img" aria-label="Greenhouse blueprint">
+    <!-- ground -->
+    <g data-p="gh"><path class="dr" pathLength="1" d="M20 520H880"/><path class="dr" pathLength="1" d="M90 520V250L450 70 810 250V520"/><path class="dr" pathLength="1" d="M90 250H810M270 160V250M630 160V250M450 70V520M270 250V520M630 250V520"/><path class="fl" d="M90 520V250L450 70 810 250V520Z"/>
+      <path class="dr" pathLength="1" d="M90 560H810M90 548V572M810 548V572"/><text class="tx" x="450" y="590" text-anchor="middle">STRUCTURE</text></g>
+    <!-- climate -->
+    <g data-p="climate"><path class="dr" pathLength="1" d="M330 112 372 90M570 112 528 90"/><path class="dr" pathLength="1" d="M110 262H790" stroke-dasharray="1"/><path class="dr flowl" pathLength="1" d="M200 215c40-30 80-30 120 0M580 215c40-30 80-30 120 0"/><text class="tx" x="450" y="52" text-anchor="middle">VENTILATION · SCREENS</text></g>
+    <!-- irrigation -->
+    <g data-p="irr"><path class="dr flowl" pathLength="1" d="M120 300H780"/><path class="dr" pathLength="1" d="M200 300V330M360 300V330M520 300V330M680 300V330"/><circle class="dr" pathLength="1" cx="200" cy="336" r="5"/><circle class="dr" pathLength="1" cx="360" cy="336" r="5"/><circle class="dr" pathLength="1" cx="520" cy="336" r="5"/><circle class="dr" pathLength="1" cx="680" cy="336" r="5"/></g>
+    <!-- substrate / hydroponics -->
+    <g data-p="sub"><path class="dr" pathLength="1" d="M130 440H770V470H130Z"/><path class="dr" pathLength="1" d="M130 495H770V510H130Z"/><path class="dr" pathLength="1" d="M180 470V495M320 470V495M460 470V495M600 470V495M740 470V495"/></g>
+    <!-- crop + monitoring -->
+    <g data-p="mon"><path class="dr" pathLength="1" d="M200 440C190 400 215 380 200 345M360 440C372 400 345 380 360 345M520 440C508 400 535 380 520 345M680 440C692 400 665 380 680 345"/>
+      <g class="dr" style="animation:none;stroke-dasharray:none;stroke-dashoffset:0"><circle cx="282" cy="402" r="5" fill="#E31C23" stroke="none"/><circle cx="602" cy="402" r="5" fill="#E31C23" stroke="none"/></g>
+      <path class="dr" pathLength="1" d="M282 402V380M602 402V380M268 376c8-8 22-8 30 0M588 376c8-8 22-8 30 0"/></g>
+    <!-- nutrition tanks -->
+    <g data-p="nut"><rect class="dr" pathLength="1" x="24" y="400" width="52" height="120" rx="6"/><rect class="dr" pathLength="1" x="824" y="400" width="52" height="120" rx="6"/><text class="tx" x="50" y="470" text-anchor="middle" style="font-size:22px">A</text><text class="tx" x="850" y="470" text-anchor="middle" style="font-size:22px">B</text><path class="dr flowl" pathLength="1" d="M76 455H130M824 455H770"/></g>
+  </svg>
+</div></section>
+
+<section class="proof"><div class="wrap g">
+  <div class="s"><b>5</b><span data-ar="خدمات من التصميم إلى الاستشارة">Services, from design to consultancy</span></div>
+  <div class="s"><b>5</b><span data-ar="خطوط منتجات للتغذية والتربة">Product lines for nutrition and soil</span></div>
+  <div class="s"><b>3</b><span data-ar="منصات بيع: أمازون وجوميا ونون">Marketplaces: Amazon, Jumia, Noon</span></div>
+  <div class="s"><b>5.0</b><span data-ar="متوسط تقييمات المتجر (5 تقييمات)">Store rating average (5 reviews)</span></div>
+</div></section>
+
+<section class="sec" id="services"><div class="wrap">
+  <h2 class="hd" data-ar="خمس خدمات. فريق واحد.">Five services. One team.</h2>
+  <div class="con">
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <div class="pnl" id="pnl"><img id="pi" alt=""><div class="in"><h3 id="pt"></h3><p id="pp"></p><a class="btn" id="pa" href="#" data-ar="اقرأ المزيد">Read more</a></div></div>
+  </div>
+</div></section>
+
+<section class="sec spec" id="products"><div class="wrap">
+  <h2 class="hd" data-ar="محاليل التغذية A&B">A&amp;B nutrient solutions</h2>
+  <div class="chips"><a href="https://plantx-egypt.com/collections/plantx-garden%E2%84%A2">PlantX Garden™</a><a href="https://plantx-egypt.com/collections/plantx-leafy%E2%84%A2">PlantX Leafy™</a><a href="https://plantx-egypt.com/collections/plantx-fruit%E2%84%A2">PlantX Fruit™</a><a href="https://plantx-egypt.com/collections/plantx-berry%E2%84%A2">PlantX Berry™</a><a href="https://plantx-egypt.com/collections/plantx-compost%E2%84%A2">PlantX Compost™</a></div>
+  <div class="tbl" id="tbl"></div>
+  <div class="mk"><span data-ar="متوفر أيضًا على:">Also available on</span><a href="https://www.amazon.eg/s?me=A331OR3GTRBRBM&language=en&marketplaceID=ARBP9OOSHTCHU"><img src="assets/amazon.png" alt="Amazon Egypt"></a><a href="https://www.jumia.com.eg/ar/plantx-horticulture-solution/"><img src="assets/jumia.png" alt="Jumia"></a><img src="assets/noon.png" alt="Noon"></div>
+</div></section>
+
+<section class="sec" id="process"><div class="wrap">
+  <h2 class="hd" data-ar="من الفكرة إلى الإنتاج.">From concept to production.</h2>
+  <div class="gantt" id="gantt">
+    <div class="gr"><div class="n"><span data-ar="تقييم المشروع">Project assessment</span><small data-ar="المحصول والموقع والمناخ والموارد">Crop, site, climate, resources</small></div><div class="tr"><i class="bar" style="--s:0"></i></div></div>
+    <div class="gr"><div class="n"><span data-ar="تصميم النظام">System design</span><small data-ar="التخطيط واختيار الأنظمة">Layout and system selection</small></div><div class="tr"><i class="bar" style="--s:1"></i></div></div>
+    <div class="gr"><div class="n"><span data-ar="التنفيذ">Implementation</span><small data-ar="التركيب والتشغيل والتكامل">Installation, commissioning, integration</small></div><div class="tr"><i class="bar" style="--s:2"></i></div></div>
+    <div class="gr"><div class="n"><span data-ar="إنتاج المحصول">Crop production</span><small data-ar="المحصول والتغذية والري والبيئة">Crop, nutrition, irrigation, environment</small></div><div class="tr"><i class="bar" style="--s:3"></i></div></div>
+    <div class="gr"><div class="n"><span data-ar="التحسين">Optimization</span><small data-ar="متابعة الأداء باستمرار">Continuous performance monitoring</small></div><div class="tr"><i class="bar" style="--s:4"></i></div></div>
+  </div>
+</div></section>
+
+<section class="sec" style="padding-top:0"><div class="wrap">
+  <h2 class="hd" data-ar="آراء العملاء.">What customers say.</h2>
+  <div class="rv">
+    <div class="rc"><span class="s">★★★★★</span><q>This fertilizer is excellent, it's magical.</q><small>Hamada · Herbs, Medicinal &amp; Aromatic A&amp;B</small></div>
+    <div class="rc"><span class="s">★★★★★</span><q lang="ar" dir="rtl">سماد ممتاز جدا وافضل من اي NPK أو أحماض أمنية استخدمتها قبل كدا انصح بيه.</q><small>Rabies · Flowering Ornamental Plants A&amp;B</small></div>
+    <div class="rc"><span class="s">★★★★★</span><q>Excellent fertilizer, after using my plants returned back fresh.</q><small>Customer · Indoor &amp; Shade Plants A&amp;B</small></div>
+  </div>
+</div></section>
+
+<section class="ct" id="contact">
+  <h2 class="hd" data-ar="جاهز لمشروعك القادم؟">Planning a greenhouse project?</h2>
+  <div class="cta"><a class="btn" style="background:#fff;color:var(--navy)" href="https://wa.link/l676ve" data-ar="تحدث مع خبرائنا">Talk to our experts</a><a class="btn o" href="https://www.linkedin.com/company/plantx-horticulture-solutions">LinkedIn</a><a class="btn o" href="https://www.instagram.com/plantx.horticulturesolutions/">Instagram</a><a class="btn o" href="https://www.facebook.com/profile.php?id=61583441600375">Facebook</a></div>
+</section>
+</main>
+<footer><div class="wrap"><img src="assets/logo.png" alt="PlantX"><span>© PlantX Horticulture Solutions</span><nav><a href="https://plantx-egypt.com/pages/our-services" data-ar="الخدمات">Services</a><a href="https://plantx-egypt.com/cart" data-ar="السلة">Cart</a></nav></div></footer>
+
+<script>
+const root=document.documentElement;
+const S=[
+ {en:'Greenhouse Solutions',ar:'حلول الصوب الزراعية',de:'Design and development of greenhouse systems based on crop requirements, location, climate conditions, and production targets.',da:'تصميم وتطوير أنظمة الصوب وفق متطلبات المحصول والموقع والمناخ وأهداف الإنتاج.',img:'s-greenhouse.png',u:'greenhouse-solutions'},
+ {en:'Hydroponic Solutions',ar:'حلول الزراعة المائية',de:'Design and development of hydroponic systems, irrigation strategies, and nutrient programs for efficient crop production.',da:'تصميم وتطوير أنظمة الزراعة المائية واستراتيجيات الري وبرامج التغذية لإنتاج فعّال.',img:'s-hydro.jpg',u:'hydroponic-solutions'},
+ {en:'Crop Management',ar:'إدارة المحاصيل',de:'Optimizing crop production through irrigation, nutrition, climate management, and crop performance monitoring.',da:'تحسين إنتاج المحصول من خلال الري والتغذية وإدارة المناخ ومتابعة أداء المحصول.',img:'s-crop.jpg',u:'crop-management'},
+ {en:'Plant Nutrition',ar:'تغذية النبات',de:'Developing crop-specific nutrition programs and products based on crop requirements and growth stages.',da:'تطوير برامج ومنتجات تغذية مخصصة لكل محصول ومرحلة نمو.',img:'s-nutrition.png',u:'plant-nutrition'},
+ {en:'Technical Consultancy',ar:'الاستشارات الفنية',de:'Technical assessment and practical solutions designed to address agricultural and operational challenges.',da:'تقييم فني وحلول عملية للتحديات الزراعية والتشغيلية.',img:'s-consult.jpg',u:'technical-consultancy'}];
+const P=[['Herbs, Medicinal and Aromatic Plants A&B','p-herbs.png','plantx-nutrient-solution-for-herbs-medicinal-and-aromatic-plants-a-b'],['Leafy Greens','p-leafy.png','plantx-nutrient-solution-for-leafy-greens-a-b'],['Lettuce','p-lettuce.png','plantx-nutrient-solution-for-lettuce-a-b'],['Flowering Ornamental Plants A&B','p-flower.png','plantx-nutrient-solution-for-flowering-ornamental-plants-a-b'],['Indoor Ornamental Plants and Shade Plants A&B','p-indoor.png','plantx-nutrient-solution-for-indoor-plants']];
+let cur=0;const ar=()=>root.lang==='ar';
+const arrow='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>';
+function renderTabs(){document.getElementById('tabs').innerHTML=S.map((s,i)=>`<button role="tab" aria-selected="${i===cur}" class="${i===cur?'on':''}" data-i="${i}"><span>${ar()?s.ar:s.en}</span>${arrow}</button>`).join('')}
+function renderPanel(sw){const s=S[cur],pnl=document.getElementById('pnl'),im=document.getElementById('pi');
+ if(sw){pnl.classList.add('sw');setTimeout(()=>{im.src='assets/'+s.img;pnl.classList.remove('sw')},180)}else im.src='assets/'+s.img;
+ document.getElementById('pt').textContent=ar()?s.ar:s.en;document.getElementById('pt').className='';document.getElementById('pp').textContent=ar()?s.da:s.de;document.getElementById('pa').href='https://plantx-egypt.com/pages/'+s.u;
+ document.getElementById('pt').style.cssText=''}
+document.getElementById('tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;cur=+b.dataset.i;renderTabs();renderPanel(true)});
+function renderTbl(){document.getElementById('tbl').innerHTML=P.map(p=>`<div class="rw"><img src="assets/${p[1]}" alt="" loading="lazy"><h3>PlantX Nutrient Solution for ${p[0]}</h3><span class="p">199.99 EGP<s>220.00</s></span><a class="btn" href="https://plantx-egypt.com/products/${p[2]}">${ar()?'اطلب الآن':'Buy now'}</a></div>`).join('')}
+function setLang(l){root.lang=l;root.dir=l==='ar'?'rtl':'ltr';
+ document.querySelectorAll('[data-ar]').forEach(e=>{if(e.dataset.en===undefined)e.dataset.en=e.innerHTML;e.innerHTML=l==='ar'?e.dataset.ar:e.dataset.en});
+ document.getElementById('lang').textContent=l==='ar'?'EN':'AR';renderTabs();renderPanel(false);renderTbl();try{localStorage.plxLang=l}catch(e){}}
+document.getElementById('lang').onclick=()=>setLang(ar()?'en':'ar');
+renderTabs();renderPanel(false);renderTbl();
+/* hero: system list highlights the blueprint part */
+(function(){const bp=document.getElementById('bp'),btn=[...document.querySelectorAll('#sy button')];
+ function on(k){bp.dataset.k=k;btn.forEach(b=>b.classList.toggle('on',b.dataset.k===k))}
+ function off(){delete bp.dataset.k;btn.forEach(b=>b.classList.remove('on'))}
+ btn.forEach(b=>{b.addEventListener('mouseenter',()=>on(b.dataset.k));b.addEventListener('focus',()=>on(b.dataset.k));b.addEventListener('click',()=>on(b.dataset.k))});
+ document.getElementById('sy').addEventListener('mouseleave',off)})();
+new IntersectionObserver((e,o)=>e.forEach(i=>{if(i.isIntersecting){i.target.classList.add('go');o.unobserve(i.target)}}),{threshold:.3}).observe(document.getElementById('gantt'));
+try{if(localStorage.plxLang==='ar'||location.hash==='#ar')setLang('ar')}catch(e){}
+</script>
+</body>
+</html>
